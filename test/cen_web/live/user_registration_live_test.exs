@@ -1,8 +1,8 @@
 defmodule CenWeb.UserRegistrationLiveTest do
   use CenWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Cen.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do

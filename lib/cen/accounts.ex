@@ -4,9 +4,11 @@ defmodule Cen.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Cen.Repo
 
-  alias Cen.Accounts.{User, UserToken, UserNotifier}
+  alias Cen.Accounts.User
+  alias Cen.Accounts.UserNotifier
+  alias Cen.Accounts.UserToken
+  alias Cen.Repo
 
   ## Database getters
 
@@ -38,8 +40,7 @@ defmodule Cen.Accounts do
       nil
 
   """
-  def get_user_by_email_and_password(email, password)
-      when is_binary(email) and is_binary(password) do
+  def get_user_by_email_and_password(email, password) when is_binary(email) and is_binary(password) do
     user = Repo.get_by(User, email: email)
     if User.valid_password?(user, password), do: user
   end

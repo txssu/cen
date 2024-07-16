@@ -1,4 +1,5 @@
 defmodule CenWeb.UserSettingsLive do
+  @moduledoc false
   use CenWeb, :live_view
 
   alias Cen.Accounts

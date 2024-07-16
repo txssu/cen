@@ -1,8 +1,8 @@
 defmodule CenWeb.UserForgotPasswordLiveTest do
   use CenWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Cen.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   alias Cen.Accounts
   alias Cen.Repo

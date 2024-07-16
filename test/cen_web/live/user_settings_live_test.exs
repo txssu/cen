@@ -1,9 +1,10 @@
 defmodule CenWeb.UserSettingsLiveTest do
   use CenWeb.ConnCase, async: true
 
-  alias Cen.Accounts
-  import Phoenix.LiveViewTest
   import Cen.AccountsFixtures
+  import Phoenix.LiveViewTest
+
+  alias Cen.Accounts
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do

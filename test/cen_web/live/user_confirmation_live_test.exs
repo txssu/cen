@@ -1,8 +1,8 @@
 defmodule CenWeb.UserConfirmationLiveTest do
   use CenWeb.ConnCase, async: true
 
-  import Phoenix.LiveViewTest
   import Cen.AccountsFixtures
+  import Phoenix.LiveViewTest
 
   alias Cen.Accounts
   alias Cen.Repo
@@ -56,8 +56,7 @@ defmodule CenWeb.UserConfirmationLiveTest do
 
       # when logged in
       conn =
-        build_conn()
-        |> log_in_user(user)
+        log_in_user(build_conn(), user)
 
       {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
 

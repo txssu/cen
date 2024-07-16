@@ -1,8 +1,9 @@
 defmodule CenWeb.UserAuth do
+  @moduledoc false
   use CenWeb, :verified_routes
 
-  import Plug.Conn
   import Phoenix.Controller
+  import Plug.Conn
 
   alias Cen.Accounts
 

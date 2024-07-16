@@ -1,4 +1,5 @@
 defmodule CenWeb.UserLoginLive do
+  @moduledoc false
   use CenWeb, :live_view
 
   def render(assigns) do

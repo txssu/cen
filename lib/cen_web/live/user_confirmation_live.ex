@@ -1,4 +1,5 @@
 defmodule CenWeb.UserConfirmationLive do
+  @moduledoc false
   use CenWeb, :live_view
 
   alias Cen.Accounts
@@ -15,7 +16,7 @@ defmodule CenWeb.UserConfirmationLive do
         </:actions>
       </.simple_form>
 
-      <p class="text-center mt-4">
+      <p class="mt-4 text-center">
         <.link href={~p"/users/register"}>Register</.link>
         | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
