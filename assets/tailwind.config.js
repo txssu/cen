@@ -15,6 +15,9 @@ module.exports = {
     extend: {
       colors: {
         brand: "#FD4F00",
+      },
+      boxShadow: {
+        "navbar": "0 0 15px 0 rgba(0, 0, 0, 0.15)" 
       }
     },
   },
