@@ -1,0 +1,151 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100 != 11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
+
+msgid "can't be blank"
+msgstr "не может быть пустым"
+
+msgid "has already been taken"
+msgstr "уже занято"
+
+msgid "is invalid"
+msgstr "некорректно"
+
+msgid "must be accepted"
+msgstr "Должно быть принято"
+
+msgid "has invalid format"
+msgstr "неверный формат"
+
+msgid "has an invalid entry"
+msgstr "некорректная запись"
+
+msgid "is reserved"
+msgstr "зарезервировано"
+
+msgid "does not match confirmation"
+msgstr "подтверждение не совпадает"
+
+msgid "is still associated with this entry"
+msgstr "привязано к этой записи"
+
+msgid "are still associated with this entry"
+msgstr "привязаны к этой записи"
+
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "должен быть %{count} элемент"
+msgstr[1] "должно быть %{count} элемента"
+msgstr[2] "должно быть %{count} элементов"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "должен быть %{count} символ"
+msgstr[1] "должно быть %{count} символа"
+msgstr[2] "должно быть %{count} символов"
+
+msgid "should be %{count} byte(s)"
+msgid_plural "should be %{count} byte(s)"
+msgstr[0] "должен быть %{count} байт"
+msgstr[1] "должно быть %{count} байта"
+msgstr[2] "должно быть %{count} байт"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "должно быть не менее %{count} элемента"
+msgstr[1] "должно быть не менее %{count} элементов"
+msgstr[2] "должно быть не менее %{count} элементов"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "должно быть не менее %{count} символа"
+msgstr[1] "должно быть не менее %{count} символов"
+msgstr[2] "должно быть не менее %{count} символов"
+
+msgid "should be at least %{count} byte(s)"
+msgid_plural "should be at least %{count} byte(s)"
+msgstr[0] "должно быть не менее %{count} байта"
+msgstr[1] "должно быть не менее %{count} байт"
+msgstr[2] "должно быть не менее %{count} байт"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "должно быть не более %{count} элемента"
+msgstr[1] "должно быть не более %{count} элементов"
+msgstr[2] "должно быть не более %{count} элементов"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "должно быть не более %{count} символа"
+msgstr[1] "должно быть не более %{count} символов"
+msgstr[2] "должно быть не более %{count} символов"
+
+msgid "should be at most %{count} byte(s)"
+msgid_plural "should be at most %{count} byte(s)"
+msgstr[0] "должно быть не более %{count} байта"
+msgstr[1] "должно быть не более %{count} байт"
+msgstr[2] "должно быть не более %{count} байт"
+
+msgid "must be less than %{number}"
+msgstr "должно быть меньше %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "должно быть больше %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "должно быть меньше или равно %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "должно быть больше или равно %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "должно быть равно %{number}"
+
+#: lib/cen/accounts/user.ex:52
+#, elixir-autogen, elixir-format
+msgid "cannot be admin"
+msgstr "не может быть админом"
+
+#: lib/cen/accounts/user.ex:119
+#, elixir-autogen, elixir-format
+msgid "did not change"
+msgstr "не изменилось"
+
+#: lib/cen/accounts/user.ex:138
+#, elixir-autogen, elixir-format
+msgid "does not match password"
+msgstr "пароль не совпадает"
+
+#: lib/cen/accounts/user.ex:175
+#, elixir-autogen, elixir-format
+msgid "is not valid"
+msgstr "недопустимый"
+
+#: lib/cen/accounts/user.ex:65
+#, elixir-autogen, elixir-format
+msgid "must have the @ sign and no spaces"
+msgstr "должна содержать символ @ и не содержать пробелов"
+
+#: lib/cen/accounts/user.ex:77
+#, elixir-autogen, elixir-format
+msgid "should be at least one digit"
+msgstr "должна быть хотя бы одна цифра"
+
+#: lib/cen/accounts/user.ex:75
+#, elixir-autogen, elixir-format
+msgid "should be at least one lower case character"
+msgstr "должна быть хотя бы одна строчная буква"
+
+#: lib/cen/accounts/user.ex:76
+#, elixir-autogen, elixir-format
+msgid "should be at least one upper case character"
+msgstr "должна быть хотя бы одна заглавная буква"

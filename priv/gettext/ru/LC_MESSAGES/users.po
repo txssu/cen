@@ -1,0 +1,52 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100 != 11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
+
+#: lib/cen_web/live/user_registration_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Applicant"
+msgstr "Соискатель"
+
+#: lib/cen_web/live/user_registration_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Employer"
+msgstr "Работодатель"
+
+#: lib/cen_web/live/user_registration_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr "Роль"
+
+#: lib/cen_web/live/user_registration_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "Birthdate"
+msgstr "День рождения"
+
+#: lib/cen_web/live/user_registration_live.ex:58
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "Почта"
+
+#: lib/cen_web/live/user_registration_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Fullname"
+msgstr "ФИО"
+
+#: lib/cen_web/live/user_registration_live.ex:63
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr "Пароль"
+
+#: lib/cen_web/live/user_registration_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Phone"
+msgstr "Номер телефона"

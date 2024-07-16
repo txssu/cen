@@ -2,6 +2,8 @@ defmodule CenWeb.UserRegistrationLive do
   @moduledoc false
   use CenWeb, :live_view
 
+  import CenWeb.Gettext
+
   alias Cen.Accounts
   alias Cen.Accounts.User
 
@@ -29,10 +31,10 @@ defmodule CenWeb.UserRegistrationLive do
         method="post"
       >
         <.error :if={@check_errors}>
-          Oops, something went wrong! Please check the errors below.
+          <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
         </.error>
 
-        <.input field={@form[:fullname]} type="text" label="Fullname" required />
+        <.input field={@form[:fullname]} type="text" label={dgettext("users", "Fullname")} required />
 
         <.input
           field={@form[:role]}
@@ -49,13 +51,18 @@ defmodule CenWeb.UserRegistrationLive do
           :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
           field={@form[:birthdate]}
           type="date"
-          label="Birthdate"
+          label={dgettext("users", "Birthdate")}
           required
         />
 
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:phone]} type="text" label="Phone" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+        <.input field={@form[:email]} type="email" label={dgettext("users", "Email")} required />
+        <.input field={@form[:phone]} type="text" label={dgettext("users", "Phone")} required />
+        <.input
+          field={@form[:password]}
+          type="password"
+          label={dgettext("users", "Password")}
+          required
+        />
 
         <:actions>
           <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>

@@ -1,0 +1,52 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Applicant"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:45
+#, elixir-autogen, elixir-format
+msgid "Employer"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:42
+#, elixir-autogen, elixir-format
+msgid "Role"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:54
+#, elixir-autogen, elixir-format
+msgid "Birthdate"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:58
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Fullname"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:63
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr ""
+
+#: lib/cen_web/live/user_registration_live.ex:59
+#, elixir-autogen, elixir-format
+msgid "Phone"
+msgstr ""
