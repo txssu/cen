@@ -44,6 +44,7 @@ defmodule Cen.MixProject do
       {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       {:mix_audit, "~> 2.1.2", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:tailwind_formatter, "~> 0.4.0", only: [:dev, :test], runtime: false},
       # Misc
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
