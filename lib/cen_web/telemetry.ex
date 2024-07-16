@@ -1,6 +1,8 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule CenWeb.Telemetry do
+  @moduledoc false
   use Supervisor
+
   import Telemetry.Metrics
 
   def start_link(arg) do
@@ -71,8 +73,7 @@ defmodule CenWeb.Telemetry do
       ),
       summary("cen.repo.query.idle_time",
         unit: {:native, :millisecond},
-        description:
-          "The time the connection spent waiting before being checked out for the query"
+        description: "The time the connection spent waiting before being checked out for the query"
       ),
 
       # VM Metrics
