@@ -27,6 +27,8 @@ config :cen, CenWeb.Endpoint,
   secret_key_base: "BPrlIJC/RJCGCbVO4Yk3WQsDplcCTVSIG1K15sjQrck9SrLPSM0poGl8c6CF9jqL",
   server: false
 
+config :gettext, :default_locale, "en"
+
 # Print only warnings and errors during test
 config :logger, level: :warning
 
