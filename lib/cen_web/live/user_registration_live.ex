@@ -56,7 +56,12 @@ defmodule CenWeb.UserRegistrationLive do
         />
 
         <.input field={@form[:email]} type="email" label={dgettext("users", "Email")} required />
-        <.input field={@form[:phone]} type="text" label={dgettext("users", "Phone")} required />
+        <.input
+          field={@form[:phone_number]}
+          type="text"
+          label={dgettext("users", "Phone number")}
+          required
+        />
         <.input
           field={@form[:password]}
           type="password"

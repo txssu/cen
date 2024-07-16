@@ -13,7 +13,7 @@ defmodule Cen.Accounts.User do
     field :confirmed_at, :utc_datetime
 
     field :fullname, :string
-    field :phone, :string
+    field :phone_number, :string
     field :birthdate, :date
     field :role, Ecto.Enum, values: [:applicant, :employer, :admin], default: :applicant
 
@@ -45,7 +45,7 @@ defmodule Cen.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, ~w[email password fullname phone role birthdate]a)
+    |> cast(attrs, ~w[email password fullname phone_number role birthdate]a)
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_birthdate()

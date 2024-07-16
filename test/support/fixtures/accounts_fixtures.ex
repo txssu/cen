@@ -9,7 +9,7 @@ defmodule Cen.AccountsFixtures do
   def valid_user_role, do: Enum.random(~w[applicant employer])
   def valid_user_birthdate, do: ~D[1990-01-01]
   def valid_user_fullname, do: "John Doe"
-  def valid_user_phone, do: "+70001234567"
+  def valid_user_phone_number, do: "+70001234567"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
@@ -17,7 +17,7 @@ defmodule Cen.AccountsFixtures do
       password: valid_user_password(),
       role: valid_user_role(),
       fullname: valid_user_fullname(),
-      phone: valid_user_phone(),
+      phone_number: valid_user_phone_number(),
       birthdate: valid_user_birthdate()
     })
   end
