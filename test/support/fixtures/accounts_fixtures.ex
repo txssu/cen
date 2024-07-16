@@ -5,12 +5,20 @@ defmodule Cen.AccountsFixtures do
   """
 
   def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  def valid_user_password, do: "HelloWorld123"
+  def valid_user_role, do: Enum.random(~w[applicant employer])
+  def valid_user_birthdate, do: ~D[1990-01-01]
+  def valid_user_fullname, do: "John Doe"
+  def valid_user_phone, do: "+70001234567"
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
       email: unique_user_email(),
-      password: valid_user_password()
+      password: valid_user_password(),
+      role: valid_user_role(),
+      fullname: valid_user_fullname(),
+      phone: valid_user_phone(),
+      birthdate: valid_user_birthdate()
     })
   end
 

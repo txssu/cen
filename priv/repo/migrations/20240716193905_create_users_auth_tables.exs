@@ -9,6 +9,12 @@ defmodule Cen.Repo.Migrations.CreateUsersAuthTables do
       add :hashed_password, :string, null: false
       add :confirmed_at, :utc_datetime
 
+      add :fullname, :string, null: false
+      add :phone, :string, null: false
+      add :role, :string, null: false
+
+      add :birthdate, :date
+
       timestamps(type: :utc_datetime)
     end
 
