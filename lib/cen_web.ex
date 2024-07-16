@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule CenWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
