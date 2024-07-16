@@ -32,7 +32,29 @@ defmodule CenWeb.UserRegistrationLive do
           Oops, something went wrong! Please check the errors below.
         </.error>
 
+        <.input field={@form[:fullname]} type="text" label="Fullname" required />
+
+        <.input
+          field={@form[:role]}
+          type="select"
+          prompt={dgettext("users", "Role")}
+          options={[
+            {dgettext("users", "Applicant"), "applicant"},
+            {dgettext("users", "Employer"), "employer"}
+          ]}
+          required
+        />
+
+        <.input
+          :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
+          field={@form[:birthdate]}
+          type="date"
+          label="Birthdate"
+          required
+        />
+
         <.input field={@form[:email]} type="email" label="Email" required />
+        <.input field={@form[:phone]} type="text" label="Phone" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>

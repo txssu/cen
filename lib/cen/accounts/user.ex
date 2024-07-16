@@ -15,7 +15,7 @@ defmodule Cen.Accounts.User do
     field :fullname, :string
     field :phone, :string
     field :birthdate, :date
-    field :role, Ecto.Enum, values: [:applicant, :employer, :admin]
+    field :role, Ecto.Enum, values: [:applicant, :employer, :admin], default: :applicant
 
     timestamps(type: :utc_datetime)
   end
