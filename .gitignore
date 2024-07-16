@@ -35,3 +35,10 @@ cen-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Nix
+.direnv
+.nix-*
+
+# Dialyzer
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

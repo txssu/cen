@@ -5,11 +5,16 @@ defmodule Cen.MixProject do
     [
       app: :cen,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [
+        plt_add_apps: [:mix],
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+        ignore_warnings: ".dialyzer_ignore.exs"
+      ]
     ]
   end
 
@@ -32,6 +37,15 @@ defmodule Cen.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      # Code quality
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      # TODO bump on release to {:styler, "~> 1.0.0"},
+      {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
+      {:mix_audit, "~> 2.1.2", only: [:dev, :test], runtime: false},
+      {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
+      {:tailwind_formatter, "~> 0.4.0", only: [:dev, :test], runtime: false},
+      # Misc
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
@@ -45,12 +59,7 @@ defmodule Cen.MixProject do
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
-       github: "tailwindlabs/heroicons",
-       tag: "v2.1.1",
-       sparse: "optimized",
-       app: false,
-       compile: false,
-       depth: 1},
+       github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
       {:swoosh, "~> 1.5"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
@@ -71,15 +80,21 @@ defmodule Cen.MixProject do
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "assets.setup", "assets.build"],
-      "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      "ecto.setup": ["ecto.create", "ecto.migrate"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
+      seed: ["run priv/repo/seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind cen", "esbuild cen"],
-      "assets.deploy": [
-        "tailwind cen --minify",
-        "esbuild cen --minify",
-        "phx.digest"
+      "assets.build": ["tailwind default", "esbuild default"],
+      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      locale: ["gettext.extract", "gettext.merge priv/gettext"],
+      ci: [
+        "compile --all-warnings --warnings-as-errors",
+        "format --check-formatted",
+        "credo --strict",
+        "sobelow -i Config.HTTPS --skip --exit",
+        "deps.audit",
+        "dialyzer"
       ]
     ]
   end
