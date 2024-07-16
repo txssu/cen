@@ -38,3 +38,7 @@ npm-debug.log
 # Nix
 .direnv
 .nix-*
+
+# Dialyzer
+/priv/plts/*.plt
+/priv/plts/*.plt.hash

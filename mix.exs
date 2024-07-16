@@ -9,7 +9,12 @@ defmodule Cen.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      dialyzer: [
+        plt_add_apps: [:mix],
+        plt_file: {:no_warn, "priv/plts/dialyzer.plt"},
+        ignore_warnings: ".dialyzer_ignore.exs"
+      ]
     ]
   end
 
@@ -36,6 +41,7 @@ defmodule Cen.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       # TODO bump on release to {:styler, "~> 1.0.0"},
       {:styler, "~> 1.0.0-rc.1", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       # Misc
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},
