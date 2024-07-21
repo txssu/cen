@@ -89,8 +89,11 @@ defmodule CenWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      scope "/users/settings", UserSettings do
+        live "/personal", PersonalInfoLive
+        live "/credentials", CredentialsLive, :edit_credentials
+        live "/confirm_email/:token", UserSettingsLive, :confirm_email
+      end
     end
   end
 

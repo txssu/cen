@@ -1,4 +1,4 @@
-defmodule CenWeb.UserSettingsLive do
+defmodule CenWeb.UserSettings.CredentialsLive do
   @moduledoc false
   use CenWeb, :live_view
 
@@ -84,7 +84,7 @@ defmodule CenWeb.UserSettingsLive do
           put_flash(socket, :error, "Email change link is invalid or it has expired.")
       end
 
-    {:ok, push_navigate(socket, to: ~p"/users/settings")}
+    {:ok, push_navigate(socket, to: ~p"/users/settings/credentials")}
   end
 
   def mount(_params, _session, socket) do

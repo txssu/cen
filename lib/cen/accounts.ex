@@ -216,6 +216,10 @@ defmodule Cen.Accounts do
     end
   end
 
+  def change_user_personal_info(user, attrs \\ %{}) do
+    User.personal_info_changeset(user, attrs)
+  end
+
   ## Session
 
   @doc """

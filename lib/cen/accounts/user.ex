@@ -48,15 +48,14 @@ defmodule Cen.Accounts.User do
     |> cast(attrs, ~w[email password fullname phone_number role birthdate]a)
     |> validate_email(opts)
     |> validate_password(opts)
-    |> validate_birthdate()
-    |> validate_exclusion(:role, in: [:admin], message: dgettext("errors", "cannot be admin"))
+    |> validate_role()
+    |> validate_personal_info()
   end
 
-  defp validate_birthdate(changeset) do
-    case get_change(changeset, :role) do
-      :applicant -> validate_required(changeset, [:birthdate])
-      _employer -> changeset
-    end
+  defp validate_role(changeset) do
+    changeset
+    |> validate_required([:role])
+    |> validate_exclusion(:role, in: [:admin], message: dgettext("errors", "cannot be admin"))
   end
 
   defp validate_email(changeset, opts) do
@@ -103,6 +102,38 @@ defmodule Cen.Accounts.User do
     else
       changeset
     end
+  end
+
+  def personal_info_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:fullname, :phone_number, :birthdate])
+    |> validate_personal_info()
+  end
+
+  defp validate_personal_info(changeset) do
+    changeset
+    |> validate_birthdate()
+    |> validate_fullname()
+    |> validate_phone_number()
+  end
+
+  defp validate_birthdate(changeset) do
+    case get_change(changeset, :role) do
+      :applicant -> validate_required(changeset, [:birthdate])
+      _employer -> changeset
+    end
+  end
+
+  defp validate_fullname(changeset) do
+    changeset
+    |> validate_required([:fullname])
+    |> validate_length(:fullname, max: 60)
+  end
+
+  defp validate_phone_number(changeset) do
+    changeset
+    |> validate_required([:phone_number])
+    |> validate_length(:phone_number, max: 20)
   end
 
   @doc """
