@@ -3,9 +3,12 @@ defmodule CenWeb.UserSettings.CredentialsLive do
   use CenWeb, :live_view
 
   alias Cen.Accounts
+  alias CenWeb.UserSettings.Components
 
   def render(assigns) do
     ~H"""
+    <Components.navigation />
+
     <.header class="text-center">
       Account Settings
       <:subtitle>Manage your account email address and password settings</:subtitle>

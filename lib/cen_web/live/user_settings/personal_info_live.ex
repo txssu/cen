@@ -3,9 +3,12 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
   use CenWeb, :live_view
 
   alias Cen.Accounts
+  alias CenWeb.UserSettings.Components
 
   def render(assigns) do
     ~H"""
+    <Components.navigation />
+
     <.header class="text-center">
       Personal account info
       <:subtitle>Manage your account fullname, phone number and other settings</:subtitle>
