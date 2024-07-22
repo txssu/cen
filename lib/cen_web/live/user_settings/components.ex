@@ -2,6 +2,7 @@ defmodule CenWeb.UserSettings.Components do
   @moduledoc false
   use CenWeb, :html
 
+  @spec navigation(map()) :: Phoenix.LiveView.Rendered.t()
   def navigation(assigns) do
     ~H"""
     <ul>

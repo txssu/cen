@@ -5,6 +5,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
   alias Cen.Accounts
   alias CenWeb.UserSettings.Components
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <Components.navigation />
@@ -49,6 +50,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
     personal_info_changeset = Accounts.change_user_personal_info(user)

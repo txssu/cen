@@ -5,6 +5,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
   alias Cen.Accounts
   alias CenWeb.UserSettings.Components
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <Components.navigation />
@@ -77,6 +78,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(%{"token" => token}, _session, socket) do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
@@ -90,6 +92,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     {:ok, push_navigate(socket, to: ~p"/users/settings/credentials")}
   end
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
@@ -107,6 +110,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     {:ok, socket}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate_email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 
@@ -119,6 +123,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("update_email", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user
@@ -139,6 +144,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     end
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate_password", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
 
@@ -151,6 +157,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     {:noreply, assign(socket, password_form: password_form, current_password: password)}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("update_password", params, socket) do
     %{"current_password" => password, "user" => user_params} = params
     user = socket.assigns.current_user

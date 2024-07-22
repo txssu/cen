@@ -7,6 +7,7 @@ defmodule CenWeb.UserRegistrationLive do
   alias Cen.Accounts
   alias Cen.Accounts.User
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -77,6 +78,7 @@ defmodule CenWeb.UserRegistrationLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
 
@@ -88,6 +90,7 @@ defmodule CenWeb.UserRegistrationLive do
     {:ok, socket, temporary_assigns: [form: nil]}
   end
 
+  @impl Phoenix.LiveView
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
@@ -105,6 +108,7 @@ defmodule CenWeb.UserRegistrationLive do
     end
   end
 
+  @impl Phoenix.LiveView
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_registration(%User{}, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}

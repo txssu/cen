@@ -2,6 +2,7 @@ defmodule CenWeb.UserLoginLive do
   @moduledoc false
   use CenWeb, :live_view
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -36,6 +37,7 @@ defmodule CenWeb.UserLoginLive do
     """
   end
 
+  @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
