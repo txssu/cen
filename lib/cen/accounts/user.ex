@@ -5,6 +5,8 @@ defmodule Cen.Accounts.User do
   import CenWeb.Gettext
   import Ecto.Changeset
 
+  @type t() :: %__MODULE__{}
+
   schema "users" do
     field :email, :string
     field :password, :string, virtual: true, redact: true

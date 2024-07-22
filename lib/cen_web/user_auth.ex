@@ -2,10 +2,14 @@ defmodule CenWeb.UserAuth do
   @moduledoc false
   use CenWeb, :verified_routes
 
+  import CenWeb.Gettext
   import Phoenix.Controller
   import Plug.Conn
 
   alias Cen.Accounts
+  alias Cen.Accounts.User
+  alias Phoenix.LiveView
+  alias Phoenix.Socket
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change
@@ -26,6 +30,7 @@ defmodule CenWeb.UserAuth do
   disconnected on log out. The line can be safely removed
   if you are not using LiveView.
   """
+  @spec log_in_user(Plug.Conn.t(), User.t(), map()) :: Plug.Conn.t()
   def log_in_user(conn, user, params \\ %{}) do
     token = Accounts.generate_user_session_token(user)
     user_return_to = get_session(conn, :user_return_to)
@@ -61,6 +66,7 @@ defmodule CenWeb.UserAuth do
   #     end
   #
   defp renew_session(conn) do
+    # Prevent a CSRF fixation attack. See https://hexdocs.pm/plug/Plug.CSRFProtection.html and https://github.com/phoenixframework/phoenix/pull/5725
     delete_csrf_token()
 
     conn
@@ -73,6 +79,7 @@ defmodule CenWeb.UserAuth do
 
   It clears all session data for safety. See renew_session.
   """
+  @spec log_out_user(Plug.Conn.t()) :: Plug.Conn.t()
   def log_out_user(conn) do
     user_token = get_session(conn, :user_token)
     user_token && Accounts.delete_user_session_token(user_token)
@@ -91,6 +98,7 @@ defmodule CenWeb.UserAuth do
   Authenticates the user by looking into the session
   and remember me token.
   """
+  @spec fetch_current_user(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
   def fetch_current_user(conn, _opts) do
     {user_token, conn} = ensure_user_token(conn)
     user = user_token && Accounts.get_user_by_session_token(user_token)
@@ -146,6 +154,7 @@ defmodule CenWeb.UserAuth do
         live "/profile", ProfileLive, :index
       end
   """
+  @spec on_mount(atom(), LiveView.unsigned_params(), map(), Socket.t()) :: {:cont, Socket.t()} | {:halt, Socket.t()}
   def on_mount(:mount_current_user, _params, session, socket) do
     {:cont, mount_current_user(socket, session)}
   end
@@ -158,7 +167,7 @@ defmodule CenWeb.UserAuth do
     else
       socket =
         socket
-        |> Phoenix.LiveView.put_flash(:error, "You must log in to access this page.")
+        |> Phoenix.LiveView.put_flash(:error, dgettext("auth", "You must log in to access this page."))
         |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
 
       {:halt, socket}
@@ -186,6 +195,7 @@ defmodule CenWeb.UserAuth do
   @doc """
   Used for routes that require the user to not be authenticated.
   """
+  @spec redirect_if_user_is_authenticated(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
   def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
@@ -202,6 +212,7 @@ defmodule CenWeb.UserAuth do
   If you want to enforce the user email is confirmed before
   they use the application at all, here would be a good place.
   """
+  @spec require_authenticated_user(Plug.Conn.t(), Keyword.t()) :: Plug.Conn.t()
   def require_authenticated_user(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
@@ -215,9 +226,11 @@ defmodule CenWeb.UserAuth do
   end
 
   defp put_token_in_session(conn, token) do
+    encoded_token = Base.url_encode64(token)
+
     conn
     |> put_session(:user_token, token)
-    |> put_session(:live_socket_id, "users_sessions:#{Base.url_encode64(token)}")
+    |> put_session(:live_socket_id, "users_sessions:#{encoded_token}")
   end
 
   defp maybe_store_return_to(%{method: "GET"} = conn) do
