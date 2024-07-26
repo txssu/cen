@@ -5,34 +5,46 @@ defmodule CenWeb.UserLoginLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Log in to account
-        <:subtitle>
-          Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
-            Sign up
-          </.link>
-          for an account now.
-        </:subtitle>
-      </.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-start-5 lg:sm:col-span-4">
+      <h1 class="text-center uppercase"><%= dgettext("auth", "Вход") %></h1>
 
-      <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+      <div class="mt-[35px]">
+        <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
+          <.input field={@form[:email]} type="email" placeholder={dgettext("auth", "Почта")} required />
+          <.input
+            field={@form[:password]}
+            type="password"
+            placeholder={dgettext("auth", "Пароль")}
+            required
+          />
 
-        <:actions>
-          <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
-          <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
-            Forgot your password?
-          </.link>
-        </:actions>
-        <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full">
-            Log in <span aria-hidden="true">→</span>
-          </.button>
-        </:actions>
-      </.simple_form>
+          <:actions>
+            <.button
+              phx-disable-with="Вход..."
+              class="mx-auto mt-[30px] uppercase text-[15px] shadow-default-1"
+            >
+              <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+              <span>
+                <%= dgettext("auth", "Войти") %>
+              </span>
+            </.button>
+          </:actions>
+        </.simple_form>
+
+        <article class="mt-[18px] space-y-2.5 text-center">
+          <p>
+            <%= dgettext("auth", "Нет аккаунта?") %>
+            <.link href={~p"/users/register"}>
+              <%= dgettext("auth", "Зарегистрироваться") %>
+            </.link>
+          </p>
+          <p>
+            <.link href={~p"/users/reset_password"}>
+              <%= dgettext("auth", "Я не помню пароль") %>
+            </.link>
+          </p>
+        </article>
+      </div>
     </div>
     """
   end

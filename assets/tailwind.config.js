@@ -15,10 +15,17 @@ module.exports = {
     extend: {
       colors: {
         brand: "#FD4F00",
+        accent: "#A2C7E0",
+        text: "#666666",
+        background: "#FCFCFC"
       },
       boxShadow: {
-        "navbar": "0 0 15px 0 rgba(0, 0, 0, 0.15)" 
-      }
+        "navbar": "0 0 15px 0 rgba(0, 0, 0, 0.15)",
+        "input": "2px 2px 5px 0px rgba(0, 0, 0, 0.09), inset -3px 4px 8px 0px rgba(0, 0, 0, 0.09)",
+        "icon": "inset 2px 2px 6px 0px rgba(0, 0, 0, 0.25)",
+        "default-1": "0px 4px 10px 0px rgba(0, 0, 0, 0.25)"
+      },
+
     },
   },
   plugins: [

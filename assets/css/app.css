@@ -1,5 +1,25 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "fonts.css";
 
 /* This file is for your main application CSS */
+
+html {
+  @apply text-[17px] leading-[1.1] text-text;
+  font-family: "HelveticaNeueCyr", monospace;
+}
+
+main {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/overlay.png');
+}
+
+@layer components {
+  h1 {
+    @apply text-accent font-medium text-[30px] leading-[1.2];
+  }
+
+  a {
+    @apply text-accent font-normal underline;
+  }
+}

@@ -1,6 +1,6 @@
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
-    <.flash_group flash={@flash} />
+<main class="container mx-auto">
+  <.flash_group flash={@flash} />
+  <div class="py-[115px] grid grid-cols-4 gap-x-5 px-5 lg:grid-cols-12 lg:gap-x-10">
     <%= @inner_content %>
   </div>
 </main>

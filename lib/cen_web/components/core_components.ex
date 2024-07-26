@@ -207,7 +207,7 @@ defmodule CenWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="space-y-[15px]">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -236,8 +236,7 @@ defmodule CenWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "rounded-lg bg-zinc-900 px-3 py-2 hover:bg-zinc-700 phx-submit-loading:opacity-75",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "bg-accent py-[8px] pr-[20px] pl-[7px] gap-[10px] flex items-center rounded-full font-normal uppercase text-white",
         @class
       ]}
       {@rest}
@@ -380,7 +379,7 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         value={Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "h-[58px] shadow-input text-style-main mt-2 block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -597,6 +596,12 @@ defmodule CenWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  def icon(%{name: "cen-" <> _} = assigns) do
+    ~H"""
+    <img src={"/images/icons/#{@name}.svg"} class={[@class]} />
     """
   end
 
