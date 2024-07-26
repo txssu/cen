@@ -4,10 +4,13 @@ defmodule Cen.Accounts.UserToken do
 
   import Ecto.Query
 
+  alias Cen.Accounts.User
   alias Cen.Accounts.UserToken
 
   @hash_algorithm :sha256
   @rand_size 32
+
+  @type t :: %__MODULE__{}
 
   # It is very important to keep the reset password token expiry short,
   # since someone with access to the email may take over the account.
@@ -20,7 +23,7 @@ defmodule Cen.Accounts.UserToken do
     field :token, :binary
     field :context, :string
     field :sent_to, :string
-    belongs_to :user, Cen.Accounts.User
+    belongs_to :user, User
 
     timestamps(type: :utc_datetime, updated_at: false)
   end
@@ -44,6 +47,7 @@ defmodule Cen.Accounts.UserToken do
   and devices in the UI and allow users to explicitly expire any
   session they deem invalid.
   """
+  @spec build_session_token(User.t()) :: {binary(), t()}
   def build_session_token(user) do
     token = :crypto.strong_rand_bytes(@rand_size)
     {token, %UserToken{token: token, context: "session", user_id: user.id}}
@@ -57,6 +61,7 @@ defmodule Cen.Accounts.UserToken do
   The token is valid if it matches the value in the database and it has
   not expired (after @session_validity_in_days).
   """
+  @spec verify_session_token_query(binary()) :: {:ok, Ecto.Query.t()}
   def verify_session_token_query(token) do
     query =
       from token in by_token_and_context_query(token, "session"),
@@ -80,10 +85,12 @@ defmodule Cen.Accounts.UserToken do
   Users can easily adapt the existing code to provide other types of delivery methods,
   for example, by phone numbers.
   """
+  @spec build_email_token(User.t(), String.t()) :: {binary(), t()}
   def build_email_token(user, context) do
     build_hashed_token(user, context, user.email)
   end
 
+  @spec build_hashed_token(User.t(), String.t(), String.t()) :: {binary(), t()}
   defp build_hashed_token(user, context, sent_to) do
     token = :crypto.strong_rand_bytes(@rand_size)
     hashed_token = :crypto.hash(@hash_algorithm, token)
@@ -110,6 +117,7 @@ defmodule Cen.Accounts.UserToken do
   for resetting the password. For verifying requests to change the email,
   see `verify_change_email_token_query/2`.
   """
+  @spec verify_email_token_query(binary(), String.t()) :: {:ok, Ecto.Query.t()} | :error
   def verify_email_token_query(token, context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
@@ -146,7 +154,8 @@ defmodule Cen.Accounts.UserToken do
   database and if it has not expired (after @change_email_validity_in_days).
   The context must always start with "change:".
   """
-  def verify_change_email_token_query(token, "change:" <> _ = context) do
+  @spec verify_change_email_token_query(binary(), String.t()) :: {:ok, Ecto.Query.t()} | :error
+  def verify_change_email_token_query(token, "change:" <> _rest = context) do
     case Base.url_decode64(token, padding: false) do
       {:ok, decoded_token} ->
         hashed_token = :crypto.hash(@hash_algorithm, decoded_token)
@@ -165,6 +174,7 @@ defmodule Cen.Accounts.UserToken do
   @doc """
   Returns the token struct for the given token value and context.
   """
+  @spec by_token_and_context_query(binary(), String.t()) :: Ecto.Query.t()
   def by_token_and_context_query(token, context) do
     from UserToken, where: [token: ^token, context: ^context]
   end
@@ -172,6 +182,7 @@ defmodule Cen.Accounts.UserToken do
   @doc """
   Gets all tokens for the given user for the given contexts.
   """
+  @spec by_user_and_contexts_query(User.t(), [String.t()] | :all) :: Ecto.Query.t()
   def by_user_and_contexts_query(user, :all) do
     from t in UserToken, where: t.user_id == ^user.id
   end

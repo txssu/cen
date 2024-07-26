@@ -14,8 +14,9 @@ defmodule CenWeb.ConnCase do
   by setting `use CenWeb.ConnCase, async: true`, although
   this option is not recommended for other databases.
   """
-
   use ExUnit.CaseTemplate
+
+  alias Cen.Accounts.User
 
   using do
     quote do
@@ -43,6 +44,7 @@ defmodule CenWeb.ConnCase do
   It stores an updated connection and a registered user in the
   test context.
   """
+  @spec register_and_log_in_user(%{conn: Plug.Conn.t()}) :: %{conn: Plug.Conn.t(), user: User.t()}
   def register_and_log_in_user(%{conn: conn}) do
     user = Cen.AccountsFixtures.user_fixture()
     %{conn: log_in_user(conn, user), user: user}
@@ -53,6 +55,7 @@ defmodule CenWeb.ConnCase do
 
   It returns an updated `conn`.
   """
+  @spec log_in_user(Plug.Conn.t(), User.t()) :: Plug.Conn.t()
   def log_in_user(conn, user) do
     token = Cen.Accounts.generate_user_session_token(user)
 

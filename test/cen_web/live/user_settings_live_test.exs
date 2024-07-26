@@ -183,8 +183,8 @@ defmodule CenWeb.UserSettingsLiveTest do
       assert Accounts.get_user_by_email(email)
 
       # use confirm token again
-      {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
-      assert {:live_redirect, %{to: path, flash: flash}} = redirect
+      {:error, error_redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
+      assert {:live_redirect, %{to: path, flash: flash}} = error_redirect
       assert path == ~p"/users/settings/personal"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."

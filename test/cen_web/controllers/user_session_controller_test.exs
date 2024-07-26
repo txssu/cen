@@ -18,8 +18,7 @@ defmodule CenWeb.UserSessionControllerTest do
       assert redirected_to(conn) == ~p"/"
 
       # Now do a logged in request and assert on the menu
-      conn = get(conn, ~p"/")
-      response = html_response(conn, 200)
+      response = conn |> get(~p"/") |> html_response(200)
       assert response =~ user.email
       assert response =~ ~p"/users/settings/personal"
       assert response =~ ~p"/users/log_out"

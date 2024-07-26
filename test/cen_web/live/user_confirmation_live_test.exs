@@ -23,15 +23,15 @@ defmodule CenWeb.UserConfirmationLiveTest do
           Accounts.deliver_user_confirmation_instructions(user, url)
         end)
 
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
+      {:ok, lv_1, _html} = live(conn, ~p"/users/confirm/#{token}")
 
-      result =
-        lv
+      result_1 =
+        lv_1
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, "/")
 
-      assert {:ok, conn} = result
+      assert {:ok, conn} = result_1
 
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
                "User confirmed successfully"
@@ -41,15 +41,15 @@ defmodule CenWeb.UserConfirmationLiveTest do
       assert Repo.all(Accounts.UserToken) == []
 
       # when not logged in
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
+      {:ok, lv_2, _html} = live(conn, ~p"/users/confirm/#{token}")
 
-      result =
-        lv
+      result_2 =
+        lv_2
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, "/")
 
-      assert {:ok, conn} = result
+      assert {:ok, conn} = result_2
 
       assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
                "User confirmation link is invalid or it has expired"
@@ -58,15 +58,15 @@ defmodule CenWeb.UserConfirmationLiveTest do
       conn =
         log_in_user(build_conn(), user)
 
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
+      {:ok, lv_3, _html} = live(conn, ~p"/users/confirm/#{token}")
 
-      result =
-        lv
+      result_3 =
+        lv_3
         |> form("#confirmation_form")
         |> render_submit()
         |> follow_redirect(conn, "/")
 
-      assert {:ok, conn} = result
+      assert {:ok, conn} = result_3
       refute Phoenix.Flash.get(conn.assigns.flash, :error)
     end
 

@@ -111,7 +111,7 @@ defmodule CenWeb.UserAuthTest do
     end
 
     test "does not authenticate if data is missing", %{conn: conn, user: user} do
-      _ = Accounts.generate_user_session_token(user)
+      _session_token = Accounts.generate_user_session_token(user)
       conn = UserAuth.fetch_current_user(conn, [])
       refute get_session(conn, :user_token)
       refute conn.assigns.current_user
@@ -239,29 +239,29 @@ defmodule CenWeb.UserAuthTest do
     end
 
     test "stores the path to redirect to on GET", %{conn: conn} do
-      halted_conn =
+      halted_conn_1 =
         %{conn | path_info: ["foo"], query_string: ""}
         |> fetch_flash()
         |> UserAuth.require_authenticated_user([])
 
-      assert halted_conn.halted
-      assert get_session(halted_conn, :user_return_to) == "/foo"
+      assert halted_conn_1.halted
+      assert get_session(halted_conn_1, :user_return_to) == "/foo"
 
-      halted_conn =
+      halted_conn_2 =
         %{conn | path_info: ["foo"], query_string: "bar=baz"}
         |> fetch_flash()
         |> UserAuth.require_authenticated_user([])
 
-      assert halted_conn.halted
-      assert get_session(halted_conn, :user_return_to) == "/foo?bar=baz"
+      assert halted_conn_2.halted
+      assert get_session(halted_conn_2, :user_return_to) == "/foo?bar=baz"
 
-      halted_conn =
+      halted_conn_3 =
         %{conn | path_info: ["foo"], query_string: "bar", method: "POST"}
         |> fetch_flash()
         |> UserAuth.require_authenticated_user([])
 
-      assert halted_conn.halted
-      refute get_session(halted_conn, :user_return_to)
+      assert halted_conn_3.halted
+      refute get_session(halted_conn_3, :user_return_to)
     end
 
     test "does not redirect if user is authenticated", %{conn: conn, user: user} do
