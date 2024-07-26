@@ -6,7 +6,9 @@ defmodule CenWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-start-5 lg:sm:col-span-4">
-      <h1 class="text-center uppercase"><%= dgettext("auth", "Вход") %></h1>
+      <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
+        <%= dgettext("auth", "Вход") %>
+      </h1>
 
       <div class="mt-[35px]">
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
@@ -34,12 +36,12 @@ defmodule CenWeb.UserLoginLive do
         <article class="mt-[18px] space-y-2.5 text-center">
           <p>
             <%= dgettext("auth", "Нет аккаунта?") %>
-            <.link href={~p"/users/register"}>
+            <.link class="link" href={~p"/users/register"}>
               <%= dgettext("auth", "Зарегистрироваться") %>
             </.link>
           </p>
           <p>
-            <.link href={~p"/users/reset_password"}>
+            <.link class="link" href={~p"/users/reset_password"}>
               <%= dgettext("auth", "Я не помню пароль") %>
             </.link>
           </p>

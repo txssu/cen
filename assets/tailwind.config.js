@@ -12,12 +12,19 @@ module.exports = {
     "../lib/cen_web/**/*.*ex"
   ],
   theme: {
+    container: {
+      padding: {
+        DEFAULT: '20px',
+        lg: '40px',
+      },
+    },
     extend: {
       colors: {
         brand: "#FD4F00",
         accent: "#A2C7E0",
         text: "#666666",
-        background: "#FCFCFC"
+        background: "#FCFCFC",
+        navbargray: "#1F1F1F"
       },
       boxShadow: {
         "navbar": "0 0 15px 0 rgba(0, 0, 0, 0.15)",
