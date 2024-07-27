@@ -419,7 +419,10 @@ defmodule CenWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase">
+    <label
+      for={@for}
+      class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl"
+    >
       <%= render_slot(@inner_block) %>
     </label>
     """

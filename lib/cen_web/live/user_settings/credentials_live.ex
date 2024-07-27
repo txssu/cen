@@ -8,13 +8,13 @@ defmodule CenWeb.UserSettings.CredentialsLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4">
+    <div class="col-span-4 lg:col-span-3">
       <Components.navigation current_page={:credentials} />
     </div>
 
-    <div class="col-span-4">
+    <div class="col-span-4 lg:col-start-5">
       <div>
-        <h2 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase">
+        <h2 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase lg:text-3xl">
           <%= dgettext("users", "Обновить почту") %>
         </h2>
         <.simple_form
@@ -46,7 +46,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
         </.simple_form>
       </div>
 
-      <h2 class="leadin-[1.3] text-title-text mt-[4.375rem] mb-[2.1875rem] text-xl font-medium uppercase">
+      <h2 class="leadin-[1.3] text-title-text mt-[4.375rem] mb-[2.1875rem] text-xl font-medium uppercase lg:mt-[7.3125rem] lg:text-3xl">
         <%= dgettext("users", "Обновить пароль") %>
       </h2>
 
