@@ -19,7 +19,11 @@ main {
     @apply text-navbargray no-underline text-[20px] leading-[1.35] font-light hover:text-accent;
   }
 
+  .link-hover {
+    @apply hover:text-accent
+  }
+
   .link {
-    @apply text-text hover:text-accent font-normal underline;
+    @apply text-text link-hover font-normal underline;
   }
 }
