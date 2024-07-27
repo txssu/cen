@@ -236,7 +236,7 @@ defmodule CenWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "bg-accent py-[8px] pr-[20px] pl-[7px] gap-[10px] flex items-center rounded-full font-normal uppercase text-white",
+        "bg-accent pl-[0.4375rem] flex items-center gap-2.5 rounded-full py-2 pr-5 font-normal uppercase text-white",
         @class
       ]}
       {@rest}
@@ -379,7 +379,7 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         value={Form.normalize_value(@type, @value)}
         class={[
-          "h-[58px] shadow-input text-style-main mt-[15px] block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
+          "h-[3.625rem] shadow-input text-style-main mt-[0.9375rem] block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}

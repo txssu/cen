@@ -6,7 +6,7 @@
 /* This file is for your main application CSS */
 
 html {
-  @apply text-[17px] leading-[1.1] text-text;
+  @apply leading-[1.1] text-text;
   font-family: "HelveticaNeueCyr", monospace;
 }
 
@@ -16,7 +16,7 @@ main {
 
 @layer components {
   .navbar-link {
-    @apply text-navbargray no-underline text-[20px] leading-[1.35] font-light hover:text-accent;
+    @apply text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent;
   }
 
   .link-hover {

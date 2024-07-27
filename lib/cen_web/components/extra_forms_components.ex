@@ -23,7 +23,7 @@ defmodule CenWeb.ExtraFormsComponents do
 
     ~H"""
     <fieldset class="flex flex-row flex-wrap justify-between gap-y-2.5 sm:flex-col md:flex-row lg:flex-col xl:flex-row">
-      <p class="text-[20px] uppercase"><%= @legend %></p>
+      <p class="text-xl uppercase"><%= @legend %></p>
       <div :for={{label, value} <- @options}>
         <label>
           <input

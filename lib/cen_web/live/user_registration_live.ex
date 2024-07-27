@@ -12,10 +12,10 @@ defmodule CenWeb.UserRegistrationLive do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
+      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
         <%= dgettext("users", "Регистрация") %>
       </h1>
-      <div class="mt-[35px]">
+      <div class="mt-[2.1875rem]">
         <.simple_form
           for={@form}
           id="registration_form"
@@ -29,7 +29,7 @@ defmodule CenWeb.UserRegistrationLive do
             <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
           </.error>
 
-          <div class="mb-[45px]">
+          <div class="mb-[2.8125rem]">
             <.radio
               legend={dgettext("users", "Роль")}
               field={@form[:role]}
@@ -79,9 +79,9 @@ defmodule CenWeb.UserRegistrationLive do
           <:actions>
             <.button
               phx-disable-with="Вход..."
-              class="mx-auto mt-[30px] uppercase text-[15px] shadow-default-1"
+              class="mx-auto mt-[1.875rem] uppercase text-[0.9375rem] shadow-default-1"
             >
-              <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+              <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
               <span>
                 <%= dgettext("users", "Зарегистрироваться") %>
               </span>
@@ -89,7 +89,7 @@ defmodule CenWeb.UserRegistrationLive do
           </:actions>
         </.simple_form>
 
-        <article class="mt-[18px] space-y-2.5 text-center">
+        <article class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Уже есть аккаунт?") %>
             <.link class="link" href={~p"/users/log_in"}>

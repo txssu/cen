@@ -6,11 +6,11 @@ defmodule CenWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
+      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
         <%= dgettext("users", "Вход") %>
       </h1>
 
-      <div class="mt-[35px]">
+      <div class="mt-[2.1875rem]">
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
           <.input
             field={@form[:email]}
@@ -28,9 +28,9 @@ defmodule CenWeb.UserLoginLive do
           <:actions>
             <.button
               phx-disable-with="Вход..."
-              class="mx-auto mt-[30px] uppercase text-[15px] shadow-default-1"
+              class="mx-auto mt-[1.875rem] uppercase text-[0.9375rem] shadow-default-1"
             >
-              <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+              <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
               <span>
                 <%= dgettext("users", "Войти") %>
               </span>
@@ -38,7 +38,7 @@ defmodule CenWeb.UserLoginLive do
           </:actions>
         </.simple_form>
 
-        <article class="mt-[18px] space-y-2.5 text-center">
+        <article class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Нет аккаунта?") %>
             <.link class="link" href={~p"/users/register"}>
