@@ -26,6 +26,8 @@ module.exports = {
         background: "#FCFCFC",
         navbargray: "#1F1F1F",
         footergray: "#1F1F1F",
+        "title-text": "#3E3E3E",
+        "accent-hover": "#dfebf4"
       },
       boxShadow: {
         "navbar": "0 0 15px 0 rgba(0, 0, 0, 0.15)",

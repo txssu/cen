@@ -26,15 +26,9 @@ defmodule CenWeb.UserLoginLive do
           />
 
           <:actions>
-            <.button
-              phx-disable-with="Вход..."
-              class="mx-auto mt-[1.875rem] uppercase text-[0.9375rem] shadow-default-1"
-            >
-              <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
-              <span>
-                <%= dgettext("users", "Войти") %>
-              </span>
-            </.button>
+            <.arrow_button class="mx-auto">
+              <%= dgettext("users", "Войти") %>
+            </.arrow_button>
           </:actions>
         </.simple_form>
 

@@ -8,7 +8,9 @@ defmodule CenWeb.UserSettings.CredentialsLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <Components.navigation />
+    <div class="col-span-4">
+      <Components.navigation current_page={:credentials} />
+    </div>
 
     <.header class="text-center">
       Account Settings

@@ -8,14 +8,22 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <Components.navigation />
+    <div class="col-span-4">
+      <Components.navigation current_page={:personal} />
+    </div>
 
-    <.header class="text-center">
-      Personal account info
-      <:subtitle>Manage your account fullname, phone number and other settings</:subtitle>
-    </.header>
+    <div class="mt-[2.1875rem] gap-[1.875rem] mb-2.5 flex">
+      <div class="flex-shrink-0 flex-grow-0">
+        <div class="w-[4.375rem] h-[4.375rem] bg-accent inline-block rounded-full"></div>
+      </div>
+      <div class="flex flex-grow-0 flex-col justify-center">
+        <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
+          <%= dgettext("users", "Удалить аккаунт") %>
+        </.button>
+      </div>
+    </div>
 
-    <div>
+    <div class="col-span-4">
       <.simple_form
         for={@personal_info_form}
         id="personal_info_form"
@@ -25,25 +33,26 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
         <.input
           field={@personal_info_form[:fullname]}
           type="text"
-          label={dgettext("users", "Fullname")}
+          placeholder={dgettext("users", "ФИО")}
           required
         />
         <.input
+          :if={@user_role == :applicant}
           field={@personal_info_form[:birthdate]}
           type="date"
-          label={dgettext("users", "Birthdate")}
+          placeholder={dgettext("users", "Дата рождения")}
           required
         />
         <.input
           field={@personal_info_form[:phone_number]}
           type="text"
-          label={dgettext("users", "Phone number")}
+          placeholder={dgettext("users", "Номер телефона")}
           required
         />
         <:actions>
-          <.button phx-disable-with="Changing...">
-            <%= dgettext("users", "Update personal info") %>
-          </.button>
+          <.arrow_button>
+            <%= dgettext("users", "Сохранить") %>
+          </.arrow_button>
         </:actions>
       </.simple_form>
     </div>
@@ -56,7 +65,10 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
     personal_info_changeset = Accounts.change_user_personal_info(user)
 
     socket =
-      assign(socket, :personal_info_form, to_form(personal_info_changeset))
+      assign(socket,
+        personal_info_form: to_form(personal_info_changeset),
+        user_role: user.role
+      )
 
     {:ok, socket}
   end

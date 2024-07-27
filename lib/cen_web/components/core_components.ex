@@ -226,7 +226,7 @@ defmodule CenWeb.CoreComponents do
       <.button phx-click="go" class="ml-2">Send!</.button>
   """
   attr :type, :string, default: nil
-  attr :class, :string, default: nil
+  attr :class, :any, default: nil
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -235,14 +235,35 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <button
       type={@type}
-      class={[
-        "bg-accent pl-[0.4375rem] flex items-center gap-2.5 rounded-full py-2 pr-5 font-normal uppercase text-white",
-        @class
-      ]}
+      class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]}
       {@rest}
     >
       <%= render_slot(@inner_block) %>
     </button>
+    """
+  end
+
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def arrow_button(assigns) do
+    ~H"""
+    <.button
+      class={[
+        "bg-accent pl-[0.4375rem] flex items-center gap-2.5 rounded-full py-2 pr-5 mt-[1.875rem] uppercase text-[0.9375rem]",
+        @class
+      ]}
+      type={@type}
+      {@rest}
+    >
+      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+      <span class="text-white">
+        <%= render_slot(@inner_block) %>
+      </span>
+    </.button>
     """
   end
 
