@@ -12,34 +12,44 @@ defmodule CenWeb.UserSettings.CredentialsLive do
       <Components.navigation current_page={:credentials} />
     </div>
 
-    <.header class="text-center">
-      Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
-    </.header>
-
-    <div class="space-y-12 divide-y">
+    <div class="col-span-4">
       <div>
+        <h2 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase">
+          <%= dgettext("users", "Обновить почту") %>
+        </h2>
         <.simple_form
           for={@email_form}
           id="email_form"
           phx-submit="update_email"
           phx-change="validate_email"
         >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
+          <.input
+            field={@email_form[:email]}
+            type="email"
+            label={dgettext("users", "Почта")}
+            required
+          />
           <.input
             field={@email_form[:current_password]}
             name="current_password"
             id="current_password_for_email"
             type="password"
-            label="Current password"
+            label={dgettext("users", "Текущий пароль")}
             value={@email_form_current_password}
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
+            <.arrow_button>
+              <%= dgettext("users", "Сохранить") %>
+            </.arrow_button>
           </:actions>
         </.simple_form>
       </div>
+
+      <h2 class="leadin-[1.3] text-title-text mt-[4.375rem] mb-[2.1875rem] text-xl font-medium uppercase">
+        <%= dgettext("users", "Обновить пароль") %>
+      </h2>
+
       <div>
         <.simple_form
           for={@password_form}
@@ -56,23 +66,30 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             id="hidden_user_email"
             value={@current_email}
           />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
+          <.input
+            field={@password_form[:password]}
+            type="password"
+            label={dgettext("users", "Новый пароль")}
+            required
+          />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
-            label="Confirm new password"
+            label={dgettext("users", "Подтвердите новый пароль")}
           />
           <.input
             field={@password_form[:current_password]}
             name="current_password"
             type="password"
-            label="Current password"
+            label={dgettext("users", "Текущий пароль")}
             id="current_password_for_password"
             value={@current_password}
             required
           />
           <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
+            <.arrow_button>
+              <%= dgettext("users", "Сохранить") %>
+            </.arrow_button>
           </:actions>
         </.simple_form>
       </div>
