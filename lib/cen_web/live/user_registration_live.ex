@@ -2,6 +2,7 @@ defmodule CenWeb.UserRegistrationLive do
   @moduledoc false
   use CenWeb, :live_view
 
+  import CenWeb.ExtraFormsComponents
   import CenWeb.Gettext
 
   alias Cen.Accounts
@@ -10,70 +11,93 @@ defmodule CenWeb.UserRegistrationLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Register for an account
-        <:subtitle>
-          Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-            Log in
-          </.link>
-          to your account now.
-        </:subtitle>
-      </.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+      <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
+        <%= dgettext("auth", "Регистрация") %>
+      </h1>
+      <div class="mt-[35px]">
+        <.simple_form
+          for={@form}
+          id="registration_form"
+          phx-submit="save"
+          phx-change="validate"
+          phx-trigger-action={@trigger_submit}
+          action={~p"/users/log_in?_action=registered"}
+          method="post"
+        >
+          <.error :if={@check_errors}>
+            <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
+          </.error>
 
-      <.simple_form
-        for={@form}
-        id="registration_form"
-        phx-submit="save"
-        phx-change="validate"
-        phx-trigger-action={@trigger_submit}
-        action={~p"/users/log_in?_action=registered"}
-        method="post"
-      >
-        <.error :if={@check_errors}>
-          <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
-        </.error>
+          <div class="mb-[45px]">
+            <.radio
+              legend={dgettext("users", "Роль")}
+              field={@form[:role]}
+              options={[
+                {dgettext("users", "Applicant"), "applicant"},
+                {dgettext("users", "Employer"), "employer"}
+              ]}
+            />
+          </div>
 
-        <.input field={@form[:fullname]} type="text" label={dgettext("users", "Fullname")} required />
+          <.input
+            field={@form[:fullname]}
+            type="text"
+            placeholder={dgettext("users", "ФИО")}
+            required
+          />
 
-        <.input
-          field={@form[:role]}
-          type="select"
-          prompt={dgettext("users", "Role")}
-          options={[
-            {dgettext("users", "Applicant"), "applicant"},
-            {dgettext("users", "Employer"), "employer"}
-          ]}
-          required
-        />
+          <.input
+            :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
+            field={@form[:birthdate]}
+            type="text"
+            onfocus="(this.type='date')"
+            onblur="(this.type='text')"
+            placeholder={dgettext("users", "Дата рождения")}
+            required
+          />
 
-        <.input
-          :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
-          field={@form[:birthdate]}
-          type="date"
-          label={dgettext("users", "Birthdate")}
-          required
-        />
+          <.input
+            field={@form[:email]}
+            type="email"
+            placeholder={dgettext("users", "Почта")}
+            required
+          />
+          <.input
+            field={@form[:phone_number]}
+            type="text"
+            placeholder={dgettext("users", "Номер телефона")}
+            required
+          />
+          <.input
+            field={@form[:password]}
+            type="password"
+            placeholder={dgettext("users", "Пароль")}
+            required
+          />
 
-        <.input field={@form[:email]} type="email" label={dgettext("users", "Email")} required />
-        <.input
-          field={@form[:phone_number]}
-          type="text"
-          label={dgettext("users", "Phone number")}
-          required
-        />
-        <.input
-          field={@form[:password]}
-          type="password"
-          label={dgettext("users", "Password")}
-          required
-        />
+          <:actions>
+            <.button
+              phx-disable-with="Вход..."
+              class="mx-auto mt-[30px] uppercase text-[15px] shadow-default-1"
+            >
+              <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+              <span>
+                <%= dgettext("auth", "Зарегистрироваться") %>
+              </span>
+            </.button>
+          </:actions>
+        </.simple_form>
 
-        <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
-        </:actions>
-      </.simple_form>
+        <article class="mt-[18px] space-y-2.5 text-center">
+          <p>
+            <%= dgettext("auth", "Уже есть аккаунт?") %>
+            <.link class="link" href={~p"/users/log_in"}>
+              <%= dgettext("auth", "Войти") %>
+            </.link>
+          </p>
+        </article>
+      </div>
     </div>
     """
   end

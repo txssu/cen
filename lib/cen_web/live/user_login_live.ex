@@ -5,7 +5,7 @@ defmodule CenWeb.UserLoginLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-start-5 lg:sm:col-span-4">
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
       <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
         <%= dgettext("auth", "Вход") %>
       </h1>

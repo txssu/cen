@@ -207,9 +207,9 @@ defmodule CenWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="space-y-[15px]">
+      <div>
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
+        <div :for={action <- @actions}>
           <%= render_slot(action, f) %>
         </div>
       </div>
@@ -379,7 +379,7 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         value={Form.normalize_value(@type, @value)}
         class={[
-          "h-[58px] shadow-input text-style-main mt-2 block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
+          "h-[58px] shadow-input text-style-main mt-[15px] block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}

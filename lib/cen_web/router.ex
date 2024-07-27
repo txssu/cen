@@ -14,7 +14,7 @@ defmodule CenWeb.Router do
 
     plug :put_secure_browser_headers, %{
       "content-security-policy" =>
-        "default-src 'self'; script-src-elem 'self'; connect-src 'self'; img-src 'self' data: blob:; frame-src 'self';"
+        "default-src 'self'; script-src-elem 'self'; connect-src 'self'; img-src 'self' data: blob:; frame-src 'self'; script-src-attr 'unsafe-inline'"
     }
 
     plug :fetch_current_user
