@@ -75,4 +75,32 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
 
     {:ok, socket}
   end
+
+  @impl Phoenix.LiveView
+  def handle_event("validate_personal_info", %{"user" => user_params}, socket) do
+    personal_info_form =
+      socket.assigns.current_user
+      |> Accounts.change_user_personal_info(user_params)
+      |> Map.put(:action, :validate)
+      |> to_form()
+
+    {:noreply, assign(socket, personal_info_form: personal_info_form)}
+  end
+
+  def handle_event("update_personal_info", %{"user" => user_params}, socket) do
+    user = socket.assigns.current_user
+
+    case Accounts.update_user_personal_info(user, user_params) do
+      {:ok, user} ->
+        personal_info_form =
+          user
+          |> Accounts.change_user_personal_info(user_params)
+          |> to_form()
+
+        {:noreply, assign(socket, trigger_submit: true, personal_info_form: personal_info_form)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, personal_info_form: to_form(changeset))}
+    end
+  end
 end

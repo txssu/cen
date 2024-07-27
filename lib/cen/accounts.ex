@@ -231,8 +231,15 @@ defmodule Cen.Accounts do
   end
 
   @spec change_user_personal_info(User.t(), map()) :: Ecto.Changeset.t()
-  def(change_user_personal_info(user, attrs \\ %{})) do
+  def change_user_personal_info(user, attrs \\ %{}) do
     User.personal_info_changeset(user, attrs)
+  end
+
+  @spec update_user_personal_info(User.t(), map()) :: user_changeset()
+  def update_user_personal_info(user, attrs) do
+    user
+    |> User.personal_info_changeset(attrs)
+    |> Repo.update()
   end
 
   ## Session
