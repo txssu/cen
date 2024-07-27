@@ -22,7 +22,7 @@ defmodule CenWeb.ExtraFormsComponents do
       |> assign_new(:name, fn -> field.name end)
 
     ~H"""
-    <fieldset class="flex flex-wrap justify-between">
+    <fieldset class="flex flex-row flex-wrap justify-between gap-y-2.5 sm:flex-col md:flex-row lg:flex-col xl:flex-row">
       <p class="text-[20px] uppercase"><%= @legend %></p>
       <div :for={{label, value} <- @options}>
         <label>
