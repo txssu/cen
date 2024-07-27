@@ -167,7 +167,7 @@ defmodule CenWeb.UserAuth do
     else
       socket =
         socket
-        |> Phoenix.LiveView.put_flash(:error, dgettext("auth", "You must log in to access this page."))
+        |> Phoenix.LiveView.put_flash(:error, dgettext("users", "You must log in to access this page."))
         |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
 
       {:halt, socket}

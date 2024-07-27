@@ -13,7 +13,7 @@ defmodule CenWeb.UserRegistrationLive do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
       <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
-        <%= dgettext("auth", "Регистрация") %>
+        <%= dgettext("users", "Регистрация") %>
       </h1>
       <div class="mt-[35px]">
         <.simple_form
@@ -83,7 +83,7 @@ defmodule CenWeb.UserRegistrationLive do
             >
               <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
               <span>
-                <%= dgettext("auth", "Зарегистрироваться") %>
+                <%= dgettext("users", "Зарегистрироваться") %>
               </span>
             </.button>
           </:actions>
@@ -91,9 +91,9 @@ defmodule CenWeb.UserRegistrationLive do
 
         <article class="mt-[18px] space-y-2.5 text-center">
           <p>
-            <%= dgettext("auth", "Уже есть аккаунт?") %>
+            <%= dgettext("users", "Уже есть аккаунт?") %>
             <.link class="link" href={~p"/users/log_in"}>
-              <%= dgettext("auth", "Войти") %>
+              <%= dgettext("users", "Войти") %>
             </.link>
           </p>
         </article>

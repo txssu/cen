@@ -7,16 +7,21 @@ defmodule CenWeb.UserLoginLive do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
       <h1 class="text-accent text-[30px] leading-[1.2] text-center font-medium uppercase">
-        <%= dgettext("auth", "Вход") %>
+        <%= dgettext("users", "Вход") %>
       </h1>
 
       <div class="mt-[35px]">
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
-          <.input field={@form[:email]} type="email" placeholder={dgettext("auth", "Почта")} required />
+          <.input
+            field={@form[:email]}
+            type="email"
+            placeholder={dgettext("users", "Почта")}
+            required
+          />
           <.input
             field={@form[:password]}
             type="password"
-            placeholder={dgettext("auth", "Пароль")}
+            placeholder={dgettext("users", "Пароль")}
             required
           />
 
@@ -27,7 +32,7 @@ defmodule CenWeb.UserLoginLive do
             >
               <.icon class="h-[30px] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
               <span>
-                <%= dgettext("auth", "Войти") %>
+                <%= dgettext("users", "Войти") %>
               </span>
             </.button>
           </:actions>
@@ -35,14 +40,14 @@ defmodule CenWeb.UserLoginLive do
 
         <article class="mt-[18px] space-y-2.5 text-center">
           <p>
-            <%= dgettext("auth", "Нет аккаунта?") %>
+            <%= dgettext("users", "Нет аккаунта?") %>
             <.link class="link" href={~p"/users/register"}>
-              <%= dgettext("auth", "Зарегистрироваться") %>
+              <%= dgettext("users", "Зарегистрироваться") %>
             </.link>
           </p>
           <p>
             <.link class="link" href={~p"/users/reset_password"}>
-              <%= dgettext("auth", "Я не помню пароль") %>
+              <%= dgettext("users", "Я не помню пароль") %>
             </.link>
           </p>
         </article>
