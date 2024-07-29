@@ -2,9 +2,11 @@ defmodule CenWeb.UserSettings.Components do
   @moduledoc false
   use CenWeb, :html
 
+  alias Phoenix.LiveView.Rendered
+
   attr :current_page, :atom, required: true, values: [:personal, :credentials]
 
-  @spec navigation(map()) :: Phoenix.LiveView.Rendered.t()
+  @spec navigation(map()) :: Rendered.t()
   def navigation(assigns) do
     ~H"""
     <div class="h-fit lg:px-[2.1875rem] lg:rounded-[10px] lg:shadow-default-convexity lg:bg-white lg:py-5">
@@ -36,6 +38,7 @@ defmodule CenWeb.UserSettings.Components do
 
   slot :inner_block, required: true
 
+  @spec maybe_link(map()) :: Rendered.t()
   def maybe_link(%{is_link: true} = assigns) do
     ~H"""
     <.link class="link-hover" navigate={@navigate}>
