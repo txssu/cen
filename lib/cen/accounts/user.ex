@@ -122,7 +122,7 @@ defmodule Cen.Accounts.User do
   end
 
   defp validate_birthdate(changeset) do
-    case get_change(changeset, :role) do
+    case get_field(changeset, :role) do
       :applicant -> validate_required(changeset, [:birthdate])
       _employer -> changeset
     end

@@ -100,24 +100,31 @@ defmodule Cen.AccountsTest do
   end
 
   describe "change_user_registration/2" do
-    test "returns a changeset" do
-      assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+    test "returns a changeset for `applicant` role" do
+      assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{role: :applicant})
+      assert changeset.required == [:phone_number, :fullname, :birthdate, :role, :password, :email]
+    end
+
+    test "returns a changeset for `employer` role" do
+      assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{role: :employer})
+      assert changeset.required == [:phone_number, :fullname, :role, :password, :email]
     end
 
     test "allows fields to be set" do
-      email = unique_user_email()
-      password = valid_user_password()
+      attrs = valid_user_attributes(role: :employer)
 
       changeset =
-        Accounts.change_user_registration(
-          %User{},
-          valid_user_attributes(email: email, password: password)
-        )
+        Accounts.change_user_registration(%User{}, attrs)
 
       assert changeset.valid?
-      assert get_change(changeset, :email) == email
-      assert get_change(changeset, :password) == password
+
+      assert get_change(changeset, :phone_number) == attrs.phone_number
+      assert get_change(changeset, :fullname) == attrs.fullname
+      assert get_change(changeset, :role) == attrs.role
+      assert get_change(changeset, :birthdate) == attrs.birthdate
+      assert get_change(changeset, :password) == attrs.password
+      assert get_change(changeset, :email) == attrs.email
+
       assert is_nil(get_change(changeset, :hashed_password))
     end
   end

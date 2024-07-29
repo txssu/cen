@@ -11,7 +11,7 @@ defmodule Cen.AccountsFixtures do
   def valid_user_password, do: "HelloWorld123"
 
   @spec valid_user_role() :: String.t()
-  def valid_user_role, do: Enum.random(~w[applicant employer])
+  def valid_user_role, do: Enum.random(~w[applicant employer]a)
 
   @spec valid_user_birthdate() :: Date.t()
   def valid_user_birthdate, do: ~D[1990-01-01]
