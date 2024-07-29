@@ -7,8 +7,10 @@ defmodule CenWeb.UserResetPasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+      <h1 class="text-accent leading-[1.2] mb-9 text-center text-3xl font-medium uppercase">
+        <%= dgettext("users", "Восстановление пароля") %>
+      </h1>
 
       <.simple_form
         for={@form}
@@ -17,25 +19,27 @@ defmodule CenWeb.UserResetPasswordLive do
         phx-change="validate"
       >
         <.error :if={@form.errors != []}>
-          Oops, something went wrong! Please check the errors below.
+          <%= dgettext("users", "Упс, что-то пошло не так! Пожалуйста, проверьте ошибки ниже.") %>
         </.error>
 
-        <.input field={@form[:password]} type="password" label="New password" required />
+        <.input
+          field={@form[:password]}
+          type="password"
+          label={dgettext("users", "Новый пароль")}
+          required
+        />
         <.input
           field={@form[:password_confirmation]}
           type="password"
-          label="Confirm new password"
+          label={dgettext("users", "Повторите новый пароль")}
           required
         />
         <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
+          <.arrow_button class="mx-auto">
+            <%= dgettext("users", "Сохранить") %>
+          </.arrow_button>
         </:actions>
       </.simple_form>
-
-      <p class="mt-4 text-center text-sm">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
@@ -64,7 +68,7 @@ defmodule CenWeb.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Password reset successfully.")
+         |> put_flash(:info, dgettext("users", "Пароль успешно обновлён"))
          |> redirect(to: ~p"/users/log_in")}
 
       {:error, changeset} ->
@@ -83,7 +87,7 @@ defmodule CenWeb.UserResetPasswordLive do
       assign(socket, user: user, token: token)
     else
       socket
-      |> put_flash(:error, "Reset password link is invalid or it has expired.")
+      |> put_flash(:error, dgettext("users", "Ссылка для сброса пароля недействительна или срок ее действия истек"))
       |> redirect(to: ~p"/")
     end
   end
