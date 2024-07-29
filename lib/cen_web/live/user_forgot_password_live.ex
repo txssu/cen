@@ -7,24 +7,26 @@ defmodule CenWeb.UserForgotPasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Forgot your password?
-        <:subtitle>We'll send a password reset link to your inbox</:subtitle>
-      </.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+        <%= dgettext("users", "Восстановление пароля") %>
+      </h1>
+
+      <p class="mt-10 mb-12">
+        <%= dgettext(
+          "users",
+          "Введите адрес электронной почты от вашей учётной записи. На него мы вышлем ссылку для сброса пароля."
+        ) %>
+      </p>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
+        <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} required />
         <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Send password reset instructions
-          </.button>
+          <.arrow_button class="mx-auto">
+            <%= dgettext("users", "Сбросить пароль") %>
+          </.arrow_button>
         </:actions>
       </.simple_form>
-      <p class="mt-4 text-center text-sm">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
@@ -44,7 +46,10 @@ defmodule CenWeb.UserForgotPasswordLive do
     end
 
     info =
-      "If your email is in our system, you will receive instructions to reset your password shortly."
+      dgettext(
+        "users",
+        "Если ваш адрес электронной почты есть в нашей системе, вы вскоре получите инструкции по сбросу пароля."
+      )
 
     {:noreply,
      socket
