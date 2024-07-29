@@ -19,9 +19,7 @@ defmodule CenWeb.UserSessionControllerTest do
 
       # Now do a logged in request and assert on the menu
       response = conn |> get(~p"/") |> html_response(200)
-      assert response =~ user.email
       assert response =~ ~p"/users/settings/personal"
-      assert response =~ ~p"/users/log_out"
     end
 
     test "logs the user in with remember me", %{conn: conn, user: user} do

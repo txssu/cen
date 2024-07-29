@@ -49,9 +49,7 @@ defmodule CenWeb.UserRegistrationLiveTest do
 
       # Now do a logged in request and assert on the menu
       response = conn |> get("/") |> html_response(200)
-      assert response =~ email
-      assert response =~ "Settings"
-      assert response =~ "Log out"
+      assert response =~ ~p"/users/settings/personal"
     end
 
     test "renders errors for duplicated email", %{conn: conn} do

@@ -1,4 +1,4 @@
-defmodule CenWeb.UserSettingsLiveTest do
+defmodule CenWeb.UserSettings.CredentialsLiveTest do
   use CenWeb.ConnCase, async: true
 
   import Cen.AccountsFixtures
