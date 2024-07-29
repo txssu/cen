@@ -102,10 +102,14 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     socket =
       case Accounts.update_user_email(socket.assigns.current_user, token) do
         :ok ->
-          put_flash(socket, :info, "Email changed successfully.")
+          put_flash(socket, :info, dgettext("users", "Почта успешно обновлена."))
 
         :error ->
-          put_flash(socket, :error, "Email change link is invalid or it has expired.")
+          put_flash(
+            socket,
+            :error,
+            dgettext("users", "Ссылка для изменения электронной почты недействительна или срок ее действия истек.")
+          )
       end
 
     {:ok, push_navigate(socket, to: ~p"/users/settings/credentials")}
@@ -155,7 +159,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
           &url(~p"/users/settings/confirm_email/#{&1}")
         )
 
-        info = "A link to confirm your email change has been sent to the new address."
+        info = dgettext("users", "На новый адрес отправлена ссылка для подтверждения изменения электронной почты.")
         {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
 
       {:error, changeset} ->

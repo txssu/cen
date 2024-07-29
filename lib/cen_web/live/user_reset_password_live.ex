@@ -68,7 +68,7 @@ defmodule CenWeb.UserResetPasswordLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, dgettext("users", "Пароль успешно обновлён"))
+         |> put_flash(:info, dgettext("users", "Пароль успешно обновлён."))
          |> redirect(to: ~p"/users/log_in")}
 
       {:error, changeset} ->

@@ -34,8 +34,8 @@ defmodule CenWeb.UserRegistrationLive do
               legend={dgettext("users", "Роль")}
               field={@form[:role]}
               options={[
-                {dgettext("users", "Applicant"), "applicant"},
-                {dgettext("users", "Employer"), "employer"}
+                {dgettext("users", "Соискатель"), "applicant"},
+                {dgettext("users", "Работодатель"), "employer"}
               ]}
             />
           </div>
