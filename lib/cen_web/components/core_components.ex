@@ -209,7 +209,7 @@ defmodule CenWeb.CoreComponents do
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div>
         <%= render_slot(@inner_block, f) %>
-        <div :for={action <- @actions}>
+        <div :for={action <- @actions} class="mt-[1.875rem]">
           <%= render_slot(action, f) %>
         </div>
       </div>
@@ -253,7 +253,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <.button
       class={[
-        "bg-accent pl-[0.4375rem] flex items-center gap-2.5 rounded-full py-2 pr-5 mt-[1.875rem] uppercase text-[0.9375rem]",
+        "bg-accent pl-[0.4375rem] gap-2.5 py-2 pr-5 text-[0.9375rem]",
         @class
       ]}
       type={@type}
