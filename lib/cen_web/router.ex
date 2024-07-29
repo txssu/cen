@@ -92,7 +92,7 @@ defmodule CenWeb.Router do
       scope "/users/settings", UserSettings do
         live "/personal", PersonalInfoLive
         live "/credentials", CredentialsLive, :edit_credentials
-        live "/confirm_email/:token", UserSettingsLive, :confirm_email
+        live "/confirm_email/:token", CredentialsLive, :confirm_email
       end
     end
   end

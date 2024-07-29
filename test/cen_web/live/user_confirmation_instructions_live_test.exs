@@ -14,7 +14,8 @@ defmodule CenWeb.UserConfirmationInstructionsLiveTest do
   describe "Resend confirmation" do
     test "renders the resend confirmation page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/confirm")
-      assert html =~ "Resend confirmation instructions"
+      assert html =~ "Confirm Account"
+      assert html =~ "Send"
     end
 
     test "sends a new confirmation token", %{conn: conn, user: user} do

@@ -71,7 +71,7 @@ defmodule CenWeb.UserSessionControllerTest do
           "user" => %{"email" => user.email, "password" => valid_user_password()}
         })
 
-      assert redirected_to(conn) == ~p"/users/settings/personal"
+      assert redirected_to(conn) == ~p"/users/settings/credentials"
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password updated successfully"
     end
 
@@ -81,7 +81,7 @@ defmodule CenWeb.UserSessionControllerTest do
           "user" => %{"email" => "invalid@email.com", "password" => "invalid_password"}
         })
 
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password"
+      assert Phoenix.Flash.get(conn.assigns.flash, :error) == "Invalid email or password."
       assert redirected_to(conn) == ~p"/users/log_in"
     end
   end

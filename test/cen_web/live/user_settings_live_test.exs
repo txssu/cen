@@ -11,7 +11,7 @@ defmodule CenWeb.UserSettingsLiveTest do
       {:ok, _lv, html} =
         conn
         |> log_in_user(user_fixture())
-        |> live(~p"/users/settings/personal")
+        |> live(~p"/users/settings/credentials")
 
       assert html =~ "Change Email"
       assert html =~ "Change Password"
@@ -36,7 +36,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     test "updates the user email", %{conn: conn, password: password, user: user} do
       new_email = unique_user_email()
 
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       result =
         lv
@@ -46,12 +46,12 @@ defmodule CenWeb.UserSettingsLiveTest do
         })
         |> render_submit()
 
-      assert result =~ "A link to confirm your email"
+      assert result =~ "A link has been sent"
       assert Accounts.get_user_by_email(user.email)
     end
 
     test "renders errors with invalid data (phx-change)", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       result =
         lv
@@ -67,7 +67,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     end
 
     test "renders errors with invalid data (phx-submit)", %{conn: conn, user: user} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       result =
         lv
@@ -93,7 +93,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     test "updates the user password", %{conn: conn, user: user, password: password} do
       new_password = valid_user_password()
 
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       form =
         form(lv, "#password_form", %{
@@ -109,7 +109,7 @@ defmodule CenWeb.UserSettingsLiveTest do
 
       new_password_conn = follow_trigger_action(form, conn)
 
-      assert redirected_to(new_password_conn) == ~p"/users/settings/personal"
+      assert redirected_to(new_password_conn) == ~p"/users/settings/credentials"
 
       assert get_session(new_password_conn, :user_token) != get_session(conn, :user_token)
 
@@ -120,7 +120,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     end
 
     test "renders errors with invalid data (phx-change)", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       result =
         lv
@@ -139,7 +139,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     end
 
     test "renders errors with invalid data (phx-submit)", %{conn: conn} do
-      {:ok, lv, _html} = live(conn, ~p"/users/settings/personal")
+      {:ok, lv, _html} = live(conn, ~p"/users/settings/credentials")
 
       result =
         lv
@@ -176,7 +176,7 @@ defmodule CenWeb.UserSettingsLiveTest do
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
 
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/settings/personal"
+      assert path == ~p"/users/settings/credentials"
       assert %{"info" => message} = flash
       assert message == "Email changed successfully."
       refute Accounts.get_user_by_email(user.email)
@@ -185,7 +185,7 @@ defmodule CenWeb.UserSettingsLiveTest do
       # use confirm token again
       {:error, error_redirect} = live(conn, ~p"/users/settings/confirm_email/#{token}")
       assert {:live_redirect, %{to: path, flash: flash}} = error_redirect
-      assert path == ~p"/users/settings/personal"
+      assert path == ~p"/users/settings/credentials"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."
     end
@@ -193,7 +193,7 @@ defmodule CenWeb.UserSettingsLiveTest do
     test "does not update email with invalid token", %{conn: conn, user: user} do
       {:error, redirect} = live(conn, ~p"/users/settings/confirm_email/oops")
       assert {:live_redirect, %{to: path, flash: flash}} = redirect
-      assert path == ~p"/users/settings/personal"
+      assert path == ~p"/users/settings/credentials"
       assert %{"error" => message} = flash
       assert message == "Email change link is invalid or it has expired."
       assert Accounts.get_user_by_email(user.email)
