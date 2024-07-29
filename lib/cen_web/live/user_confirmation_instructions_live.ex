@@ -7,25 +7,28 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        No confirmation instructions received?
-        <:subtitle>We'll send a new confirmation link to your inbox</:subtitle>
-      </.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+        <%= dgettext("users", "Подтверждение аккаунта") %>
+      </h1>
+
+      <section class="my-10">
+        <p>
+          <%= dgettext("users", "Не пришло письмо?") %>
+        </p>
+        <p>
+          <%= dgettext("users", "Мы отправим новую ссылку для подтверждения") %>
+        </p>
+      </section>
 
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
+        <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} required />
         <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Resend confirmation instructions
-          </.button>
+          <.arrow_button class="mx-auto">
+            <%= dgettext("users", "Отправить") %>
+          </.arrow_button>
         </:actions>
       </.simple_form>
-
-      <p class="mt-4 text-center">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
@@ -45,7 +48,10 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
     end
 
     info =
-      "If your email is in our system and it has not been confirmed yet, you will receive an email with instructions shortly."
+      dgettext(
+        "users",
+        "Если ваш адрес электронной почты есть в нашей системе, вы вскоре получите инструкции по сбросу пароля."
+      )
 
     {:noreply,
      socket
