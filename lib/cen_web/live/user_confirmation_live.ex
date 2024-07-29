@@ -7,20 +7,19 @@ defmodule CenWeb.UserConfirmationLive do
   @impl Phoenix.LiveView
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+        <%= dgettext("users", "Подтверждение аккаунта") %>
+      </h1>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          <.arrow_button class="mx-auto">
+            <%= dgettext("users", "Подтвердить аккаунт") %>
+          </.arrow_button>
         </:actions>
       </.simple_form>
-
-      <p class="mt-4 text-center">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
@@ -39,7 +38,7 @@ defmodule CenWeb.UserConfirmationLive do
       {:ok, _} ->
         {:noreply,
          socket
-         |> put_flash(:info, "User confirmed successfully.")
+         |> put_flash(:info, dgettext("users", "Аккаунт успешно подтверждён."))
          |> redirect(to: ~p"/")}
 
       :error ->
@@ -54,7 +53,10 @@ defmodule CenWeb.UserConfirmationLive do
           %{} ->
             {:noreply,
              socket
-             |> put_flash(:error, "User confirmation link is invalid or it has expired.")
+             |> put_flash(
+               :error,
+               dgettext("users", "Ссылка для подтверждения недействительна или срок ее действия истек")
+             )
              |> redirect(to: ~p"/")}
         end
     end
