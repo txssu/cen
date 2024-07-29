@@ -390,4 +390,14 @@ defmodule Cen.Accounts do
       {:error, :user, changeset, _changes} -> {:error, changeset}
     end
   end
+
+  @doc """
+  Deletes the user.
+  """
+  @spec delete_user(User.t()) :: :ok
+  def delete_user(user) do
+    Repo.delete(user)
+
+    :ok
+  end
 end

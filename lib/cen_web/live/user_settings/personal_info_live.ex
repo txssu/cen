@@ -19,9 +19,11 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
           </div>
         </div>
         <div class="flex flex-grow-0 flex-col justify-center">
-          <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
-            <%= dgettext("users", "Удалить аккаунт") %>
-          </.button>
+          <.link patch={~p"/users/settings/personal/delete"}>
+            <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
+              <%= dgettext("users", "Удалить аккаунт") %>
+            </.button>
+          </.link>
         </div>
       </div>
 
@@ -59,6 +61,24 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
         </.simple_form>
       </div>
     </div>
+
+    <.modal
+      :if={@live_action == :confirm_delete_user}
+      show
+      id="confirm_delete_user"
+      on_cancel={JS.navigate(~p"/users/settings/personal")}
+    >
+      <p>
+        <%= dgettext("users", "Вы действительно хотите удалить пользователя?") %>
+      </p>
+      <div class="w-fit">
+        <.link href={~p"/users"} method="delete">
+          <.arrow_button class="mt-4">
+            <%= dgettext("users", "Да, удалить") %>
+          </.arrow_button>
+        </.link>
+      </div>
+    </.modal>
     """
   end
 
@@ -74,6 +94,11 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
       )
 
     {:ok, socket}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(_params, _uri, socket) do
+    {:noreply, socket}
   end
 
   @impl Phoenix.LiveView

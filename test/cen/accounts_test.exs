@@ -525,4 +525,12 @@ defmodule Cen.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "delete_user/1" do
+    test "deletes user" do
+      user = user_fixture()
+      assert :ok == Accounts.delete_user(user)
+      assert nil == Accounts.get_user_by_email(user.email)
+    end
+  end
 end

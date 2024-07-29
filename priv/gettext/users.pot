@@ -61,7 +61,7 @@ msgid "Данные для входа"
 msgstr ""
 
 #: lib/cen_web/live/user_registration_live.ex:56
-#: lib/cen_web/live/user_settings/personal_info_live.ex:45
+#: lib/cen_web/live/user_settings/personal_info_live.ex:48
 #, elixir-autogen, elixir-format
 msgid "Дата рождения"
 msgstr ""
@@ -120,7 +120,7 @@ msgid "Новый пароль"
 msgstr ""
 
 #: lib/cen_web/live/user_registration_live.ex:69
-#: lib/cen_web/live/user_settings/personal_info_live.ex:51
+#: lib/cen_web/live/user_settings/personal_info_live.ex:54
 #, elixir-autogen, elixir-format
 msgid "Номер телефона"
 msgstr ""
@@ -225,7 +225,7 @@ msgstr ""
 #: lib/cen_web/live/user_reset_password_live.ex:39
 #: lib/cen_web/live/user_settings/credentials_live.ex:43
 #: lib/cen_web/live/user_settings/credentials_live.ex:91
-#: lib/cen_web/live/user_settings/personal_info_live.ex:56
+#: lib/cen_web/live/user_settings/personal_info_live.ex:59
 #, elixir-autogen, elixir-format
 msgid "Сохранить"
 msgstr ""
@@ -251,7 +251,7 @@ msgstr ""
 msgid "Текущий пароль"
 msgstr ""
 
-#: lib/cen_web/live/user_settings/personal_info_live.ex:23
+#: lib/cen_web/live/user_settings/personal_info_live.ex:26
 #, elixir-autogen, elixir-format
 msgid "Удалить аккаунт"
 msgstr ""
@@ -267,7 +267,7 @@ msgid "Упс, что-то пошло не так! Пожалуйста, про�
 msgstr ""
 
 #: lib/cen_web/live/user_registration_live.ex:46
-#: lib/cen_web/live/user_settings/personal_info_live.ex:38
+#: lib/cen_web/live/user_settings/personal_info_live.ex:41
 #, elixir-autogen, elixir-format
 msgid "ФИО"
 msgstr ""
@@ -275,4 +275,9 @@ msgstr ""
 #: lib/cen_web/live/user_login_live.ex:44
 #, elixir-autogen, elixir-format
 msgid "Я не помню пароль"
+msgstr ""
+
+#: lib/cen_web/controllers/user_controller.ex:15
+#, elixir-autogen, elixir-format
+msgid "Аккаунт успешно удалён."
 msgstr ""
