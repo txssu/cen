@@ -13,31 +13,16 @@
   </head>
   <body class="bg-background">
     <div class="shadow-navbar relative z-10">
-      <ul class="h-[5.125rem] container mx-auto flex items-center justify-end gap-10">
-        <li class="mr-auto">
+      <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
+        <li class="mr-32">
           <.link href={~p"/"}>
             <img src={~p"/images/logo.svg"} height="30" />
           </.link>
         </li>
         <%= if @current_user do %>
-          <li class="text-[1.25rem] leading-6 text-zinc-900">
-            <%= @current_user.email %>
-          </li>
-          <li>
-            <.link
-              href={~p"/users/settings/personal"}
-              class="text-[1.25rem] leading-6 text-zinc-900 hover:text-zinc-700"
-            >
-              Settings
-            </.link>
-          </li>
-          <li>
-            <.link
-              href={~p"/users/log_out"}
-              method="delete"
-              class="text-[1.25rem] leading-6 text-zinc-900 hover:text-zinc-700"
-            >
-              Log out
+          <li class="ml-auto">
+            <.link href={~p"/users/settings/personal"}>
+              <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
             </.link>
           </li>
         <% else %>
