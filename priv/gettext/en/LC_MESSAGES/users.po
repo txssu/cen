@@ -1,0 +1,293 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100 != 11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
+
+#: lib/cen_web/live/user_confirmation_live.ex:41
+#, elixir-autogen, elixir-format
+msgid "Аккаунт успешно подтверждён."
+msgstr "User confirmed successfully."
+
+#: lib/cen_web/controllers/user_session_controller.ex:9
+#, elixir-autogen, elixir-format
+msgid "Аккаунт успешно создан."
+msgstr "Account created successfully."
+
+#: lib/cen_web/user_auth.ex:170
+#: lib/cen_web/user_auth.ex:221
+#, elixir-autogen, elixir-format
+msgid "Вам нужно войти, чтобы открыть эту страницу."
+msgstr "You must log in to access this page."
+
+#: lib/cen_web/live/user_forgot_password_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Введите адрес электронной почты от вашей учётной записи. На него мы вышлем ссылку для сброса пароля."
+msgstr "Enter the email address from your account. We will send you a link to reset your password. "
+
+#: lib/cen_web/live/user_login_live.ex:30
+#: lib/cen_web/live/user_registration_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Войти"
+msgstr "Log in"
+
+#: lib/cen_web/live/user_forgot_password_live.ex:12
+#: lib/cen_web/live/user_reset_password_live.ex:12
+#, elixir-autogen, elixir-format
+msgid "Восстановление пароля"
+msgstr "Password recovery"
+
+#: lib/cen_web/components/layouts/root.html.heex:38
+#: lib/cen_web/live/user_login_live.ex:10
+#, elixir-autogen, elixir-format
+msgid "Вход"
+msgstr "Log in"
+
+#: lib/cen_web/controllers/user_session_controller.ex:41
+#, elixir-autogen, elixir-format
+msgid "Вы вышли из системы."
+msgstr "Logged out successfully."
+
+#: lib/cen_web/live/user_settings/components.ex:28
+#, elixir-autogen, elixir-format
+msgid "Данные для входа"
+msgstr "Credentials"
+
+#: lib/cen_web/live/user_registration_live.ex:56
+#: lib/cen_web/live/user_settings/personal_info_live.ex:47
+#, elixir-autogen, elixir-format
+msgid "Дата рождения"
+msgstr "Date of birth"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:51
+#: lib/cen_web/live/user_forgot_password_live.ex:49
+#, elixir-autogen, elixir-format
+msgid "Если ваш адрес электронной почты есть в нашей системе, вы вскоре получите инструкции по сбросу пароля."
+msgstr "If your email is in our system, you will soon receive instructions to reset your password."
+
+#: lib/cen_web/live/user_login_live.ex:39
+#: lib/cen_web/live/user_registration_live.ex:81
+#, elixir-autogen, elixir-format
+msgid "Зарегистрироваться"
+msgstr "Register"
+
+#: lib/cen_web/live/user_settings/components.ex:19
+#, elixir-autogen, elixir-format
+msgid "Личные данные"
+msgstr "Personal information"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:20
+#, elixir-autogen, elixir-format
+msgid "Мы отправим новую ссылку для подтверждения"
+msgstr "We will send a new link for confirmation"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:162
+#, elixir-autogen, elixir-format
+msgid "На новый адрес отправлена ссылка для подтверждения изменения электронной почты."
+msgstr "A link has been sent to the new address to confirm the email change."
+
+#: lib/cen_web/live/user_settings/components.ex:14
+#, elixir-autogen, elixir-format
+msgid "Настройки"
+msgstr "Settings"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:17
+#, elixir-autogen, elixir-format
+msgid "Не пришло письмо?"
+msgstr "Didn't get the email?"
+
+#: lib/cen_web/controllers/user_session_controller.ex:32
+#, elixir-autogen, elixir-format
+msgid "Неверный адрес электронной почты или пароль."
+msgstr "Invalid email or password."
+
+#: lib/cen_web/live/user_login_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Нет аккаунта?"
+msgstr "Don't have an account?"
+
+#: lib/cen_web/live/user_reset_password_live.ex:28
+#: lib/cen_web/live/user_settings/credentials_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Новый пароль"
+msgstr "New password"
+
+#: lib/cen_web/live/user_registration_live.ex:69
+#: lib/cen_web/live/user_settings/personal_info_live.ex:53
+#, elixir-autogen, elixir-format
+msgid "Номер телефона"
+msgstr "Phone number"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:50
+#, elixir-autogen, elixir-format
+msgid "Обновить пароль"
+msgstr "Change Password"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:18
+#, elixir-autogen, elixir-format
+msgid "Обновить почту"
+msgstr "Change Email"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:28
+#, elixir-autogen, elixir-format
+msgid "Отправить"
+msgstr "Send"
+
+#: lib/cen_web/live/user_login_live.ex:24
+#: lib/cen_web/live/user_registration_live.ex:75
+#, elixir-autogen, elixir-format
+msgid "Пароль"
+msgstr "Password"
+
+#: lib/cen_web/controllers/user_session_controller.ex:15
+#, elixir-autogen, elixir-format
+msgid "Пароль успешно обновлен!"
+msgstr "Password updated successfully!"
+
+#: lib/cen_web/live/user_reset_password_live.ex:71
+#, elixir-autogen, elixir-format
+msgid "Пароль успешно обновлён."
+msgstr "Password reset successfully."
+
+#: lib/cen_web/live/user_reset_password_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Повторите новый пароль"
+msgstr "Repeat new password"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:78
+#, elixir-autogen, elixir-format
+msgid "Подтвердите новый пароль"
+msgstr "Confirm new password"
+
+#: lib/cen_web/live/user_confirmation_live.ex:19
+#, elixir-autogen, elixir-format
+msgid "Подтвердить аккаунт"
+msgstr "Verify account"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:12
+#: lib/cen_web/live/user_confirmation_live.ex:12
+#, elixir-autogen, elixir-format
+msgid "Подтверждение аккаунта"
+msgstr "Confirm Account"
+
+#: lib/cen_web/live/user_confirmation_instructions_live.ex:25
+#: lib/cen_web/live/user_forgot_password_live.ex:23
+#: lib/cen_web/live/user_login_live.ex:18
+#: lib/cen_web/live/user_registration_live.ex:63
+#: lib/cen_web/live/user_settings/credentials_live.ex:29
+#, elixir-autogen, elixir-format
+msgid "Почта"
+msgstr "Email"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:105
+#, elixir-autogen, elixir-format
+msgid "Почта успешно обновлена."
+msgstr "Email changed successfully."
+
+#: lib/cen_web/live/user_registration_live.ex:38
+#, elixir-autogen, elixir-format
+msgid "Работодатель"
+msgstr "Employer"
+
+#: lib/cen_web/components/layouts/root.html.heex:33
+#: lib/cen_web/live/user_registration_live.ex:16
+#, elixir-autogen, elixir-format
+msgid "Регистрация"
+msgstr "Registration"
+
+#: lib/cen_web/live/user_registration_live.ex:34
+#, elixir-autogen, elixir-format
+msgid "Роль"
+msgstr "Role"
+
+#: lib/cen_web/controllers/user_session_controller.ex:19
+#, elixir-autogen, elixir-format
+msgid "С возвращением!"
+msgstr "Welcome back!"
+
+#: lib/cen_web/live/user_forgot_password_live.ex:26
+#, elixir-autogen, elixir-format
+msgid "Сбросить пароль"
+msgstr "Reset Password"
+
+#: lib/cen_web/live/user_registration_live.ex:37
+#, elixir-autogen, elixir-format
+msgid "Соискатель"
+msgstr "Applicant"
+
+#: lib/cen_web/live/user_reset_password_live.ex:39
+#: lib/cen_web/live/user_settings/credentials_live.ex:43
+#: lib/cen_web/live/user_settings/credentials_live.ex:91
+#: lib/cen_web/live/user_settings/personal_info_live.ex:58
+#, elixir-autogen, elixir-format
+msgid "Сохранить"
+msgstr "Save"
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Ссылка для изменения электронной почты недействительна или срок ее действия истек."
+msgstr "Email change link is invalid or it has expired."
+
+#: lib/cen_web/live/user_confirmation_live.ex:58
+#, elixir-autogen, elixir-format
+msgid "Ссылка для подтверждения недействительна или срок ее действия истек"
+msgstr "User confirmation link is invalid or it has expired"
+
+#: lib/cen_web/live/user_reset_password_live.ex:90
+#, elixir-autogen, elixir-format
+msgid "Ссылка для сброса пароля недействительна или срок ее действия истек"
+msgstr "Reset password link is invalid or it has expired."
+
+#: lib/cen_web/live/user_settings/credentials_live.ex:37
+#: lib/cen_web/live/user_settings/credentials_live.ex:84
+#, elixir-autogen, elixir-format
+msgid "Текущий пароль"
+msgstr "Current password"
+
+#: lib/cen_web/live/user_settings/personal_info_live.ex:24
+#, elixir-autogen, elixir-format
+msgid "Удалить аккаунт"
+msgstr "Delete account"
+
+#: lib/cen_web/live/user_registration_live.ex:88
+#, elixir-autogen, elixir-format
+msgid "Уже есть аккаунт?"
+msgstr "Already have an account?"
+
+#: lib/cen_web/live/user_reset_password_live.ex:22
+#, elixir-autogen, elixir-format
+msgid "Упс, что-то пошло не так! Пожалуйста, проверьте ошибки ниже."
+msgstr "Oops, something went wrong! Please check the errors below."
+
+#: lib/cen_web/live/user_registration_live.ex:46
+#: lib/cen_web/live/user_settings/personal_info_live.ex:40
+#, elixir-autogen, elixir-format
+msgid "ФИО"
+msgstr "Full name"
+
+#: lib/cen_web/live/user_login_live.ex:44
+#, elixir-autogen, elixir-format
+msgid "Я не помню пароль"
+msgstr "Forgot your password?"
+
+#: lib/cen_web/controllers/user_controller.ex:14
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Аккаунт успешно удалён."
+msgstr "Account deleted successfully."
+
+#: lib/cen_web/live/user_settings/personal_info_live.ex:72
+#, elixir-autogen, elixir-format
+msgid "Вы действительно хотите удалить пользователя?"
+msgstr "Do you really want to delete a user?"
+
+#: lib/cen_web/live/user_settings/personal_info_live.ex:77
+#, elixir-autogen, elixir-format
+msgid "Да, удалить"
+msgstr "Yes, delete"

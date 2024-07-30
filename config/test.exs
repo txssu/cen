@@ -1,5 +1,8 @@
 import Config
 
+# Only in tests, remove the complexity from the password hashing algorithm
+config :bcrypt_elixir, :log_rounds, 1
+
 # In test we don't send emails
 config :cen, Cen.Mailer, adapter: Swoosh.Adapters.Test
 
@@ -23,6 +26,8 @@ config :cen, CenWeb.Endpoint,
   http: [ip: {127, 0, 0, 1}, port: 4002],
   secret_key_base: "BPrlIJC/RJCGCbVO4Yk3WQsDplcCTVSIG1K15sjQrck9SrLPSM0poGl8c6CF9jqL",
   server: false
+
+config :gettext, :default_locale, "en"
 
 # Print only warnings and errors during test
 config :logger, level: :warning

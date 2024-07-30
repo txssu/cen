@@ -1,5 +1,29 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import "fonts.css";
 
 /* This file is for your main application CSS */
+
+html {
+  @apply leading-[1.1] text-text;
+  font-family: "HelveticaNeueCyr", monospace;
+}
+
+main {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/overlay.png');
+}
+
+@layer components {
+  .navbar-link {
+    @apply text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent;
+  }
+
+  .link-hover {
+    @apply hover:text-accent
+  }
+
+  .link {
+    @apply text-text link-hover font-normal underline;
+  }
+}

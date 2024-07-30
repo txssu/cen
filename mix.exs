@@ -37,6 +37,7 @@ defmodule Cen.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
+      {:bcrypt_elixir, "~> 3.0"},
       # Code quality
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       # TODO bump on release to {:styler, "~> 1.0.0"},

@@ -107,3 +107,43 @@ msgstr ""
 
 msgid "must be equal to %{number}"
 msgstr ""
+
+#: lib/cen/accounts/user.ex:61
+#, elixir-autogen, elixir-format
+msgid "cannot be admin"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:155
+#, elixir-autogen, elixir-format
+msgid "did not change"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:175
+#, elixir-autogen, elixir-format
+msgid "does not match password"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:215
+#, elixir-autogen, elixir-format
+msgid "is not valid"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:67
+#, elixir-autogen, elixir-format
+msgid "must have the @ sign and no spaces"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:79
+#, elixir-autogen, elixir-format
+msgid "should be at least one digit"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:77
+#, elixir-autogen, elixir-format
+msgid "should be at least one lower case character"
+msgstr ""
+
+#: lib/cen/accounts/user.ex:78
+#, elixir-autogen, elixir-format
+msgid "should be at least one upper case character"
+msgstr ""
