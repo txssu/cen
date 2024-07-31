@@ -19,6 +19,8 @@ defmodule Cen.Accounts.User do
     field :birthdate, :date
     field :role, Ecto.Enum, values: [:applicant, :employer, :admin], default: :applicant
 
+    has_many :organizations, Cen.Employers.Organization
+
     timestamps(type: :utc_datetime)
   end
 
