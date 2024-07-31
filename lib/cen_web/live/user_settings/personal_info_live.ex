@@ -122,7 +122,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
           |> Accounts.change_user_personal_info(user_params)
           |> to_form()
 
-        {:noreply, assign(socket, trigger_submit: true, personal_info_form: personal_info_form)}
+        {:noreply, assign(socket, personal_info_form: personal_info_form)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, personal_info_form: to_form(changeset))}
