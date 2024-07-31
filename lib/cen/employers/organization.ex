@@ -86,7 +86,8 @@ defmodule Cen.Employers.Organization do
   defp validate_uri(changeset, field) do
     maybe_uri = get_change(changeset, field)
 
-    case URI.new(maybe_uri) do
+    case maybe_uri && URI.new(maybe_uri) do
+      nil -> changeset
       {:ok, uri} -> validate_uri_is_absolute(changeset, field, uri)
       _other -> add_error(changeset, field, dgettext("errors", "must be a valid URL"))
     end
