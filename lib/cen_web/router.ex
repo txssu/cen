@@ -110,4 +110,13 @@ defmodule CenWeb.Router do
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end
   end
+
+  scope "/", CenWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :requires_authentication,
+      on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
+      live "/organizations/new", OrganizationLive.New
+    end
+  end
 end
