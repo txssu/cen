@@ -42,3 +42,5 @@ npm-debug.log
 # Dialyzer
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
+
+priv/scripts/tailwind_components_diffs.txt
