@@ -10,48 +10,72 @@ defmodule CenWeb.OrganizationLive.New do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 lg:col-start-5">
+      <h1 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase lg:text-3xl">
+        <%= dgettext("orgs", "Организация") %>
+      </h1>
       <.simple_form
         for={@organization_form}
         id="organization_form"
         phx-submit="update_organization"
         phx-change="validate_organization"
       >
-        <.input
-          field={@organization_form[:name]}
-          type="text"
-          label={dgettext("orgs", "Название")}
-          required
-        />
+        <fieldset>
+          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
+            <%= dgettext("orgs", "Общая информация") %>
+          </legend>
+          <.input
+            field={@organization_form[:name]}
+            type="text"
+            label={dgettext("orgs", "Название")}
+            required
+          />
 
-        <.input field={@organization_form[:inn]} type="text" label={dgettext("orgs", "ИНН")} required />
+          <.input
+            field={@organization_form[:inn]}
+            type="text"
+            label={dgettext("orgs", "ИНН")}
+            required
+          />
 
-        <.input
-          field={@organization_form[:description]}
-          type="textarea"
-          label={dgettext("orgs", "Описание")}
-          required
-        />
+          <.input
+            field={@organization_form[:description]}
+            type="textarea"
+            label={dgettext("orgs", "Описание")}
+            required
+          />
+        </fieldset>
 
-        <.input
-          field={@organization_form[:phone_number]}
-          type="text"
-          label={dgettext("orgs", "Номер телефона")}
-          required
-        />
+        <fieldset>
+          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
+            <%= dgettext("orgs", "Общая информация") %>
+          </legend>
+          <.input
+            field={@organization_form[:phone_number]}
+            type="text"
+            label={dgettext("orgs", "Номер телефона")}
+            required
+          />
 
-        <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
-        <.input
-          field={@organization_form[:website_link]}
-          type="text"
-          label={dgettext("orgs", "Сайт организации")}
-        />
-        <.input
-          field={@organization_form[:social_link]}
-          type="text"
-          label={dgettext("orgs", "Соцсеть")}
-        />
+          <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
 
-        <.input field={@organization_form[:address]} type="text" label={dgettext("orgs", "Адрес")} />
+          <.input field={@organization_form[:address]} type="text" label={dgettext("orgs", "Адрес")} />
+        </fieldset>
+
+        <fieldset>
+          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
+            <%= dgettext("orgs", "Общая информация") %>
+          </legend>
+          <.input
+            field={@organization_form[:website_link]}
+            type="text"
+            label={dgettext("orgs", "Сайт организации")}
+          />
+          <.input
+            field={@organization_form[:social_link]}
+            type="text"
+            label={dgettext("orgs", "Соцсеть")}
+          />
+        </fieldset>
 
         <:actions>
           <.arrow_button>
