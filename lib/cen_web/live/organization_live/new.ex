@@ -10,19 +10,17 @@ defmodule CenWeb.OrganizationLive.New do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 lg:col-start-5">
-      <h1 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase lg:text-3xl">
+      <.header header_kind="black_left">
         <%= dgettext("orgs", "Организация") %>
-      </h1>
+      </.header>
+
       <.simple_form
         for={@organization_form}
         id="organization_form"
         phx-submit="update_organization"
         phx-change="validate_organization"
       >
-        <fieldset>
-          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
-            <%= dgettext("orgs", "Общая информация") %>
-          </legend>
+        <.fieldset legend={dgettext("orgs", "Общая информация")}>
           <.input
             field={@organization_form[:name]}
             type="text"
@@ -43,12 +41,9 @@ defmodule CenWeb.OrganizationLive.New do
             label={dgettext("orgs", "Описание")}
             required
           />
-        </fieldset>
+        </.fieldset>
 
-        <fieldset>
-          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
-            <%= dgettext("orgs", "Общая информация") %>
-          </legend>
+        <.fieldset legend={dgettext("orgs", "Контакты")}>
           <.input
             field={@organization_form[:phone_number]}
             type="text"
@@ -59,12 +54,9 @@ defmodule CenWeb.OrganizationLive.New do
           <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
 
           <.input field={@organization_form[:address]} type="text" label={dgettext("orgs", "Адрес")} />
-        </fieldset>
+        </.fieldset>
 
-        <fieldset>
-          <legend class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl uppercase lg:text-3xl">
-            <%= dgettext("orgs", "Общая информация") %>
-          </legend>
+        <.fieldset legend={dgettext("orgs", "Общая информация")}>
           <.input
             field={@organization_form[:website_link]}
             type="text"
@@ -75,7 +67,7 @@ defmodule CenWeb.OrganizationLive.New do
             type="text"
             label={dgettext("orgs", "Соцсеть")}
           />
-        </fieldset>
+        </.fieldset>
 
         <:actions>
           <.arrow_button>

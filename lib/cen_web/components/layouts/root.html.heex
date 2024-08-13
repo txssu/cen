@@ -27,14 +27,14 @@
           </li>
         <% else %>
           <li>
-            <.link href={~p"/users/register"} class="navbar-link">
+            <.navbar_link href={~p"/users/register"}>
               <%= dgettext("users", "Регистрация") %>
-            </.link>
+            </.navbar_link>
           </li>
           <li>
-            <.link href={~p"/users/log_in"} class="navbar-link">
+            <.navbar_link href={~p"/users/log_in"}>
               <%= dgettext("users", "Вход") %>
-            </.link>
+            </.navbar_link>
           </li>
         <% end %>
       </ul>
@@ -53,7 +53,7 @@
                 <li><img class="w-60" src="/images/culture-ekb-logo.png" /></li>
                 <li>
                   <.link
-                    class="link-hover"
+                    class="hover:text-accent"
                     target="_blank"
                     rel="noopener noreferrer"
                     href="https://культура.екатеринбург.рф/"
@@ -63,7 +63,7 @@
                 </li>
                 <li>
                   <.icon name="cen-phone" class="inline" />
-                  <.link class="link-hover" href="tel:+73433042420" target="_blank">
+                  <.link class="hover:text-accent" href="tel:+73433042420" target="_blank">
                     +7 (343) 304-24-20
                   </.link>
                 </li>
@@ -83,7 +83,7 @@
             <p>ГРЦ &ldquo;ТОН: творческий образовательный навигатор&rdquo;</p>
             <p>
               <.icon name="cen-message" class="inline" />
-              <.link class="link-hover" href="mailto:ton.ekb@ya.ru" target="_blank">
+              <.link class="hover:text-accent" href="mailto:ton.ekb@ya.ru" target="_blank">
                 ton.ekb@ya.ru
               </.link>
             </p>

@@ -41,7 +41,7 @@ defmodule CenWeb.UserSettings.Components do
   @spec maybe_link(map()) :: Rendered.t()
   def maybe_link(%{is_link: true} = assigns) do
     ~H"""
-    <.link class="link-hover" navigate={@navigate}>
+    <.link class="hover:text-accent" navigate={@navigate}>
       <%= render_slot(@inner_block) %>
     </.link>
     """

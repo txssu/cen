@@ -8,9 +8,9 @@ defmodule CenWeb.UserForgotPasswordLive do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+      <.header header_kind="blue_center">
         <%= dgettext("users", "Восстановление пароля") %>
-      </h1>
+      </.header>
 
       <p class="mt-10 mb-12">
         <%= dgettext(

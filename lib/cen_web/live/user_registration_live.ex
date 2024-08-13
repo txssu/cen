@@ -12,9 +12,9 @@ defmodule CenWeb.UserRegistrationLive do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+      <.header header_kind="blue_center">
         <%= dgettext("users", "Регистрация") %>
-      </h1>
+      </.header>
       <div class="mt-[2.1875rem]">
         <.simple_form
           for={@form}
@@ -86,9 +86,7 @@ defmodule CenWeb.UserRegistrationLive do
         <article class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Уже есть аккаунт?") %>
-            <.link class="link" href={~p"/users/log_in"}>
-              <%= dgettext("users", "Войти") %>
-            </.link>
+            <.regular_link href={~p"/users/log_in"} text={dgettext("users", "Войти")} />
           </p>
         </article>
       </div>

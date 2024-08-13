@@ -13,10 +13,11 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     </div>
 
     <div class="col-span-4 lg:col-start-5">
-      <div>
-        <h2 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase lg:text-3xl">
+      <section>
+        <.header header_level="h2" header_kind="black_left">
           <%= dgettext("users", "Обновить почту") %>
-        </h2>
+        </.header>
+
         <.simple_form
           for={@email_form}
           id="email_form"
@@ -44,13 +45,13 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             </.arrow_button>
           </:actions>
         </.simple_form>
-      </div>
+      </section>
 
-      <h2 class="leadin-[1.3] text-title-text mt-[4.375rem] mb-[2.1875rem] text-xl font-medium uppercase lg:mt-[7.3125rem] lg:text-3xl">
-        <%= dgettext("users", "Обновить пароль") %>
-      </h2>
+      <section class="mt-[4.375rem]">
+        <.header header_level="h2" header_kind="black_left">
+          <%= dgettext("users", "Обновить пароль") %>
+        </.header>
 
-      <div>
         <.simple_form
           for={@password_form}
           id="password_form"
@@ -92,7 +93,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             </.arrow_button>
           </:actions>
         </.simple_form>
-      </div>
+      </section>
     </div>
     """
   end

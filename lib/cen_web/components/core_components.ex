@@ -1,5 +1,4 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-
 defmodule CenWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
@@ -446,24 +445,77 @@ defmodule CenWeb.CoreComponents do
   Renders a header with title.
   """
   attr :class, :string, default: nil
+  attr :header_level, :string, default: "h1"
+
+  attr :header_kind, :string, required: true, values: ~w[blue_center black_left]
 
   slot :inner_block, required: true
-  slot :subtitle
-  slot :actions
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
-      <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
-          <%= render_slot(@inner_block) %>
-        </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
-          <%= render_slot(@subtitle) %>
-        </p>
-      </div>
-      <div class="flex-none"><%= render_slot(@actions) %></div>
+    <header class={@class}>
+      <.dynamic_tag
+        name={@header_level}
+        class={[
+          "leading-[1.2] text-3xl font-medium uppercase",
+          header_kind_class(@header_kind)
+        ]}
+      >
+        <%= render_slot(@inner_block) %>
+      </.dynamic_tag>
     </header>
+    """
+  end
+
+  defp header_kind_class(header_kind) do
+    case header_kind do
+      "blue_center" -> "text-accent text-center"
+      "black_left" -> "text-title-text"
+    end
+  end
+
+  attr :class, :string, default: nil
+  attr :legend, :string, required: true
+
+  slot :inner_block, required: true
+
+  def fieldset(assigns) do
+    ~H"""
+    <fieldset class={@class}>
+      <.header header_level="legend" header_kind="black_left">
+        <%= @legend %>
+      </.header>
+      <%= render_slot(@inner_block) %>
+    </fieldset>
+    """
+  end
+
+  attr :rest, :global,
+    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+
+  slot :inner_block, required: true
+
+  def navbar_link(assigns) do
+    ~H"""
+    <.link
+      class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent"
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
+  attr :text, :string, required: true
+
+  attr :rest, :global,
+    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+
+  def regular_link(assigns) do
+    ~H"""
+    <.link class="text-text hover:text-accent font-normal underline" {@rest}>
+      <%= @text %>
+    </.link>
     """
   end
 
