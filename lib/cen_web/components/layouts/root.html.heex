@@ -14,13 +14,13 @@
   <body class="bg-background">
     <div class="shadow-navbar relative z-10">
       <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
-        <li class="mr-32">
+        <li class="mr-auto">
           <.link href={~p"/"}>
             <img src={~p"/images/logo.svg"} height="30" />
           </.link>
         </li>
         <%= if @current_user do %>
-          <li class="ml-auto">
+          <li>
             <.link href={~p"/users/settings/personal"}>
               <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
             </.link>
