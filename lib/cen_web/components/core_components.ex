@@ -677,7 +677,7 @@ defmodule CenWeb.CoreComponents do
 
   def icon(%{name: "cen-" <> _} = assigns) do
     ~H"""
-    <img src={"/images/icons/#{@name}.svg"} class={[@class]} />
+    <img src={"/images/icons/#{@name}.svg"} alt="" class={[@class]} />
     """
   end
 

@@ -8,7 +8,7 @@
       <%= assigns[:page_title] || "Cen" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    <script defer phx-track-static src={~p"/assets/app.js"}>
     </script>
   </head>
   <body class="bg-background">
@@ -16,7 +16,7 @@
       <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
         <li class="mr-auto">
           <.link href={~p"/"}>
-            <img src={~p"/images/logo.svg"} height="30" />
+            <img src={~p"/images/logo.svg"} height="30" alt={dgettext("alt", "Логотип ТОН")} />
           </.link>
         </li>
         <%= if @current_user do %>
@@ -50,7 +50,7 @@
             </div>
             <div>
               <ul class="space-y-3.5">
-                <li><img class="w-60" src="/images/culture-ekb-logo.png" /></li>
+                <li><img class="w-60" src="/images/culture-ekb-logo.png" alt={dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")} /></li>
                 <li>
                   <.link
                     class="hover:text-accent"
