@@ -18,6 +18,7 @@ all_components =
   |> Enum.map(fn component ->
     String.split(component, " ")
   end)
+  |> Enum.reject(&(length(&1) == 1))
 
 pairs =
   Enum.flat_map(all_components, fn component ->
@@ -32,14 +33,15 @@ pairs =
 
 freqs =
   pairs
-  |> Enum.frequencies()
-  |> Map.new(fn {{comp1, comp2} = pair, _freq} ->
-    new_freq = Enum.count(all_components, fn comp -> comp == comp1 or comp == comp2 end)
-    {pair, new_freq}
+  |> Map.new(fn {comp1, comp2} = pair ->
+    freq = Enum.count(all_components, fn comp -> comp == comp1 or comp == comp2 end)
+    {pair, freq}
   end)
+  |> Map.filter(fn {_pair, freq} -> freq > 2 end)
 
 result =
   pairs
+  |> Enum.filter(fn pair -> Map.has_key?(freqs, pair) end)
   |> Enum.uniq_by(fn {comp1, comp2} -> Enum.sort_by([comp1, comp2], &length/1) end)
   |> Enum.map(fn {comp1, comp2} = pair -> {comp1, comp2, list_difference.(comp1, comp2), freqs[pair]} end)
   |> Enum.reject(fn {_comp1, _comp2, diff, _freq} -> diff == 1 or diff == 0 end)
