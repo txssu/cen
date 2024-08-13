@@ -32,7 +32,7 @@ defmodule CenWeb.UserLoginLive do
           </:actions>
         </.simple_form>
 
-        <article class="mt-[1.125rem] space-y-2.5 text-center">
+        <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Нет аккаунта?") %>
             <.regular_link
@@ -46,7 +46,7 @@ defmodule CenWeb.UserLoginLive do
               text={dgettext("users", "Я не помню пароль")}
             />
           </p>
-        </article>
+        </div>
       </div>
     </div>
     """

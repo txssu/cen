@@ -83,12 +83,12 @@ defmodule CenWeb.UserRegistrationLive do
           </:actions>
         </.simple_form>
 
-        <article class="mt-[1.125rem] space-y-2.5 text-center">
+        <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Уже есть аккаунт?") %>
             <.regular_link href={~p"/users/log_in"} text={dgettext("users", "Войти")} />
           </p>
-        </article>
+        </div>
       </div>
     </div>
     """
