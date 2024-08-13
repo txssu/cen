@@ -6,7 +6,7 @@
 @layer base {
   html {
     @apply leading-[1.1] text-text;
-    font-family: "HelveticaNeueCyr", monospace;
+    font-family: "HelveticaNeueCyr", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
   main {
