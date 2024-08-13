@@ -12,14 +12,14 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
         <%= dgettext("users", "Подтверждение аккаунта") %>
       </.header>
 
-      <section class="my-10">
+      <div class="my-10">
         <p>
           <%= dgettext("users", "Не пришло письмо?") %>
         </p>
         <p>
           <%= dgettext("users", "Мы отправим новую ссылку для подтверждения") %>
         </p>
-      </section>
+      </div>
 
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
         <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} required />
