@@ -9,7 +9,7 @@ defmodule CenWeb.OrganizationLive.New do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-start-5">
+    <div class="col-span-4 lg:col-span-9 lg:col-start-2">
       <.simple_form
         for={@organization_form}
         id="organization_form"
@@ -21,57 +21,79 @@ defmodule CenWeb.OrganizationLive.New do
             legend={dgettext("orgs", "Организация")}
             subtitle={dgettext("orgs", "Общая информация")}
           >
-            <.input
-              field={@organization_form[:name]}
-              type="text"
-              label={dgettext("orgs", "Название организации")}
-              required
-            />
-
-            <.input
-              field={@organization_form[:inn]}
-              type="text"
-              label={dgettext("orgs", "ИНН")}
-              required
-            />
-
-            <.input
-              field={@organization_form[:description]}
-              type="textarea"
-              label={dgettext("orgs", "Описание")}
-              required
-              maxLength="1000"
-            />
+            <div class="lg:grid lg:grid-cols-9 lg:gap-x-10">
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:name]}
+                  type="text"
+                  label={dgettext("orgs", "Название организации")}
+                  required
+                />
+              </div>
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:inn]}
+                  type="text"
+                  label={dgettext("orgs", "ИНН")}
+                  required
+                />
+              </div>
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:description]}
+                  type="textarea"
+                  label={dgettext("orgs", "Описание")}
+                  required
+                  maxlength="1000"
+                />
+              </div>
+            </div>
           </.fieldset>
 
           <.fieldset legend={dgettext("orgs", "Контакты")}>
-            <.input
-              field={@organization_form[:phone_number]}
-              type="text"
-              label={dgettext("orgs", "Номер телефона")}
-              required
-            />
-
-            <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
-
-            <.input
-              field={@organization_form[:address]}
-              type="text"
-              label={dgettext("orgs", "Адрес")}
-            />
+            <div class="lg:grid lg:grid-cols-9 lg:gap-x-10">
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:phone_number]}
+                  type="text"
+                  label={dgettext("orgs", "Номер телефона")}
+                  required
+                />
+              </div>
+              <div class="lg:col-span-4 lg:col-start-6">
+                <.input
+                  field={@organization_form[:email]}
+                  type="email"
+                  label={dgettext("orgs", "Почта")}
+                />
+              </div>
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:address]}
+                  type="text"
+                  label={dgettext("orgs", "Адрес")}
+                />
+              </div>
+            </div>
           </.fieldset>
 
-          <.fieldset legend={dgettext("orgs", "Общая информация")}>
-            <.input
-              field={@organization_form[:website_link]}
-              type="text"
-              label={dgettext("orgs", "Сайт организации")}
-            />
-            <.input
-              field={@organization_form[:social_link]}
-              type="text"
-              label={dgettext("orgs", "Соцсеть")}
-            />
+          <.fieldset legend={dgettext("orgs", "Ссылки")}>
+            <div class="lg:grid lg:grid-cols-9 lg:gap-x-10">
+              <div class="lg:col-span-4 lg:col-start-1">
+                <.input
+                  field={@organization_form[:website_link]}
+                  type="text"
+                  label={dgettext("orgs", "Сайт организации")}
+                />
+              </div>
+              <div class="lg:col-span-4 lg:col-start-6">
+                <.input
+                  field={@organization_form[:social_link]}
+                  type="text"
+                  label={dgettext("orgs", "Соцсеть")}
+                />
+              </div>
+            </div>
           </.fieldset>
         </div>
 
