@@ -10,64 +10,70 @@ defmodule CenWeb.OrganizationLive.New do
   def render(assigns) do
     ~H"""
     <div class="col-span-4 lg:col-start-5">
-      <.header header_kind="black_left">
-        <%= dgettext("orgs", "Организация") %>
-      </.header>
-
       <.simple_form
         for={@organization_form}
         id="organization_form"
         phx-submit="update_organization"
         phx-change="validate_organization"
       >
-        <.fieldset legend={dgettext("orgs", "Общая информация")}>
-          <.input
-            field={@organization_form[:name]}
-            type="text"
-            label={dgettext("orgs", "Название")}
-            required
-          />
+        <div class="space-y-9">
+          <.fieldset
+            legend={dgettext("orgs", "Организация")}
+            subtitle={dgettext("orgs", "Общая информация")}
+          >
+            <.input
+              field={@organization_form[:name]}
+              type="text"
+              label={dgettext("orgs", "Название организации")}
+              required
+            />
 
-          <.input
-            field={@organization_form[:inn]}
-            type="text"
-            label={dgettext("orgs", "ИНН")}
-            required
-          />
+            <.input
+              field={@organization_form[:inn]}
+              type="text"
+              label={dgettext("orgs", "ИНН")}
+              required
+            />
 
-          <.input
-            field={@organization_form[:description]}
-            type="textarea"
-            label={dgettext("orgs", "Описание")}
-            required
-          />
-        </.fieldset>
+            <.input
+              field={@organization_form[:description]}
+              type="textarea"
+              label={dgettext("orgs", "Описание")}
+              required
+              maxLength="1000"
+            />
+          </.fieldset>
 
-        <.fieldset legend={dgettext("orgs", "Контакты")}>
-          <.input
-            field={@organization_form[:phone_number]}
-            type="text"
-            label={dgettext("orgs", "Номер телефона")}
-            required
-          />
+          <.fieldset legend={dgettext("orgs", "Контакты")}>
+            <.input
+              field={@organization_form[:phone_number]}
+              type="text"
+              label={dgettext("orgs", "Номер телефона")}
+              required
+            />
 
-          <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
+            <.input field={@organization_form[:email]} type="email" label={dgettext("orgs", "Почта")} />
 
-          <.input field={@organization_form[:address]} type="text" label={dgettext("orgs", "Адрес")} />
-        </.fieldset>
+            <.input
+              field={@organization_form[:address]}
+              type="text"
+              label={dgettext("orgs", "Адрес")}
+            />
+          </.fieldset>
 
-        <.fieldset legend={dgettext("orgs", "Общая информация")}>
-          <.input
-            field={@organization_form[:website_link]}
-            type="text"
-            label={dgettext("orgs", "Сайт организации")}
-          />
-          <.input
-            field={@organization_form[:social_link]}
-            type="text"
-            label={dgettext("orgs", "Соцсеть")}
-          />
-        </.fieldset>
+          <.fieldset legend={dgettext("orgs", "Общая информация")}>
+            <.input
+              field={@organization_form[:website_link]}
+              type="text"
+              label={dgettext("orgs", "Сайт организации")}
+            />
+            <.input
+              field={@organization_form[:social_link]}
+              type="text"
+              label={dgettext("orgs", "Соцсеть")}
+            />
+          </.fieldset>
+        </div>
 
         <:actions>
           <.arrow_button>

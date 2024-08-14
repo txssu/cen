@@ -310,8 +310,10 @@ defmodule CenWeb.CoreComponents do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
+  attr :required, :boolean, default: false
+
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
-                multiple pattern placeholder readonly required rows size step)
+                multiple pattern placeholder readonly rows size step)
 
   def input(%{field: %FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -372,12 +374,12 @@ defmodule CenWeb.CoreComponents do
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id}><%= @label %><%= if @required, do: "*" %></.label>
       <textarea
         id={@id}
         name={@name}
         class={[
-          "min-h-[6rem] mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "min-h-[6rem] h-[3.625rem] shadow-input text-style-main mt-[0.9375rem] block w-full rounded-lg border-0 font-light focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -392,7 +394,7 @@ defmodule CenWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id}><%= @label %><%= if @required, do: "*" %></.label>
       <input
         type={@type}
         name={@name}
@@ -449,6 +451,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :header_kind, :string, required: true, values: ~w[blue_center black_left]
 
+  slot :subtitle
   slot :inner_block, required: true
 
   def header(assigns) do
@@ -463,6 +466,7 @@ defmodule CenWeb.CoreComponents do
       >
         <%= render_slot(@inner_block) %>
       </.dynamic_tag>
+      <%= render_slot(@subtitle) %>
     </header>
     """
   end
@@ -476,6 +480,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :class, :string, default: nil
   attr :legend, :string, required: true
+  attr :subtitle, :string, default: nil
 
   slot :inner_block, required: true
 
@@ -484,6 +489,13 @@ defmodule CenWeb.CoreComponents do
     <fieldset class={@class}>
       <.header header_level="legend" header_kind="black_left">
         <%= @legend %>
+        <:subtitle>
+          <%= if @subtitle do %>
+            <p class="text-title-text leading-[1.3rem] mt-2.5 block uppercase lg:text-xl">
+              <%= @subtitle %>
+            </p>
+          <% end %>
+        </:subtitle>
       </.header>
       <%= render_slot(@inner_block) %>
     </fieldset>
