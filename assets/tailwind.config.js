@@ -24,6 +24,7 @@ module.exports = {
         accent: "#A2C7E0",
         text: "#666666",
         background: "#FCFCFC",
+        regulargray: "#1F1F1F",
         navbargray: "#1F1F1F",
         footergray: "#1F1F1F",
         "title-text": "#3E3E3E",

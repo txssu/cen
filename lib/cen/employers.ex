@@ -6,6 +6,8 @@ defmodule Cen.Employers do
 
   @type organization_changeset :: {:ok, Organization.t()} | {:error, Ecto.Changeset.t()}
 
+  def get_organization(id), do: Repo.get(Organization, id)
+
   @spec create_organization_for(Cen.Accounts.User.t(), map()) :: organization_changeset()
   def create_organization_for(user, attrs \\ %{}) do
     user

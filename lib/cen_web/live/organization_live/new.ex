@@ -13,7 +13,7 @@ defmodule CenWeb.OrganizationLive.New do
       <.simple_form
         for={@organization_form}
         id="organization_form"
-        phx-submit="update_organization"
+        phx-submit="create_organization"
         phx-change="validate_organization"
       >
         <div class="space-y-9">
@@ -128,7 +128,7 @@ defmodule CenWeb.OrganizationLive.New do
     {:noreply, assign(socket, organization_form: organization_form)}
   end
 
-  def handle_event("update_organization", %{"organization" => organization_params}, socket) do
+  def handle_event("create_organization", %{"organization" => organization_params}, socket) do
     current_user = socket.assigns.current_user
 
     case Employers.create_organization_for(current_user, organization_params) do

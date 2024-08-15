@@ -244,6 +244,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :type, :string, default: nil
   attr :class, :string, default: nil
+  attr :arrow_direction, :string, values: ~w(left right), default: "right"
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -258,8 +259,34 @@ defmodule CenWeb.CoreComponents do
       type={@type}
       {@rest}
     >
-      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+      <.icon
+        class="h-[1.875rem] bg-white rounded-full shadow-icon"
+        name={"cen-arrow-#{@arrow_direction}"}
+      />
       <span class="text-white">
+        <%= render_slot(@inner_block) %>
+      </span>
+    </.button>
+    """
+  end
+
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def regular_button(assigns) do
+    ~H"""
+    <.button
+      class={[
+        "py-4 px-5 text-[0.9375rem] ",
+        @class
+      ]}
+      type={@type}
+      {@rest}
+    >
+      <span class="text-title-text">
         <%= render_slot(@inner_block) %>
       </span>
     </.button>
@@ -460,7 +487,7 @@ defmodule CenWeb.CoreComponents do
       <.dynamic_tag
         name={@header_level}
         class={[
-          "leading-[1.2] text-3xl font-medium uppercase",
+          "leading-[1.2] text-2xl lg:text-3xl font-medium uppercase",
           header_kind_class(@header_kind)
         ]}
       >
@@ -528,6 +555,34 @@ defmodule CenWeb.CoreComponents do
     <.link class="text-text hover:text-accent font-normal underline" {@rest}>
       <%= @text %>
     </.link>
+    """
+  end
+
+  attr :class, :string, default: nil
+  attr :header, :string, default: nil
+
+  slot :inner_block, required: true
+
+  def basic_card(assigns) do
+    ~H"""
+    <div class={[@class, "bg-[#F5F5F5] shadow-default-convexity rounded-lg"]}>
+      <h2 class="leading leading-[1.3] text-regulargray text-base font-medium uppercase lg:text-xl">
+        <%= @header %>
+      </h2>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  attr :value, :any, required: true
+  slot :inner_block, required: true
+
+  def render_not_nil(assigns)
+  def render_not_nil(%{value: nil} = assigns), do: ~H""
+
+  def render_not_nil(assigns) do
+    ~H"""
+    <%= render_slot(@inner_block) %>
     """
   end
 
