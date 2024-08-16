@@ -43,7 +43,10 @@ defmodule CenWeb.OrganizationLive.Show do
           </.button>
         </div>
 
-        <.basic_card class="w-full px-6 py-14 lg:col-span-9" header={dgettext("orgs", "Описание")}>
+        <.basic_card
+          class="w-full px-6 py-10 lg:py-12 lg:col-span-9"
+          header={dgettext("orgs", "Описание")}
+        >
           <p class="mt-6">
             <%= @organization.description %>
           </p>
