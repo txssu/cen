@@ -5,7 +5,7 @@ defmodule CenWeb.UserLoginLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
+    <div class="col-span-4 lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
         <%= dgettext("users", "Вход") %>
       </.header>
