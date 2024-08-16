@@ -32,7 +32,12 @@ defmodule CenWeb.OrganizationLive.Show do
         </.basic_card>
 
         <div class="flex gap-2.5 lg:col-span-12">
-          <.regular_button class="bg-accent-hover">Редактировать</.regular_button>
+          <.regular_button
+            class="bg-accent-hover"
+            phx-click={JS.navigate(~p"/organizations/#{@organization}/edit")}
+          >
+            <%= gettext("Редактировать") %>
+          </.regular_button>
           <.button class="p-4" phx-click="delete_organization">
             <.icon name="cen-bin" alt={dgettext("orgs", "Удалить")} />
           </.button>

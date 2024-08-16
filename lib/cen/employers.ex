@@ -16,13 +16,19 @@ defmodule Cen.Employers do
     |> Repo.insert()
   end
 
-  @spec change_organization(Organization.t(), map()) :: Ecto.Changeset.t()
-  def change_organization(organization, attrs \\ %{}) do
-    Organization.changeset(organization, attrs)
+  def update_organization(organization, attrs) do
+    organization
+    |> Organization.changeset(attrs)
+    |> Repo.update()
   end
 
   @spec delete_organization(Organization.t()) :: :ok
   def delete_organization(organization) do
     Repo.delete(organization)
+  end
+
+  @spec change_organization(Organization.t(), map()) :: Ecto.Changeset.t()
+  def change_organization(organization, attrs \\ %{}) do
+    Organization.changeset(organization, attrs)
   end
 end
