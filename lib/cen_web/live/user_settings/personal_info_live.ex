@@ -8,7 +8,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-span-3">
+    <div class="lg:col-span-3">
       <Components.navigation current_page={:personal} />
     </div>
 

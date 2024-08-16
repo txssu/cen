@@ -9,7 +9,7 @@ defmodule CenWeb.OrganizationLive.Form do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-span-9 lg:col-start-2">
+    <div class="lg:col-span-9 lg:col-start-2">
       <.simple_form for={@form} id="organization-form" phx-submit="save" phx-change="validate">
         <div class="space-y-9">
           <.fieldset

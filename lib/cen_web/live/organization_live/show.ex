@@ -7,7 +7,7 @@ defmodule CenWeb.OrganizationLive.Show do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-span-12">
+    <div class="lg:col-span-12">
       <div class="space-y-6 lg:grid lg:grid-flow-dense lg:grid-cols-12 lg:gap-10 lg:space-y-0">
         <.header class="lg:col-span-12" header_kind="black_left">
           <%= @organization.name %>

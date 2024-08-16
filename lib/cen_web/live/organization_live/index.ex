@@ -8,7 +8,7 @@ defmodule CenWeb.OrganizationLive.Index do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-start-5">
+    <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
           <%= dgettext("orgs", "Мои организации") %>
