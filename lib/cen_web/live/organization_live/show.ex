@@ -33,7 +33,9 @@ defmodule CenWeb.OrganizationLive.Show do
 
         <div class="flex gap-2.5 lg:col-span-12">
           <.regular_button class="bg-accent-hover">Редактировать</.regular_button>
-          <.button class="p-4"><.icon name="cen-bin" /></.button>
+          <.button class="p-4" phx-click="delete_organization">
+            <.icon name="cen-bin" alt={dgettext("orgs", "Удалить")} />
+          </.button>
         </div>
 
         <.basic_card class="w-full px-6 py-14 lg:col-span-9" header={dgettext("orgs", "Описание")}>
@@ -65,6 +67,12 @@ defmodule CenWeb.OrganizationLive.Show do
       organization ->
         {:ok, assign(socket, organization: organization)}
     end
+  end
+
+  @impl Phoenix.LiveView
+  def handle_event("delete_organization", _params, socket) do
+    Employers.delete_organization(socket.assigns.organization)
+    {:noreply, push_navigate(socket, to: ~p"/organizations")}
   end
 
   defp contacts_list(organization) do

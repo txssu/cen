@@ -20,4 +20,9 @@ defmodule Cen.Employers do
   def change_organization(organization, attrs \\ %{}) do
     Organization.changeset(organization, attrs)
   end
+
+  @spec delete_organization(Organization.t()) :: :ok
+  def delete_organization(organization) do
+    Repo.delete(organization)
+  end
 end

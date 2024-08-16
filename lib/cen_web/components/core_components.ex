@@ -743,16 +743,17 @@ defmodule CenWeb.CoreComponents do
   """
   attr :name, :string, required: true
   attr :class, :string, default: nil
+  attr :alt, :string, default: ""
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    <span class={[@name, @class]} alt={@alt} />
     """
   end
 
   def icon(%{name: "cen-" <> _} = assigns) do
     ~H"""
-    <img src={"/images/icons/#{@name}.svg"} alt="" class={[@class]} />
+    <img src={"/images/icons/#{@name}.svg"} alt={@alt} class={[@class]} />
     """
   end
 
