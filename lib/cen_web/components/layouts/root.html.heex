@@ -11,7 +11,7 @@
     <script defer phx-track-static src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-background">
+  <body class="bg-background flex h-screen flex-col justify-between">
     <div class="shadow-navbar relative z-10">
       <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
         <li class="mr-auto">
@@ -39,7 +39,9 @@
         <% end %>
       </ul>
     </div>
-    <%= @inner_content %>
+    <div class="mb-auto">
+      <%= @inner_content %>
+    </div>
     <footer class="shadow-footer bg-[#F8F8F8] text-footergray">
       <div class="container mx-auto py-10 lg:py-[3.75rem] lg:grid-cols-12">
         <div class=" grid grid-cols-1 gap-x-10 gap-y-10 ">
@@ -50,7 +52,15 @@
             </div>
             <div>
               <ul class="space-y-3.5">
-                <li><img class="w-60" src="/images/culture-ekb-logo.png" alt={dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")} /></li>
+                <li>
+                  <img
+                    class="w-60"
+                    src="/images/culture-ekb-logo.png"
+                    alt={
+                      dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")
+                    }
+                  />
+                </li>
                 <li>
                   <.link
                     class="hover:text-accent"
