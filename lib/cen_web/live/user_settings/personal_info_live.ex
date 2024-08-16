@@ -38,20 +38,20 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
             field={@personal_info_form[:fullname]}
             type="text"
             placeholder={dgettext("users", "ФИО")}
-            required
+            implicit_required
           />
           <.input
             :if={@user_role == :applicant}
             field={@personal_info_form[:birthdate]}
             type="date"
             placeholder={dgettext("users", "Дата рождения")}
-            required
+            implicit_required
           />
           <.input
             field={@personal_info_form[:phone_number]}
             type="text"
             placeholder={dgettext("users", "Номер телефона")}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>

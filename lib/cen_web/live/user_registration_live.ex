@@ -44,7 +44,7 @@ defmodule CenWeb.UserRegistrationLive do
             field={@form[:fullname]}
             type="text"
             placeholder={dgettext("users", "ФИО")}
-            required
+            implicit_required
           />
 
           <.input
@@ -54,26 +54,26 @@ defmodule CenWeb.UserRegistrationLive do
             onfocus="(this.type='date')"
             onblur="(this.type='text')"
             placeholder={dgettext("users", "Дата рождения")}
-            required
+            implicit_required
           />
 
           <.input
             field={@form[:email]}
             type="email"
             placeholder={dgettext("users", "Почта")}
-            required
+            implicit_required
           />
           <.input
             field={@form[:phone_number]}
             type="text"
             placeholder={dgettext("users", "Номер телефона")}
-            required
+            implicit_required
           />
           <.input
             field={@form[:password]}
             type="password"
             placeholder={dgettext("users", "Пароль")}
-            required
+            implicit_required
           />
 
           <:actions>

@@ -16,13 +16,13 @@ defmodule CenWeb.UserLoginLive do
             field={@form[:email]}
             type="email"
             placeholder={dgettext("users", "Почта")}
-            required
+            implicit_required
           />
           <.input
             field={@form[:password]}
             type="password"
             placeholder={dgettext("users", "Пароль")}
-            required
+            implicit_required
           />
 
           <:actions>

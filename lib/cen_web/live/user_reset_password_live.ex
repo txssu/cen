@@ -26,13 +26,13 @@ defmodule CenWeb.UserResetPasswordLive do
           field={@form[:password]}
           type="password"
           label={dgettext("users", "Новый пароль")}
-          required
+          implicit_required
         />
         <.input
           field={@form[:password_confirmation]}
           type="password"
           label={dgettext("users", "Повторите новый пароль")}
-          required
+          implicit_required
         />
         <:actions>
           <.arrow_button class="mx-auto">

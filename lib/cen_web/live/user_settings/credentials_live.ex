@@ -28,7 +28,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             field={@email_form[:email]}
             type="email"
             label={dgettext("users", "Почта")}
-            required
+            implicit_required
           />
           <.input
             field={@email_form[:current_password]}
@@ -37,7 +37,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             type="password"
             label={dgettext("users", "Текущий пароль")}
             value={@email_form_current_password}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>
@@ -71,12 +71,13 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             field={@password_form[:password]}
             type="password"
             label={dgettext("users", "Новый пароль")}
-            required
+            implicit_required
           />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
             label={dgettext("users", "Подтвердите новый пароль")}
+            implicit_required
           />
           <.input
             field={@password_form[:current_password]}
@@ -85,7 +86,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             label={dgettext("users", "Текущий пароль")}
             id="current_password_for_password"
             value={@current_password}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>

@@ -322,6 +322,7 @@ defmodule CenWeb.CoreComponents do
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
+  attr :implicit_required, :boolean, default: false
   attr :value, :any
 
   attr :type, :string,
@@ -348,6 +349,7 @@ defmodule CenWeb.CoreComponents do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign(:required, assigns.required or assigns.implicit_required)
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
@@ -401,7 +403,9 @@ defmodule CenWeb.CoreComponents do
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %><%= if @required, do: "*" %></.label>
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
       <textarea
         id={@id}
         name={@name}
@@ -410,6 +414,7 @@ defmodule CenWeb.CoreComponents do
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
+        required={@required}
         {@rest}
       ><%= Form.normalize_value("textarea", @value) %></textarea>
       <.error :for={msg <- @errors}><%= msg %></.error>
@@ -421,7 +426,9 @@ defmodule CenWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %><%= if @required, do: "*" %></.label>
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
       <input
         type={@type}
         name={@name}
@@ -432,6 +439,7 @@ defmodule CenWeb.CoreComponents do
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
+        required={@required}
         {@rest}
       />
       <.error :for={msg <- @errors}><%= msg %></.error>
