@@ -116,6 +116,7 @@ defmodule CenWeb.Router do
 
     live_session :requires_authentication,
       on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
+      live "/organizations", OrganizationLive.Index
       live "/organizations/new", OrganizationLive.Form, :create
       live "/organizations/:id", OrganizationLive.Show
       live "/organizations/:id/edit", OrganizationLive.Form, :update

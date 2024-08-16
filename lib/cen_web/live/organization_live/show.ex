@@ -57,7 +57,7 @@ defmodule CenWeb.OrganizationLive.Show do
         </section>
 
         <div class="col-span-12">
-          <.arrow_button arrow_direction="left">
+          <.arrow_button arrow_direction="left" phx-click={JS.navigate(~p"/organizations")}>
             <%= dgettext("orgs", "Вернуться к организациям") %>
           </.arrow_button>
         </div>

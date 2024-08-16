@@ -1,6 +1,7 @@
 defmodule Cen.Employers do
   @moduledoc false
 
+  alias Cen.Accounts.User
   alias Cen.Employers.Organization
   alias Cen.Repo
 
@@ -8,7 +9,14 @@ defmodule Cen.Employers do
 
   def get_organization(id), do: Repo.get(Organization, id)
 
-  @spec create_organization_for(Cen.Accounts.User.t(), map()) :: organization_changeset()
+  @spec list_organizations_for(User.t()) :: [Organization.t()]
+  def list_organizations_for(user) do
+    user
+    |> Repo.preload(:organizations)
+    |> Map.get(:organizations)
+  end
+
+  @spec create_organization_for(User.t(), map()) :: organization_changeset()
   def create_organization_for(user, attrs \\ %{}) do
     user
     |> Ecto.build_assoc(:organizations)
