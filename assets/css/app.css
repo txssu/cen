@@ -2,6 +2,11 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 @import "fonts.css";
+@import "../vendor/croppr.css";
+
+.croppr, .croppr > * {
+  @apply w-full
+}
 
 @layer base {
   html {

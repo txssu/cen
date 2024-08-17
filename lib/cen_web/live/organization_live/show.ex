@@ -95,6 +95,9 @@ defmodule CenWeb.OrganizationLive.Show do
   end
 
   defp image(organization) do
-    Cen.ImageUploader.url({organization.image, organization})
+    case Cen.ImageUploader.url({organization.image, organization}) do
+      nil -> ~p"/images/image-placeholder.jpg"
+      url -> url
+    end
   end
 end

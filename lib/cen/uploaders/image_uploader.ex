@@ -1,3 +1,4 @@
+# credo:disable-for-this-file Credo.Check.Readability.Specs
 defmodule Cen.ImageUploader do
   @moduledoc false
   use Waffle.Definition

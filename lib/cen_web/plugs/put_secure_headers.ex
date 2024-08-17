@@ -16,7 +16,7 @@ defmodule CenWeb.Plugs.PutSecureHeaders do
     %{
       "default-src" => ["'self'"],
       "script-src-elem" => ["'self'"],
-      "connect-src" => ["'self'"],
+      "connect-src" => ["'self'", csp_s3()],
       "img-src" => ["'self'", "data:", "blob:", csp_s3()],
       "frame-src" => ["'self'"],
       "script-src-attr" => ["'unsafe-inline'"]

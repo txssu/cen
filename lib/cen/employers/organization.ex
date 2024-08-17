@@ -25,12 +25,17 @@ defmodule Cen.Employers.Organization do
     timestamps(type: :utc_datetime)
   end
 
+  @spec image_changeset(t() | Ecto.Changeset.t(), map()) :: Ecto.Changeset.t()
+  def image_changeset(organization, attrs) do
+    cast_attachments(organization, attrs, [:image], allow_paths: true)
+  end
+
   @doc false
   @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(organization, attrs) do
     organization
     |> cast(attrs, [:name, :inn, :description, :phone_number, :email, :website_link, :social_link, :address])
-    |> cast_attachments(attrs, [:image], allow_paths: true)
+    |> image_changeset(attrs)
     |> validate_name()
     |> validate_inn()
     |> validate_description()
