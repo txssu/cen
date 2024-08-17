@@ -1,6 +1,7 @@
 defmodule Cen.Employers.Organization do
   @moduledoc false
   use Ecto.Schema
+  use Waffle.Ecto.Schema
 
   import CenWeb.Gettext
   import Ecto.Changeset
@@ -17,6 +18,8 @@ defmodule Cen.Employers.Organization do
     field :website_link, :string
     field :social_link, :string
 
+    field :image, Cen.ImageUploader.Type
+
     belongs_to :user, Cen.Accounts.User
 
     timestamps(type: :utc_datetime)
@@ -27,6 +30,7 @@ defmodule Cen.Employers.Organization do
   def changeset(organization, attrs) do
     organization
     |> cast(attrs, [:name, :inn, :description, :phone_number, :email, :website_link, :social_link, :address])
+    |> cast_attachments(attrs, [:image], allow_paths: true)
     |> validate_name()
     |> validate_inn()
     |> validate_description()

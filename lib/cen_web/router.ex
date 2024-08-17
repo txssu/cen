@@ -12,10 +12,7 @@ defmodule CenWeb.Router do
     plug :put_root_layout, html: {CenWeb.Layouts, :root}
     plug :protect_from_forgery
 
-    plug :put_secure_browser_headers, %{
-      "content-security-policy" =>
-        "default-src 'self'; script-src-elem 'self'; connect-src 'self'; img-src 'self' data: blob:; frame-src 'self'; script-src-attr 'unsafe-inline'"
-    }
+    plug CenWeb.Plugs.PutSecureHeaders
 
     plug :fetch_current_user
   end

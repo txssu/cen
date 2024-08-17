@@ -20,6 +20,26 @@ if System.get_env("PHX_SERVER") do
   config :cen, CenWeb.Endpoint, server: true
 end
 
+s3_uri =
+  "S3_URL"
+  |> System.fetch_env!()
+  |> URI.parse()
+
+s3_bucket = System.fetch_env!("S3_BUCKET")
+
+config :cen, :csp, s3: to_string(s3_uri)
+
+config :ex_aws,
+  json_codec: Jason,
+  access_key_id: System.fetch_env!("S3_ACCESS_KEY"),
+  secret_access_key: System.fetch_env!("S3_SECRET_KEY"),
+  s3: Map.from_struct(s3_uri)
+
+config :waffle,
+  storage: Waffle.Storage.S3,
+  bucket: s3_bucket,
+  asset_host: s3_uri |> URI.append_path("/#{s3_bucket}") |> to_string()
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

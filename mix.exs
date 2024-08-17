@@ -46,6 +46,13 @@ defmodule Cen.MixProject do
       {:mix_audit, "~> 2.1.2", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
       {:tailwind_formatter, "~> 0.4.0", only: [:dev, :test], runtime: false},
+      # Uploads
+      {:waffle, "~> 1.1"},
+      {:waffle_ecto, "~> 0.0.12"},
+      {:ex_aws, "~> 2.1.2"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"},
       # Misc
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},

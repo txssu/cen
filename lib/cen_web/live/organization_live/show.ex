@@ -13,23 +13,26 @@ defmodule CenWeb.OrganizationLive.Show do
           <%= @organization.name %>
         </.header>
 
-        <.basic_card
-          class="lg:order-1 lg:col-span-3 lg:col-start-10 w-full px-6 py-14"
-          header={dgettext("orgs", "Контакты")}
-        >
-          <ul class="mt-7 space-y-4">
-            <%= for {value, icon} <- contacts_list(@organization) do %>
-              <.render_not_nil value={value}>
-                <li class="flex items-center gap-2.5">
-                  <.icon name={icon} class="w-4 h-4" />
-                  <div class="leading-[1.2] text-sm font-light text-black">
-                    <%= value %>
-                  </div>
-                </li>
-              </.render_not_nil>
-            <% end %>
-          </ul>
-        </.basic_card>
+        <div class="relative pt-16 lg:order-1 lg:col-span-3 lg:col-start-10 lg:pt-0">
+          <.basic_card class="px-6 pt-24 pb-14" header={dgettext("orgs", "Контакты")}>
+            <img
+              src={image(@organization)}
+              class="outline-[1rem] absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full outline outline-white lg:-translate-y-1/2"
+            />
+            <ul class="mt-7 space-y-4">
+              <%= for {value, icon} <- contacts_list(@organization) do %>
+                <.render_not_nil value={value}>
+                  <li class="flex items-center gap-2.5">
+                    <.icon name={icon} class="w-4 h-4" />
+                    <div class="leading-[1.2] text-sm font-light text-black">
+                      <%= value %>
+                    </div>
+                  </li>
+                </.render_not_nil>
+              <% end %>
+            </ul>
+          </.basic_card>
+        </div>
 
         <div class="flex gap-2.5 lg:col-span-12">
           <.regular_button
@@ -89,5 +92,9 @@ defmodule CenWeb.OrganizationLive.Show do
       {organization.email, "cen-message"},
       {organization.address, "cen-globe"}
     ]
+  end
+
+  defp image(organization) do
+    Cen.ImageUploader.url({organization.image, organization})
   end
 end

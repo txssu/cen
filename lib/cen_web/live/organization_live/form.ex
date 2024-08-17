@@ -40,6 +40,8 @@ defmodule CenWeb.OrganizationLive.Form do
             </div>
           </.fieldset>
 
+          <.live_file_input upload={@uploads[:image]} />
+
           <.fieldset legend={dgettext("orgs", "Контакты")}>
             <div class="lg:grid lg:grid-cols-9 lg:gap-x-10">
               <div class="lg:col-span-4 lg:col-start-1">
@@ -95,7 +97,10 @@ defmodule CenWeb.OrganizationLive.Form do
 
     form = organization |> Employers.change_organization() |> to_form()
 
-    {:ok, assign(socket, organization: organization, form: form)}
+    {:ok,
+     socket
+     |> assign(organization: organization, form: form)
+     |> allow_upload(:image, accept: ~w(.jpg .jpeg .png))}
   end
 
   @impl Phoenix.LiveView
@@ -110,7 +115,22 @@ defmodule CenWeb.OrganizationLive.Form do
   end
 
   def handle_event("save", %{"organization" => organization_params}, socket) do
-    save_organization(socket, socket.assigns.live_action, organization_params)
+    save_organization(socket, socket.assigns.live_action, maybe_put_image(organization_params, socket))
+  end
+
+  defp maybe_put_image(params, socket) do
+    files =
+      consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
+        # Add the file extension to the temp file
+        path_with_extension = path <> String.replace(entry.client_type, "image/", ".")
+        File.cp!(path, path_with_extension)
+        {:ok, path_with_extension}
+      end)
+
+    case files do
+      [] -> params
+      [file_path] -> Map.put(params, "image", file_path)
+    end
   end
 
   defp save_organization(socket, :create, organization_params) do
