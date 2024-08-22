@@ -14,7 +14,8 @@
     font-family: "HelveticaNeueCyr", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   }
 
-  main {
+  .cen-background {
     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/overlay.png');
+    background-size: cover;
   }
 }
