@@ -7,8 +7,8 @@ defmodule Cen.Employers do
 
   @type organization_changeset :: {:ok, Organization.t()} | {:error, Ecto.Changeset.t()}
 
-  @spec get_organization(id :: integer() | binary()) :: Organization.t() | nil
-  def get_organization(id), do: Repo.get(Organization, id)
+  @spec get_organization!(id :: integer() | binary()) :: Organization.t()
+  def get_organization!(id), do: Repo.get!(Organization, id)
 
   @spec list_organizations_for(User.t()) :: [Organization.t()]
   def list_organizations_for(user) do

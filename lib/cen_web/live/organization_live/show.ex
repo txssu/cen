@@ -2,6 +2,8 @@ defmodule CenWeb.OrganizationLive.Show do
   @moduledoc false
   use CenWeb, :live_view
 
+  import Cen.Permissions
+
   alias Cen.Employers
 
   @impl Phoenix.LiveView
@@ -34,7 +36,10 @@ defmodule CenWeb.OrganizationLive.Show do
           </.basic_card>
         </div>
 
-        <div class="flex gap-2.5 lg:col-span-12">
+        <div
+          :if={has_permission?(@current_user, @organization, :update)}
+          class="flex gap-2.5 lg:col-span-12"
+        >
           <.regular_button
             class="bg-accent-hover"
             phx-click={JS.navigate(~p"/organizations/#{@organization}/edit")}
@@ -74,10 +79,9 @@ defmodule CenWeb.OrganizationLive.Show do
 
   @impl Phoenix.LiveView
   def mount(%{"id" => id}, _session, socket) do
-    case Employers.get_organization(id) do
-      organization ->
-        {:ok, assign(socket, organization: organization)}
-    end
+    organization = Employers.get_organization!(id)
+    verify_has_permission!(socket.assigns.current_user, organization, :show)
+    {:ok, assign(socket, organization: organization)}
   end
 
   @impl Phoenix.LiveView

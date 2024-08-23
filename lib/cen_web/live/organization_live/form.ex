@@ -3,6 +3,8 @@ defmodule CenWeb.OrganizationLive.Form do
 
   use CenWeb, :live_view
 
+  import Cen.Permissions
+
   alias Cen.Employers
   alias Cen.Employers.Organization
 
@@ -132,11 +134,15 @@ defmodule CenWeb.OrganizationLive.Form do
 
   @impl Phoenix.LiveView
   def mount(params, _session, socket) do
+    action = socket.assigns.live_action
+
     organization =
-      case socket.assigns.live_action do
+      case action do
         :create -> %Organization{}
-        :update -> Employers.get_organization(params["id"])
+        :update -> Employers.get_organization!(params["id"])
       end
+
+    verify_has_permission!(socket.assigns.current_user, organization, action)
 
     {:ok,
      socket

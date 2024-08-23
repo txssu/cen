@@ -3,6 +3,8 @@ defmodule CenWeb.OrganizationLive.Index do
 
   use CenWeb, :live_view
 
+  import Cen.Permissions
+
   alias Cen.Employers
 
   @impl Phoenix.LiveView
@@ -43,6 +45,7 @@ defmodule CenWeb.OrganizationLive.Index do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
+    verify_has_permission!(user, :organizations, :index)
     organizations = Employers.list_organizations_for(user)
 
     if organizations == [] do
