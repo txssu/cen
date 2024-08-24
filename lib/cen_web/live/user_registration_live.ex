@@ -1,9 +1,9 @@
 defmodule CenWeb.UserRegistrationLive do
   @moduledoc false
   use CenWeb, :live_view
+  use Gettext, backend: CenWeb.Gettext
 
   import CenWeb.ExtraFormsComponents
-  import CenWeb.Gettext
 
   alias Cen.Accounts
   alias Cen.Accounts.User

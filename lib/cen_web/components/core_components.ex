@@ -16,8 +16,7 @@ defmodule CenWeb.CoreComponents do
   Icons are provided by [heroicons](https://heroicons.com). See `icon/1` for usage.
   """
   use Phoenix.Component
-
-  import CenWeb.Gettext
+  use Gettext, backend: CenWeb.Gettext
 
   alias Phoenix.HTML.Form
   alias Phoenix.HTML.FormField

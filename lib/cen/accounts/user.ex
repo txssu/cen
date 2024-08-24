@@ -1,8 +1,8 @@
 defmodule Cen.Accounts.User do
   @moduledoc false
   use Ecto.Schema
+  use Gettext, backend: CenWeb.Gettext
 
-  import CenWeb.Gettext
   import Ecto.Changeset
 
   @type t() :: %__MODULE__{}
