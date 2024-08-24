@@ -5,10 +5,10 @@ defmodule CenWeb.UserLoginLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+    <div class="lg:col-span-4 lg:col-start-5">
+      <.header header_kind="blue_center">
         <%= dgettext("users", "Вход") %>
-      </h1>
+      </.header>
 
       <div class="mt-[2.1875rem]">
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
@@ -16,13 +16,13 @@ defmodule CenWeb.UserLoginLive do
             field={@form[:email]}
             type="email"
             placeholder={dgettext("users", "Почта")}
-            required
+            implicit_required
           />
           <.input
             field={@form[:password]}
             type="password"
             placeholder={dgettext("users", "Пароль")}
-            required
+            implicit_required
           />
 
           <:actions>
@@ -32,19 +32,21 @@ defmodule CenWeb.UserLoginLive do
           </:actions>
         </.simple_form>
 
-        <article class="mt-[1.125rem] space-y-2.5 text-center">
+        <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Нет аккаунта?") %>
-            <.link class="link" navigate={~p"/users/register"}>
-              <%= dgettext("users", "Зарегистрироваться") %>
-            </.link>
+            <.regular_link
+              navigate={~p"/users/register"}
+              text={dgettext("users", "Зарегистрироваться")}
+            />
           </p>
           <p>
-            <.link class="link" href={~p"/users/reset_password"}>
-              <%= dgettext("users", "Я не помню пароль") %>
-            </.link>
+            <.regular_link
+              href={~p"/users/reset_password"}
+              text={dgettext("users", "Я не помню пароль")}
+            />
           </p>
-        </article>
+        </div>
       </div>
     </div>
     """

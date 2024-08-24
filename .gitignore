@@ -35,6 +35,9 @@ cen-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Env
+.env
+
 # Nix
 .direnv
 .nix-*
@@ -42,3 +45,5 @@ npm-debug.log
 # Dialyzer
 /priv/plts/*.plt
 /priv/plts/*.plt.hash
+
+priv/scripts/tailwind_components_diffs.txt

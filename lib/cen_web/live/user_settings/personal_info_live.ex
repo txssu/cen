@@ -8,7 +8,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-span-3">
+    <div class="lg:col-span-3">
       <Components.navigation current_page={:personal} />
     </div>
 
@@ -38,20 +38,20 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
             field={@personal_info_form[:fullname]}
             type="text"
             placeholder={dgettext("users", "ФИО")}
-            required
+            implicit_required
           />
           <.input
             :if={@user_role == :applicant}
             field={@personal_info_form[:birthdate]}
             type="date"
             placeholder={dgettext("users", "Дата рождения")}
-            required
+            implicit_required
           />
           <.input
             field={@personal_info_form[:phone_number]}
             type="text"
             placeholder={dgettext("users", "Номер телефона")}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>
@@ -122,7 +122,10 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
           |> Accounts.change_user_personal_info(user_params)
           |> to_form()
 
-        {:noreply, assign(socket, trigger_submit: true, personal_info_form: personal_info_form)}
+        {:noreply,
+         socket
+         |> put_flash(:info, dgettext("users", "Личные данные успешно обновлены."))
+         |> assign(personal_info_form: personal_info_form)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, personal_info_form: to_form(changeset))}

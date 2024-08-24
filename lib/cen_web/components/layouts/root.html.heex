@@ -8,52 +8,67 @@
       <%= assigns[:page_title] || "Cen" %>
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    <script defer phx-track-static src={~p"/assets/app.js"}>
     </script>
   </head>
-  <body class="bg-background">
+  <body class="bg-background flex h-screen flex-col justify-between">
     <div class="shadow-navbar relative z-10">
       <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
-        <li class="mr-32">
+        <li>
           <.link href={~p"/"}>
-            <img src={~p"/images/logo.svg"} height="30" />
+            <img src={~p"/images/logo.svg"} height="30" alt={dgettext("alt", "Логотип ТОН")} />
           </.link>
         </li>
         <%= if @current_user do %>
+          <li :if={has_permission?(@current_user, :organizations, :index)}>
+            <.navbar_link href={~p"/organizations"}>
+              <%= dgettext("users", "Организации") %>
+            </.navbar_link>
+          </li>
           <li class="ml-auto">
             <.link href={~p"/users/settings/personal"}>
               <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
             </.link>
           </li>
         <% else %>
-          <li>
-            <.link href={~p"/users/register"} class="navbar-link">
+          <li class="ml-auto">
+            <.navbar_link href={~p"/users/register"}>
               <%= dgettext("users", "Регистрация") %>
-            </.link>
+            </.navbar_link>
           </li>
           <li>
-            <.link href={~p"/users/log_in"} class="navbar-link">
+            <.navbar_link href={~p"/users/log_in"}>
               <%= dgettext("users", "Вход") %>
-            </.link>
+            </.navbar_link>
           </li>
         <% end %>
       </ul>
     </div>
-    <%= @inner_content %>
+    <div class="cen-background grow">
+      <%= @inner_content %>
+    </div>
     <footer class="shadow-footer bg-[#F8F8F8] text-footergray">
       <div class="container mx-auto py-10 lg:py-[3.75rem] lg:grid-cols-12">
         <div class=" grid grid-cols-1 gap-x-10 gap-y-10 ">
-          <section class="flex flex-col justify-between gap-y-10 lg:col-span-7 lg:flex-row">
+          <div class="flex flex-col justify-between gap-y-10 lg:col-span-7 lg:flex-row">
             <div>
               <p class="text-[1.0625rem] leading-[1.1] font-light">Поступление 2023&ndash;2024</p>
               <p class="leading-[1.2] mt-3.5 text-xs">г. Екатеринбург</p>
             </div>
             <div>
               <ul class="space-y-3.5">
-                <li><img class="w-60" src="/images/culture-ekb-logo.png" /></li>
+                <li>
+                  <img
+                    class="w-60"
+                    src="/images/culture-ekb-logo.png"
+                    alt={
+                      dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")
+                    }
+                  />
+                </li>
                 <li>
                   <.link
-                    class="link-hover"
+                    class="hover:text-accent"
                     target="_blank"
                     rel="noopener noreferrer"
                     href="https://культура.екатеринбург.рф/"
@@ -63,7 +78,7 @@
                 </li>
                 <li>
                   <.icon name="cen-phone" class="inline" />
-                  <.link class="link-hover" href="tel:+73433042420" target="_blank">
+                  <.link class="hover:text-accent" href="tel:+73433042420" target="_blank">
                     +7 (343) 304-24-20
                   </.link>
                 </li>
@@ -78,16 +93,16 @@
                 </li>
               </ul>
             </div>
-          </section>
-          <section class="space-y-3.5 lg:col-span-3 lg:col-start-10">
+          </div>
+          <div class="space-y-3.5 lg:col-span-3 lg:col-start-10">
             <p>ГРЦ &ldquo;ТОН: творческий образовательный навигатор&rdquo;</p>
             <p>
               <.icon name="cen-message" class="inline" />
-              <.link class="link-hover" href="mailto:ton.ekb@ya.ru" target="_blank">
+              <.link class="hover:text-accent" href="mailto:ton.ekb@ya.ru" target="_blank">
                 ton.ekb@ya.ru
               </.link>
             </p>
-          </section>
+          </div>
         </div>
       </div>
     </footer>

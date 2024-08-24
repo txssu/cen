@@ -12,10 +12,7 @@ defmodule CenWeb.Router do
     plug :put_root_layout, html: {CenWeb.Layouts, :root}
     plug :protect_from_forgery
 
-    plug :put_secure_browser_headers, %{
-      "content-security-policy" =>
-        "default-src 'self'; script-src-elem 'self'; connect-src 'self'; img-src 'self' data: blob:; frame-src 'self'; script-src-attr 'unsafe-inline'"
-    }
+    plug CenWeb.Plugs.PutSecureHeaders
 
     plug :fetch_current_user
   end
@@ -108,6 +105,18 @@ defmodule CenWeb.Router do
       on_mount: [{CenWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
+  end
+
+  scope "/", CenWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :requires_authentication,
+      on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
+      live "/organizations", OrganizationLive.Index
+      live "/organizations/new", OrganizationLive.Form, :create
+      live "/organizations/:id", OrganizationLive.Show
+      live "/organizations/:id/edit", OrganizationLive.Form, :update
     end
   end
 end

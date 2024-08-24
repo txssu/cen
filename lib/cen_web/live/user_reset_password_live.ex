@@ -7,10 +7,10 @@ defmodule CenWeb.UserResetPasswordLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent leading-[1.2] mb-9 text-center text-3xl font-medium uppercase">
+    <div class="lg:col-span-4 lg:col-start-5">
+      <.header header_kind="blue_center">
         <%= dgettext("users", "Восстановление пароля") %>
-      </h1>
+      </.header>
 
       <.simple_form
         for={@form}
@@ -26,13 +26,13 @@ defmodule CenWeb.UserResetPasswordLive do
           field={@form[:password]}
           type="password"
           label={dgettext("users", "Новый пароль")}
-          required
+          implicit_required
         />
         <.input
           field={@form[:password_confirmation]}
           type="password"
           label={dgettext("users", "Повторите новый пароль")}
-          required
+          implicit_required
         />
         <:actions>
           <.arrow_button class="mx-auto">

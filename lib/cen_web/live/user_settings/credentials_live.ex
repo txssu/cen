@@ -8,15 +8,16 @@ defmodule CenWeb.UserSettings.CredentialsLive do
   @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
-    <div class="col-span-4 lg:col-span-3">
+    <div class="lg:col-span-3">
       <Components.navigation current_page={:credentials} />
     </div>
 
     <div class="col-span-4 lg:col-start-5">
-      <div>
-        <h2 class="leadin-[1.3] text-title-text my-[2.1875rem] text-xl font-medium uppercase lg:text-3xl">
+      <section>
+        <.header header_level="h2" header_kind="black_left">
           <%= dgettext("users", "Обновить почту") %>
-        </h2>
+        </.header>
+
         <.simple_form
           for={@email_form}
           id="email_form"
@@ -27,7 +28,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             field={@email_form[:email]}
             type="email"
             label={dgettext("users", "Почта")}
-            required
+            implicit_required
           />
           <.input
             field={@email_form[:current_password]}
@@ -36,7 +37,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             type="password"
             label={dgettext("users", "Текущий пароль")}
             value={@email_form_current_password}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>
@@ -44,13 +45,13 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             </.arrow_button>
           </:actions>
         </.simple_form>
-      </div>
+      </section>
 
-      <h2 class="leadin-[1.3] text-title-text mt-[4.375rem] mb-[2.1875rem] text-xl font-medium uppercase lg:mt-[7.3125rem] lg:text-3xl">
-        <%= dgettext("users", "Обновить пароль") %>
-      </h2>
+      <section class="mt-[4.375rem]">
+        <.header header_level="h2" header_kind="black_left">
+          <%= dgettext("users", "Обновить пароль") %>
+        </.header>
 
-      <div>
         <.simple_form
           for={@password_form}
           id="password_form"
@@ -70,12 +71,13 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             field={@password_form[:password]}
             type="password"
             label={dgettext("users", "Новый пароль")}
-            required
+            implicit_required
           />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
             label={dgettext("users", "Подтвердите новый пароль")}
+            implicit_required
           />
           <.input
             field={@password_form[:current_password]}
@@ -84,7 +86,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             label={dgettext("users", "Текущий пароль")}
             id="current_password_for_password"
             value={@current_password}
-            required
+            implicit_required
           />
           <:actions>
             <.arrow_button>
@@ -92,7 +94,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
             </.arrow_button>
           </:actions>
         </.simple_form>
-      </div>
+      </section>
     </div>
     """
   end

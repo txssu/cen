@@ -7,10 +7,10 @@ defmodule CenWeb.UserConfirmationLive do
   @impl Phoenix.LiveView
   def render(%{live_action: :edit} = assigns) do
     ~H"""
-    <div class="col-span-4 sm:col-span-2 sm:col-start-2 lg:col-span-4 lg:col-start-5">
-      <h1 class="text-accent leading-[1.2] text-center text-3xl font-medium uppercase">
+    <div class="col-span-4 lg:col-span-4 lg:col-start-5">
+      <.header header_kind="blue_center">
         <%= dgettext("users", "Подтверждение аккаунта") %>
-      </h1>
+      </.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />

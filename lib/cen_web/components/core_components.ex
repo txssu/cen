@@ -1,5 +1,4 @@
 # credo:disable-for-this-file Credo.Check.Readability.Specs
-
 defmodule CenWeb.CoreComponents do
   @moduledoc """
   Provides core UI components.
@@ -245,6 +244,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :type, :string, default: nil
   attr :class, :string, default: nil
+  attr :arrow_direction, :string, values: ~w(left right), default: "right"
   attr :rest, :global, include: ~w(disabled form name value)
 
   slot :inner_block, required: true
@@ -259,8 +259,34 @@ defmodule CenWeb.CoreComponents do
       type={@type}
       {@rest}
     >
-      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name="cen-arrow-right" />
+      <.icon
+        class="h-[1.875rem] bg-white rounded-full shadow-icon"
+        name={"cen-arrow-#{@arrow_direction}"}
+      />
       <span class="text-white">
+        <%= render_slot(@inner_block) %>
+      </span>
+    </.button>
+    """
+  end
+
+  attr :type, :string, default: nil
+  attr :class, :string, default: nil
+  attr :rest, :global, include: ~w(disabled form name value)
+
+  slot :inner_block, required: true
+
+  def regular_button(assigns) do
+    ~H"""
+    <.button
+      class={[
+        "py-4 px-5 text-[0.9375rem] ",
+        @class
+      ]}
+      type={@type}
+      {@rest}
+    >
+      <span class="text-title-text">
         <%= render_slot(@inner_block) %>
       </span>
     </.button>
@@ -296,6 +322,7 @@ defmodule CenWeb.CoreComponents do
   attr :id, :any, default: nil
   attr :name, :any
   attr :label, :string, default: nil
+  attr :implicit_required, :boolean, default: false
   attr :value, :any
 
   attr :type, :string,
@@ -311,8 +338,10 @@ defmodule CenWeb.CoreComponents do
   attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
+  attr :required, :boolean, default: false
+
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
-                multiple pattern placeholder readonly required rows size step)
+                multiple pattern placeholder readonly rows size step)
 
   def input(%{field: %FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
@@ -320,6 +349,7 @@ defmodule CenWeb.CoreComponents do
     assigns
     |> assign(field: nil, id: assigns.id || field.id)
     |> assign(:errors, Enum.map(errors, &translate_error(&1)))
+    |> assign(:required, assigns.required or assigns.implicit_required)
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
@@ -373,15 +403,18 @@ defmodule CenWeb.CoreComponents do
   def input(%{type: "textarea"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
       <textarea
         id={@id}
         name={@name}
         class={[
-          "min-h-[6rem] mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+          "min-h-[6rem] h-[3.625rem] shadow-input text-style-main mt-[0.9375rem] block w-full rounded-lg border-0 font-light focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
+        required={@required}
         {@rest}
       ><%= Form.normalize_value("textarea", @value) %></textarea>
       <.error :for={msg <- @errors}><%= msg %></.error>
@@ -393,7 +426,9 @@ defmodule CenWeb.CoreComponents do
   def input(assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %></.label>
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
       <input
         type={@type}
         name={@name}
@@ -404,6 +439,7 @@ defmodule CenWeb.CoreComponents do
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
+        required={@required}
         {@rest}
       />
       <.error :for={msg <- @errors}><%= msg %></.error>
@@ -446,24 +482,115 @@ defmodule CenWeb.CoreComponents do
   Renders a header with title.
   """
   attr :class, :string, default: nil
+  attr :header_level, :string, default: "h1"
 
-  slot :inner_block, required: true
+  attr :header_kind, :string, required: true, values: ~w[blue_center black_left]
+
   slot :subtitle
-  slot :actions
+  slot :inner_block, required: true
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
-      <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
-          <%= render_slot(@inner_block) %>
-        </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
-          <%= render_slot(@subtitle) %>
-        </p>
-      </div>
-      <div class="flex-none"><%= render_slot(@actions) %></div>
+    <header class={@class}>
+      <.dynamic_tag
+        name={@header_level}
+        class={[
+          "leading-[1.2] text-2xl lg:text-3xl font-medium uppercase",
+          header_kind_class(@header_kind)
+        ]}
+      >
+        <%= render_slot(@inner_block) %>
+      </.dynamic_tag>
+      <%= render_slot(@subtitle) %>
     </header>
+    """
+  end
+
+  defp header_kind_class(header_kind) do
+    case header_kind do
+      "blue_center" -> "text-accent text-center"
+      "black_left" -> "text-title-text"
+    end
+  end
+
+  attr :class, :string, default: nil
+  attr :legend, :string, required: true
+  attr :subtitle, :string, default: nil
+
+  slot :inner_block, required: true
+
+  def fieldset(assigns) do
+    ~H"""
+    <fieldset class={@class}>
+      <.header header_level="legend" header_kind="black_left">
+        <%= @legend %>
+        <:subtitle>
+          <%= if @subtitle do %>
+            <p class="text-title-text leading-[1.3rem] mt-2.5 block uppercase lg:text-xl">
+              <%= @subtitle %>
+            </p>
+          <% end %>
+        </:subtitle>
+      </.header>
+      <%= render_slot(@inner_block) %>
+    </fieldset>
+    """
+  end
+
+  attr :rest, :global,
+    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+
+  slot :inner_block, required: true
+
+  def navbar_link(assigns) do
+    ~H"""
+    <.link
+      class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent"
+      {@rest}
+    >
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
+  attr :text, :string, required: true
+
+  attr :rest, :global,
+    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+
+  def regular_link(assigns) do
+    ~H"""
+    <.link class="text-text hover:text-accent font-normal underline" {@rest}>
+      <%= @text %>
+    </.link>
+    """
+  end
+
+  attr :class, :string, default: nil
+  attr :header, :string, default: nil
+
+  slot :inner_block, required: true
+
+  def basic_card(assigns) do
+    ~H"""
+    <div class={[@class, "bg-[#F5F5F5] shadow-default-convexity rounded-lg"]}>
+      <h2 class="leading leading-[1.3] text-regulargray text-base font-medium uppercase lg:text-xl">
+        <%= @header %>
+      </h2>
+      <%= render_slot(@inner_block) %>
+    </div>
+    """
+  end
+
+  attr :value, :any, required: true
+  slot :inner_block, required: true
+
+  def render_not_nil(assigns)
+  def render_not_nil(%{value: nil} = assigns), do: ~H""
+
+  def render_not_nil(assigns) do
+    ~H"""
+    <%= render_slot(@inner_block) %>
     """
   end
 
@@ -616,16 +743,17 @@ defmodule CenWeb.CoreComponents do
   """
   attr :name, :string, required: true
   attr :class, :string, default: nil
+  attr :alt, :string, default: ""
 
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
-    <span class={[@name, @class]} />
+    <span class={[@name, @class]} alt={@alt} />
     """
   end
 
   def icon(%{name: "cen-" <> _} = assigns) do
     ~H"""
-    <img src={"/images/icons/#{@name}.svg"} class={[@class]} />
+    <img src={"/images/icons/#{@name}.svg"} alt={@alt} class={[@class]} />
     """
   end
 
