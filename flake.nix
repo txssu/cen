@@ -60,7 +60,7 @@
           # PGPORT = "5433"; # default 5432
 
           # enable IEx shell history
-          ERL_AFLAGS = "-kernel shell_history enabled";
+          ERL_AFLAGS = "+fnu -kernel shell_history enabled";
           # # In IEX: `open Enum.map`
           # ELIXIR_EDITOR = "code --goto __FILE__:__LINE__";
 

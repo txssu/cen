@@ -8,6 +8,7 @@ defmodule Cen.Permissions do
     defexception [:message, plug_status: 404]
   end
 
+  @spec verify_has_permission!(term(), term(), atom()) :: :ok | no_return()
   def verify_has_permission!(subject, resource, action) do
     if has_permission?(subject, resource, action) do
       :ok
@@ -16,6 +17,7 @@ defmodule Cen.Permissions do
     end
   end
 
+  @spec has_permission?(term(), term(), atom()) :: boolean()
   def has_permission?(subject, resource, action)
 
   def has_permission?(%User{role: :admin}, _resource, _action), do: true
