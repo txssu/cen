@@ -1,8 +1,8 @@
 defmodule CenWeb.UserAuth do
   @moduledoc false
   use CenWeb, :verified_routes
+  use Gettext, backend: CenWeb.Gettext
 
-  import CenWeb.Gettext
   import Phoenix.Controller
   import Plug.Conn
 

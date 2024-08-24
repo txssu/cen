@@ -43,7 +43,8 @@ defmodule CenWeb do
         formats: [:html, :json],
         layouts: [html: CenWeb.Layouts]
 
-      import CenWeb.Gettext
+      use Gettext, backend: CenWeb.Gettext
+
       import Plug.Conn
 
       unquote(verified_routes())
@@ -83,8 +84,10 @@ defmodule CenWeb do
   defp html_helpers do
     quote do
       # Core UI components and translation
+      use Gettext, backend: CenWeb.Gettext
+
       import CenWeb.CoreComponents
-      import CenWeb.Gettext
+
       # HTML escaping functionality
       import Phoenix.HTML
 

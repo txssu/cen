@@ -2,8 +2,8 @@ defmodule Cen.Employers.Organization do
   @moduledoc false
   use Ecto.Schema
   use Waffle.Ecto.Schema
+  use Gettext, backend: CenWeb.Gettext
 
-  import CenWeb.Gettext
   import Ecto.Changeset
 
   @type t :: %__MODULE__{}
