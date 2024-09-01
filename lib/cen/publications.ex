@@ -8,7 +8,7 @@ defmodule Cen.Publications do
   @type vacancy_changeset :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
 
   @spec get_vacancy!(id :: integer() | binary()) :: Vacancy.t()
-  def get_vacancy!(id), do: Repo.get!(Vacancy, id)
+  def get_vacancy!(id), do: Vacancy |> Repo.get!(id) |> Repo.preload(:organization)
 
   @spec list_vacancies_for(User.t()) :: [Vacancy.t()]
   def list_vacancies_for(user) do
@@ -34,5 +34,20 @@ defmodule Cen.Publications do
     vacancy
     |> Vacancy.changeset(attrs)
     |> Repo.update()
+  end
+
+  @spec format_salary(BetterNumber.t()) :: String.t()
+  def format_salary(value) do
+    BetterNumber.to_currency(value,
+      unit: "₽",
+      delimiter: " ",
+      precision: 0,
+      format: fn unit, number -> "#{number} #{unit}" end
+    )
+  end
+
+  @spec delete_vacancy(Vacancy.t()) :: :ok
+  def delete_vacancy(vacancy) do
+    Repo.delete(vacancy)
   end
 end

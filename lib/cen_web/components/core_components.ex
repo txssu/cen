@@ -644,7 +644,7 @@ defmodule CenWeb.CoreComponents do
   def basic_card(assigns) do
     ~H"""
     <div class={[@class, "bg-[#F5F5F5] shadow-default-convexity rounded-lg"]}>
-      <h2 class="leading leading-[1.3] text-regulargray text-base font-medium uppercase lg:text-xl">
+      <h2 class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
         <%= @header %>
       </h2>
       <%= render_slot(@inner_block) %>

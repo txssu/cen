@@ -26,7 +26,7 @@ defmodule CenWeb.VacancyLive.Index do
           <li>
             <.basic_card class="w-full py-7 px-6" header={vacancy.job_title}>
               <p :if={vacancy.proposed_salary} class="text-title-text mt-2.5">
-                от <%= format_salary(vacancy.proposed_salary) %>
+                <%= pgettext("money", "от") %> <%= Publications.format_salary(vacancy.proposed_salary) %>
               </p>
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= vacancy.organization.name %>
@@ -43,15 +43,6 @@ defmodule CenWeb.VacancyLive.Index do
       </ul>
     </div>
     """
-  end
-
-  defp format_salary(value) do
-    BetterNumber.to_currency(value,
-      unit: "₽",
-      delimiter: " ",
-      precision: 0,
-      format: fn unit, number -> "#{number} #{unit}" end
-    )
   end
 
   @impl Phoenix.LiveView

@@ -3,7 +3,7 @@ defmodule Cen.Publications.Enums do
 
   use Cen.Utils.GettextEnums
 
-  def_translation_enum(:employment_types, ~w[main secondary practice internship]a)
+  def_translation_enum(:employment_types, ~w[main secondary_job practice internship]a)
   def_translation_enum(:work_schedules, ~w[full_time part_time remote_working hybrid_working flexible_schedule]a)
 
   @doc """

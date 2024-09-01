@@ -97,7 +97,6 @@ msgid "Remote working"
 msgstr "Удалённая работа"
 
 #: lib/cen/publications/enums.ex:1
-#: lib/cen/publications/enums.ex:1
 #, elixir-autogen, elixir-format
 msgid "Secondary"
 msgstr "Среднее"
@@ -111,3 +110,8 @@ msgstr "Среднее специальное"
 #, elixir-autogen, elixir-format
 msgid "Visual"
 msgstr "Изобразительное"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Secondary job"
+msgstr "Совместительство"
