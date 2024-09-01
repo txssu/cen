@@ -16,7 +16,7 @@ defmodule CenWeb.OrganizationLive.Index do
           <%= dgettext("orgs", "Мои организации") %>
         </.header>
         <div class="ml-auto">
-          <.button class="p-4" phx-click={JS.navigate(~p"/organizations/new")}>
+          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/organizations/new")}>
             <.icon name="cen-plus" alt={dgettext("orgs", "Создать")} />
           </.button>
         </div>

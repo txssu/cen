@@ -98,7 +98,7 @@ defmodule CenWeb.VacancyLive.Form do
                   maxlength="6"
                   label={dgettext("publications", "Зарплата")}
                   text_before={dgettext("publications", "от")}
-                  text_after={dgettext("publications", "руб")}
+                  text_after="₽"
                 />
               </div>
             </div>

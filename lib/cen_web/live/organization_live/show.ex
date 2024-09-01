@@ -46,7 +46,7 @@ defmodule CenWeb.OrganizationLive.Show do
           >
             <%= gettext("Редактировать") %>
           </.regular_button>
-          <.button class="p-4" phx-click="delete_organization">
+          <.button class="bg-white p-4" phx-click="delete_organization">
             <.icon name="cen-bin" alt={dgettext("orgs", "Удалить")} />
           </.button>
         </div>

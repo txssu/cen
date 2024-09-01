@@ -10,6 +10,13 @@ defmodule Cen.Publications do
   @spec get_vacancy!(id :: integer() | binary()) :: Vacancy.t()
   def get_vacancy!(id), do: Repo.get!(Vacancy, id)
 
+  @spec list_vacancies_for(User.t()) :: [Vacancy.t()]
+  def list_vacancies_for(user) do
+    user
+    |> Repo.preload(vacancies: :organization)
+    |> Map.get(:vacancies)
+  end
+
   @spec change_vacancy(Vacancy.t(), map()) :: Ecto.Changeset.t()
   def change_vacancy(vacancy, attrs \\ %{}) do
     Vacancy.changeset(vacancy, attrs)
