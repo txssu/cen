@@ -20,12 +20,7 @@ defmodule CenWeb.UserForgotPasswordLive do
       </p>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input
-          field={@form[:email]}
-          type="email"
-          placeholder={dgettext("users", "Почта")}
-          implicit_required
-        />
+        <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
         <:actions>
           <.arrow_button class="mx-auto">
             <%= dgettext("users", "Сбросить пароль") %>

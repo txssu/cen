@@ -26,13 +26,7 @@ defmodule CenWeb.ExtraFormsComponents do
       <p class="text-xl uppercase"><%= @legend %></p>
       <div :for={{label, value} <- @options}>
         <label>
-          <input
-            id={"#{@id}-#{value}"}
-            type="radio"
-            name={@name}
-            value={value}
-            checked={@selected_value == value}
-          />
+          <input id={"#{@id}-#{value}"} type="radio" name={@name} value={value} checked={@selected_value == value} />
           <%= label %>
         </label>
       </div>

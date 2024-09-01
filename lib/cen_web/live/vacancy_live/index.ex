@@ -31,10 +31,7 @@ defmodule CenWeb.VacancyLive.Index do
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= vacancy.organization.name %>
               </p>
-              <.regular_button
-                class="bg-white w-full flex justify-center mt-5"
-                phx-click={JS.navigate(~p"/vacancies/#{vacancy}")}
-              >
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/vacancies/#{vacancy}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>

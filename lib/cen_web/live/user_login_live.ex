@@ -12,18 +12,8 @@ defmodule CenWeb.UserLoginLive do
 
       <div class="mt-[2.1875rem]">
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
-          <.input
-            field={@form[:email]}
-            type="email"
-            placeholder={dgettext("users", "Почта")}
-            implicit_required
-          />
-          <.input
-            field={@form[:password]}
-            type="password"
-            placeholder={dgettext("users", "Пароль")}
-            implicit_required
-          />
+          <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
+          <.input field={@form[:password]} type="password" placeholder={dgettext("users", "Пароль")} implicit_required />
 
           <:actions>
             <.arrow_button class="mx-auto">
@@ -35,16 +25,10 @@ defmodule CenWeb.UserLoginLive do
         <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Нет аккаунта?") %>
-            <.regular_link
-              navigate={~p"/users/register"}
-              text={dgettext("users", "Зарегистрироваться")}
-            />
+            <.regular_link navigate={~p"/users/register"} text={dgettext("users", "Зарегистрироваться")} />
           </p>
           <p>
-            <.regular_link
-              href={~p"/users/reset_password"}
-              text={dgettext("users", "Я не помню пароль")}
-            />
+            <.regular_link href={~p"/users/reset_password"} text={dgettext("users", "Я не помню пароль")} />
           </p>
         </div>
       </div>

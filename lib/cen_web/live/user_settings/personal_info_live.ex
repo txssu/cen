@@ -15,8 +15,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
     <div class="col-span-4 lg:col-start-5">
       <div class="mt-[2.1875rem] gap-[1.875rem] mb-2.5 flex lg:mb-[3.4375rem]">
         <div class="flex-shrink-0 flex-grow-0">
-          <div class="w-[4.375rem] h-[4.375rem] bg-accent inline-block rounded-full lg:w-[6.75rem] lg:h-[6.75rem]">
-          </div>
+          <div class="w-[4.375rem] h-[4.375rem] bg-accent inline-block rounded-full lg:w-[6.75rem] lg:h-[6.75rem]"></div>
         </div>
         <div class="flex flex-grow-0 flex-col justify-center">
           <.link patch={~p"/users/settings/personal/delete"}>
@@ -28,18 +27,8 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
       </div>
 
       <div class="col-span-4">
-        <.simple_form
-          for={@personal_info_form}
-          id="personal_info_form"
-          phx-submit="update_personal_info"
-          phx-change="validate_personal_info"
-        >
-          <.input
-            field={@personal_info_form[:fullname]}
-            type="text"
-            placeholder={dgettext("users", "ФИО")}
-            implicit_required
-          />
+        <.simple_form for={@personal_info_form} id="personal_info_form" phx-submit="update_personal_info" phx-change="validate_personal_info">
+          <.input field={@personal_info_form[:fullname]} type="text" placeholder={dgettext("users", "ФИО")} implicit_required />
           <.input
             :if={@user_role == :applicant}
             field={@personal_info_form[:birthdate]}
@@ -47,12 +36,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
             placeholder={dgettext("users", "Дата рождения")}
             implicit_required
           />
-          <.input
-            field={@personal_info_form[:phone_number]}
-            type="text"
-            placeholder={dgettext("users", "Номер телефона")}
-            implicit_required
-          />
+          <.input field={@personal_info_form[:phone_number]} type="text" placeholder={dgettext("users", "Номер телефона")} implicit_required />
           <:actions>
             <.arrow_button>
               <%= dgettext("users", "Сохранить") %>
@@ -62,12 +46,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
       </div>
     </div>
 
-    <.modal
-      :if={@live_action == :confirm_delete_user}
-      show
-      id="confirm_delete_user"
-      on_cancel={JS.navigate(~p"/users/settings/personal")}
-    >
+    <.modal :if={@live_action == :confirm_delete_user} show id="confirm_delete_user" on_cancel={JS.navigate(~p"/users/settings/personal")}>
       <p>
         <%= dgettext("users", "Вы действительно хотите удалить пользователя?") %>
       </p>

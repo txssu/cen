@@ -231,11 +231,7 @@ defmodule CenWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button
-      type={@type}
-      class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]}
-      {@rest}
-    >
+    <button type={@type} class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]} {@rest}>
       <%= render_slot(@inner_block) %>
     </button>
     """
@@ -258,10 +254,7 @@ defmodule CenWeb.CoreComponents do
       type={@type}
       {@rest}
     >
-      <.icon
-        class="h-[1.875rem] bg-white rounded-full shadow-icon"
-        name={"cen-arrow-#{@arrow_direction}"}
-      />
+      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name={"cen-arrow-#{@arrow_direction}"} />
       <span class="text-white">
         <%= render_slot(@inner_block) %>
       </span>
@@ -525,10 +518,7 @@ defmodule CenWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label
-      for={@for}
-      class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl"
-    >
+    <label for={@for} class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -607,17 +597,13 @@ defmodule CenWeb.CoreComponents do
     """
   end
 
-  attr :rest, :global,
-    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+  attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
 
   slot :inner_block, required: true
 
   def navbar_link(assigns) do
     ~H"""
-    <.link
-      class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent"
-      {@rest}
-    >
+    <.link class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent" {@rest}>
       <%= render_slot(@inner_block) %>
     </.link>
     """
@@ -625,8 +611,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :text, :string, required: true
 
-  attr :rest, :global,
-    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+  attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
 
   def regular_link(assigns) do
     ~H"""
@@ -727,10 +712,7 @@ defmodule CenWeb.CoreComponents do
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
-                <span
-                  :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-                >
+                <span :for={action <- @action} class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -782,10 +764,7 @@ defmodule CenWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class="mt-16">
-      <.link
-        navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
+      <.link navigate={@navigate} class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>
       </.link>

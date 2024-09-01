@@ -45,12 +45,7 @@ defmodule CenWeb.VacancyLive.Form do
               />
             </div>
             <div class="lg:col-span-9 lg:col-start-1">
-              <.input
-                field={@form[:description]}
-                type="textarea"
-                label={dgettext("publications", "Описание вакансии")}
-                required
-              />
+              <.input field={@form[:description]} type="textarea" label={dgettext("publications", "Описание вакансии")} required />
             </div>
             <div class="lg:col-span-4 lg:col-start-1">
               <.input

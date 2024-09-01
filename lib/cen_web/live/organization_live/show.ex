@@ -36,14 +36,8 @@ defmodule CenWeb.OrganizationLive.Show do
           </.basic_card>
         </div>
 
-        <div
-          :if={has_permission?(@current_user, @organization, :update)}
-          class="flex gap-2.5 lg:col-span-12"
-        >
-          <.regular_button
-            class="bg-accent-hover"
-            phx-click={JS.navigate(~p"/organizations/#{@organization}/edit")}
-          >
+        <div :if={has_permission?(@current_user, @organization, :update)} class="flex gap-2.5 lg:col-span-12">
+          <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/organizations/#{@organization}/edit")}>
             <%= gettext("Редактировать") %>
           </.regular_button>
           <.button class="bg-white p-4" phx-click="delete_organization">
@@ -51,10 +45,7 @@ defmodule CenWeb.OrganizationLive.Show do
           </.button>
         </div>
 
-        <.basic_card
-          class="w-full px-6 py-10 lg:py-12 lg:col-span-9"
-          header={dgettext("orgs", "Описание")}
-        >
+        <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9" header={dgettext("orgs", "Описание")}>
           <p class="mt-6">
             <%= @organization.description %>
           </p>

@@ -28,10 +28,7 @@ defmodule CenWeb.OrganizationLive.Index do
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= organization.address %>
               </p>
-              <.regular_button
-                class="bg-white w-full flex justify-center mt-5"
-                phx-click={JS.navigate(~p"/organizations/#{organization}")}
-              >
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/organizations/#{organization}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>

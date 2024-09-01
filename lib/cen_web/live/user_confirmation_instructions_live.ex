@@ -22,12 +22,7 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
       </div>
 
       <.simple_form for={@form} id="resend_confirmation_form" phx-submit="send_instructions">
-        <.input
-          field={@form[:email]}
-          type="email"
-          placeholder={dgettext("users", "Почта")}
-          implicit_required
-        />
+        <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
         <:actions>
           <.arrow_button class="mx-auto">
             <%= dgettext("users", "Отправить") %>
