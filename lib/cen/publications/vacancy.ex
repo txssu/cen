@@ -55,43 +55,43 @@ defmodule Cen.Publications.Vacancy do
     |> validate_proposed_salary()
   end
 
-  def validate_job_title(changeset) do
+  defp validate_job_title(changeset) do
     changeset
     |> validate_required(:job_title)
     |> validate_length(:job_title, max: 100)
   end
 
-  def validate_field_of_art(changeset) do
+  defp validate_field_of_art(changeset) do
     validate_required(changeset, :field_of_art)
   end
 
-  def validate_description(changeset) do
+  defp validate_description(changeset) do
     changeset
     |> validate_required(:description)
     |> validate_length(:description, max: 2000)
   end
 
-  def validate_employment_types(changeset) do
+  defp validate_employment_types(changeset) do
     changeset
     |> validate_required(:employment_types)
     |> validate_length(:employment_types, min: 1)
   end
 
-  def validate_work_schedules(changeset) do
+  defp validate_work_schedules(changeset) do
     changeset
     |> validate_required(:work_schedules)
     |> validate_length(:work_schedules, min: 1)
   end
 
-  def validate_education(changeset) do
+  defp validate_education(changeset) do
     validate_required(changeset, :education)
   end
 
-  def validate_min_years_of_work_experience(changeset) do
+  defp validate_min_years_of_work_experience(changeset) do
     changeset
   end
 
-  def validate_proposed_salary(changeset) do
+  defp validate_proposed_salary(changeset) do
     changeset
   end
 end

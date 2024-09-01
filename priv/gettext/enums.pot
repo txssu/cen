@@ -1,0 +1,113 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Bachelor"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Choreography"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Doctor"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Flexible schedule"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Folklore"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Full time"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Hybrid working"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Internship"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Main"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Master"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Music"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Part time"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Performing"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Practice"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Remote working"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Secondary"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Secondary vocational"
+msgstr ""
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Visual"
+msgstr ""

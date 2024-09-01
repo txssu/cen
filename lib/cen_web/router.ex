@@ -92,6 +92,20 @@ defmodule CenWeb.Router do
         live "/credentials", CredentialsLive, :edit_credentials
         live "/confirm_email/:token", CredentialsLive, :confirm_email
       end
+
+      scope "/organizations", OrganizationLive do
+        live "/", Index
+        live "/new", Form, :create
+        live "/:id", Show
+        live "/:id/edit", Form, :update
+      end
+
+      scope "/vacancies", VacancyLive do
+        live "/", Index
+        live "/new", Form, :create
+        live "/:id", Show
+        live "/:id/edit", Form, :update
+      end
     end
   end
 
@@ -105,18 +119,6 @@ defmodule CenWeb.Router do
       on_mount: [{CenWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
-    end
-  end
-
-  scope "/", CenWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    live_session :requires_authentication,
-      on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
-      live "/organizations", OrganizationLive.Index
-      live "/organizations/new", OrganizationLive.Form, :create
-      live "/organizations/:id", OrganizationLive.Show
-      live "/organizations/:id/edit", OrganizationLive.Form, :update
     end
   end
 end

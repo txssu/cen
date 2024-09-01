@@ -36,7 +36,8 @@ module.exports = {
         "input": "2px 2px 5px 0px rgba(0, 0, 0, 0.09), inset -3px 4px 8px 0px rgba(0, 0, 0, 0.09)",
         "icon": "inset 2px 2px 6px 0px rgba(0, 0, 0, 0.25)",
         "default-1": "0px 4px 10px 0px rgba(0, 0, 0, 0.25)",
-        "footer": "15px -10px 20px 0px rgba(202, 202, 202, 0.3)"
+        "footer": "15px -10px 20px 0px rgba(202, 202, 202, 0.3)",
+        "textcard": "2px 2px 5px 0px rgba(0, 0, 0, 0.09)"
       },
 
     },
