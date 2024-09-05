@@ -18,18 +18,8 @@ defmodule CenWeb.UserSettings.CredentialsLive do
           <%= dgettext("users", "Обновить почту") %>
         </.header>
 
-        <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
-        >
-          <.input
-            field={@email_form[:email]}
-            type="email"
-            label={dgettext("users", "Почта")}
-            implicit_required
-          />
+        <.simple_form for={@email_form} id="email_form" phx-submit="update_email" phx-change="validate_email">
+          <.input field={@email_form[:email]} type="email" label={dgettext("users", "Почта")} implicit_required />
           <.input
             field={@email_form[:current_password]}
             name="current_password"
@@ -61,24 +51,9 @@ defmodule CenWeb.UserSettings.CredentialsLive do
           phx-submit="update_password"
           phx-trigger-action={@trigger_submit}
         >
-          <input
-            name={@password_form[:email].name}
-            type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
-          />
-          <.input
-            field={@password_form[:password]}
-            type="password"
-            label={dgettext("users", "Новый пароль")}
-            implicit_required
-          />
-          <.input
-            field={@password_form[:password_confirmation]}
-            type="password"
-            label={dgettext("users", "Подтвердите новый пароль")}
-            implicit_required
-          />
+          <input name={@password_form[:email].name} type="hidden" id="hidden_user_email" value={@current_email} />
+          <.input field={@password_form[:password]} type="password" label={dgettext("users", "Новый пароль")} implicit_required />
+          <.input field={@password_form[:password_confirmation]} type="password" label={dgettext("users", "Подтвердите новый пароль")} implicit_required />
           <.input
             field={@password_form[:current_password]}
             name="current_password"

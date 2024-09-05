@@ -1,0 +1,117 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100 != 11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10||n%100>=20) ? 1 : 2);\n"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Bachelor"
+msgstr "Бакалавриат"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Choreography"
+msgstr "Хореография"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Doctor"
+msgstr "Научная степень"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Flexible schedule"
+msgstr "Гибкий график"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Folklore"
+msgstr "Фольклор"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Full time"
+msgstr "Полный день"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Hybrid working"
+msgstr "Гибридная работа"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Internship"
+msgstr "Стажировка"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Main"
+msgstr "Основная работа"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Master"
+msgstr "Магистратура"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Music"
+msgstr "Музыкальное"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr "Не важно"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Other"
+msgstr "Другое"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Part time"
+msgstr "Неполный день"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Performing"
+msgstr "Театральное"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Practice"
+msgstr "Практика"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Remote working"
+msgstr "Удалённая работа"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Secondary"
+msgstr "Среднее"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Secondary vocational"
+msgstr "Среднее специальное"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format
+msgid "Visual"
+msgstr "Изобразительное"
+
+#: lib/cen/publications/enums.ex:1
+#, elixir-autogen, elixir-format, fuzzy
+msgid "Secondary job"
+msgstr "Совместительство"

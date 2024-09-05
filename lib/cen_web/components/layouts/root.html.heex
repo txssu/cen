@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="[scrollbar-gutter:stable]">
+<html lang="ru">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -23,6 +23,11 @@
           <li :if={has_permission?(@current_user, :organizations, :index)}>
             <.navbar_link href={~p"/organizations"}>
               <%= dgettext("users", "Организации") %>
+            </.navbar_link>
+          </li>
+          <li :if={has_permission?(@current_user, :vacancies, :index)}>
+            <.navbar_link href={~p"/vacancies"}>
+              <%= dgettext("users", "Вакансии") %>
             </.navbar_link>
           </li>
           <li class="ml-auto">
@@ -61,9 +66,7 @@
                   <img
                     class="w-60"
                     src="/images/culture-ekb-logo.png"
-                    alt={
-                      dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")
-                    }
+                    alt={dgettext("alt", "Логотип управления культуры администрации Екатеринбурга")}
                   />
                 </li>
                 <li>

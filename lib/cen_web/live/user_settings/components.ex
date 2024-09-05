@@ -21,10 +21,7 @@ defmodule CenWeb.UserSettings.Components do
         </li>
 
         <li>
-          <.maybe_link
-            navigate={~p"/users/settings/credentials"}
-            is_link={@current_page != :credentials}
-          >
+          <.maybe_link navigate={~p"/users/settings/credentials"} is_link={@current_page != :credentials}>
             <%= dgettext("users", "Данные для входа") %>
           </.maybe_link>
         </li>

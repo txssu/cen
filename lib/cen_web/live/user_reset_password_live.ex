@@ -12,28 +12,13 @@ defmodule CenWeb.UserResetPasswordLive do
         <%= dgettext("users", "Восстановление пароля") %>
       </.header>
 
-      <.simple_form
-        for={@form}
-        id="reset_password_form"
-        phx-submit="reset_password"
-        phx-change="validate"
-      >
+      <.simple_form for={@form} id="reset_password_form" phx-submit="reset_password" phx-change="validate">
         <.error :if={@form.errors != []}>
           <%= dgettext("users", "Упс, что-то пошло не так! Пожалуйста, проверьте ошибки ниже.") %>
         </.error>
 
-        <.input
-          field={@form[:password]}
-          type="password"
-          label={dgettext("users", "Новый пароль")}
-          implicit_required
-        />
-        <.input
-          field={@form[:password_confirmation]}
-          type="password"
-          label={dgettext("users", "Повторите новый пароль")}
-          implicit_required
-        />
+        <.input field={@form[:password]} type="password" label={dgettext("users", "Новый пароль")} implicit_required />
+        <.input field={@form[:password_confirmation]} type="password" label={dgettext("users", "Повторите новый пароль")} implicit_required />
         <:actions>
           <.arrow_button class="mx-auto">
             <%= dgettext("users", "Сохранить") %>

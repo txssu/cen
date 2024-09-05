@@ -231,11 +231,7 @@ defmodule CenWeb.CoreComponents do
 
   def button(assigns) do
     ~H"""
-    <button
-      type={@type}
-      class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]}
-      {@rest}
-    >
+    <button type={@type} class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]} {@rest}>
       <%= render_slot(@inner_block) %>
     </button>
     """
@@ -258,10 +254,7 @@ defmodule CenWeb.CoreComponents do
       type={@type}
       {@rest}
     >
-      <.icon
-        class="h-[1.875rem] bg-white rounded-full shadow-icon"
-        name={"cen-arrow-#{@arrow_direction}"}
-      />
+      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name={"cen-arrow-#{@arrow_direction}"} />
       <span class="text-white">
         <%= render_slot(@inner_block) %>
       </span>
@@ -327,7 +320,7 @@ defmodule CenWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week textcard)
 
   attr :field, FormField, doc: "a form field struct retrieved from the form, for example: @form[:email]"
 
@@ -338,6 +331,9 @@ defmodule CenWeb.CoreComponents do
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
   attr :required, :boolean, default: false
+
+  attr :text_before, :string, default: nil, doc: "text before the input in textcard"
+  attr :text_after, :string, default: nil, doc: "text after the input in textcard"
 
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly rows size step)
@@ -352,6 +348,37 @@ defmodule CenWeb.CoreComponents do
     |> assign_new(:name, fn -> if assigns.multiple, do: field.name <> "[]", else: field.name end)
     |> assign_new(:value, fn -> field.value end)
     |> input()
+  end
+
+  def input(%{type: "checkbox", multiple: true} = assigns) do
+    assigns =
+      if is_nil(assigns.value),
+        do: assigns,
+        else: assign(assigns, :value, Enum.map(assigns.value, &to_string/1))
+
+    ~H"""
+    <div>
+      <input type="hidden" name={@name} value="" disabled={@rest[:disabled]} />
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
+      <div class="mt-4 ml-2 flex flex-col">
+        <label :for={{option_label, option_value} <- @options} class="text-lg">
+          <input
+            type="checkbox"
+            id={"#{@id}[#{option_value}]"}
+            name={@name}
+            value={option_value}
+            checked={@value && option_value in @value}
+            class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+            {@rest}
+          />
+          <%= option_label %>
+        </label>
+      </div>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
   end
 
   def input(%{type: "checkbox"} = assigns) do
@@ -370,6 +397,7 @@ defmodule CenWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
+          required={@required}
           class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
           {@rest}
         />
@@ -383,12 +411,20 @@ defmodule CenWeb.CoreComponents do
   def input(%{type: "select"} = assigns) do
     ~H"""
     <div>
-      <.label for={@id}><%= @label %></.label>
+      <input :if={@multiple} type="hidden" name={@name} />
+      <.label for={@id}>
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </.label>
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={[
+          "h-[3.625rem] shadow-input text-regulargray mt-[0.9375rem] block w-full rounded-lg border-0 font-light placeholder:text-text focus:ring-0 disabled:opacity-50",
+          @multiple && "overflow-y-auto lg:h-auto"
+        ]}
         multiple={@multiple}
+        size={if @multiple, do: Enum.count(@options)}
+        required={@required}
         {@rest}
       >
         <option :if={@prompt} value=""><%= @prompt %></option>
@@ -409,13 +445,41 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "min-h-[6rem] h-[3.625rem] shadow-input text-style-main mt-[0.9375rem] block w-full rounded-lg border-0 font-light focus:ring-0",
+          "min-h-[6rem] h-[3.625rem] shadow-input text-regulargray mt-[0.9375rem] block w-full rounded-lg border-0 font-light placeholder:text-text focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
         required={@required}
         {@rest}
       ><%= Form.normalize_value("textarea", @value) %></textarea>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
+  def input(%{type: "textcard"} = assigns) do
+    ~H"""
+    <div class="shadow-textcard rounded-lg bg-white px-8 py-4">
+      <label for={@id} class="text-title-text leading-[1.3rem] block uppercase lg:text-xl">
+        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+      </label>
+      <div class="mt-4 flex items-center gap-4">
+        <div class="text-regulargray"><%= @text_before %></div>
+        <input
+          type="text"
+          name={@name}
+          id={@id}
+          value={Form.normalize_value(@type, @value)}
+          class={[
+            "shadow-default-convexity text-regulargray h-11 w-24 rounded-lg border-0 font-light placeholder:text-text focus:ring-0",
+            @errors == [] && "border-zinc-300 focus:border-zinc-400",
+            @errors != [] && "border-rose-400 focus:border-rose-400"
+          ]}
+          required={@required}
+          {@rest}
+        />
+        <div class="text-regulargray"><%= @text_after %></div>
+      </div>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>
     """
@@ -434,7 +498,7 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         value={Form.normalize_value(@type, @value)}
         class={[
-          "h-[3.625rem] shadow-input text-style-main mt-[0.9375rem] block w-full rounded-lg border-0 font-light text-zinc-900 focus:ring-0",
+          "h-[3.625rem] shadow-input text-regulargray mt-[0.9375rem] block w-full rounded-lg border-0 font-light placeholder:text-text focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -454,10 +518,7 @@ defmodule CenWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label
-      for={@for}
-      class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl"
-    >
+    <label for={@for} class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -536,17 +597,13 @@ defmodule CenWeb.CoreComponents do
     """
   end
 
-  attr :rest, :global,
-    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+  attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
 
   slot :inner_block, required: true
 
   def navbar_link(assigns) do
     ~H"""
-    <.link
-      class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent"
-      {@rest}
-    >
+    <.link class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent" {@rest}>
       <%= render_slot(@inner_block) %>
     </.link>
     """
@@ -554,8 +611,7 @@ defmodule CenWeb.CoreComponents do
 
   attr :text, :string, required: true
 
-  attr :rest, :global,
-    include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
+  attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
 
   def regular_link(assigns) do
     ~H"""
@@ -573,7 +629,7 @@ defmodule CenWeb.CoreComponents do
   def basic_card(assigns) do
     ~H"""
     <div class={[@class, "bg-[#F5F5F5] shadow-default-convexity rounded-lg"]}>
-      <h2 class="leading leading-[1.3] text-regulargray text-base font-medium uppercase lg:text-xl">
+      <h2 class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
         <%= @header %>
       </h2>
       <%= render_slot(@inner_block) %>
@@ -656,10 +712,7 @@ defmodule CenWeb.CoreComponents do
             <td :if={@action != []} class="relative w-14 p-0">
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
-                <span
-                  :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-                >
+                <span :for={action <- @action} class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
               </div>
@@ -711,10 +764,7 @@ defmodule CenWeb.CoreComponents do
   def back(assigns) do
     ~H"""
     <div class="mt-16">
-      <.link
-        navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
-      >
+      <.link navigate={@navigate} class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>
       </.link>

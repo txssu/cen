@@ -40,12 +40,7 @@ defmodule CenWeb.UserRegistrationLive do
             />
           </div>
 
-          <.input
-            field={@form[:fullname]}
-            type="text"
-            placeholder={dgettext("users", "ФИО")}
-            implicit_required
-          />
+          <.input field={@form[:fullname]} type="text" placeholder={dgettext("users", "ФИО")} implicit_required />
 
           <.input
             :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
@@ -57,24 +52,9 @@ defmodule CenWeb.UserRegistrationLive do
             implicit_required
           />
 
-          <.input
-            field={@form[:email]}
-            type="email"
-            placeholder={dgettext("users", "Почта")}
-            implicit_required
-          />
-          <.input
-            field={@form[:phone_number]}
-            type="text"
-            placeholder={dgettext("users", "Номер телефона")}
-            implicit_required
-          />
-          <.input
-            field={@form[:password]}
-            type="password"
-            placeholder={dgettext("users", "Пароль")}
-            implicit_required
-          />
+          <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
+          <.input field={@form[:phone_number]} type="text" placeholder={dgettext("users", "Номер телефона")} implicit_required />
+          <.input field={@form[:password]} type="password" placeholder={dgettext("users", "Пароль")} implicit_required />
 
           <:actions>
             <.arrow_button class="mx-auto">
