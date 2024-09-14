@@ -12,9 +12,13 @@ defmodule Cen.Repo.Migrations.CreateResumes do
       add :work_schedules, {:array, :string}, default: [], null: false
 
       add :educations, :jsonb, null: false
-      add :work_experience, :jsonb, null: false
+      add :jobs, :jsonb
+
+      add :user_id, references(:users, on_delete: :delete_all), null: false
 
       timestamps(type: :utc_datetime)
     end
+
+    create index(:resumes, [:user_id])
   end
 end

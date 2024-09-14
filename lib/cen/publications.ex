@@ -2,10 +2,12 @@ defmodule Cen.Publications do
   @moduledoc false
   alias Cen.Accounts.User
   alias Cen.Employers.Organization
+  alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
   alias Cen.Repo
 
   @type vacancy_changeset :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
+  @type resume_changeset :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
 
   @spec get_vacancy!(id :: integer() | binary()) :: Vacancy.t()
   def get_vacancy!(id), do: Vacancy |> Repo.get!(id) |> Repo.preload(:organization)
@@ -49,5 +51,28 @@ defmodule Cen.Publications do
   @spec delete_vacancy(Vacancy.t()) :: :ok
   def delete_vacancy(vacancy) do
     Repo.delete(vacancy)
+  end
+
+  @spec get_resume!(id :: integer() | binary()) :: Resume.t()
+  def get_resume!(id), do: Repo.get!(Resume, id)
+
+  @spec change_resume(Resume.t(), map()) :: Ecto.Changeset.t()
+  def change_resume(resume, attrs \\ %{}) do
+    Resume.changeset(resume, attrs)
+  end
+
+  @spec create_resume_for(User.t(), map()) :: resume_changeset()
+  def create_resume_for(user, attrs) do
+    user
+    |> Ecto.build_assoc(:resumes)
+    |> Resume.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @spec update_resume(Resume.t(), map()) :: resume_changeset()
+  def update_resume(resume, attrs) do
+    resume
+    |> Resume.changeset(attrs)
+    |> Repo.update()
   end
 end

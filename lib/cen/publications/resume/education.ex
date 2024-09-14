@@ -17,6 +17,7 @@ defmodule Cen.Publications.Resume.Education do
   end
 
   @doc false
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(education, attrs) do
     education
     |> cast(attrs, [:level, :educational_institution, :department, :specialization, :year_of_graduation])
@@ -38,7 +39,7 @@ defmodule Cen.Publications.Resume.Education do
   end
 
   defp validate_department(changeset) do
-    validate_required(changeset, :department)
+    changeset
   end
 
   defp validate_specialization(changeset) do

@@ -4,6 +4,7 @@ defmodule Cen.Publications.Resume do
 
   import Ecto.Changeset
 
+  alias Cen.Accounts.User
   alias Cen.Publications.Enums
   alias Cen.Publications.Resume.Education
   alias Cen.Publications.Resume.Job
@@ -21,10 +22,13 @@ defmodule Cen.Publications.Resume do
     embeds_many :educations, Education, on_replace: :delete
     embeds_many :jobs, Job, on_replace: :delete
 
+    belongs_to :user, User
+
     timestamps(type: :utc_datetime)
   end
 
   @doc false
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(resume, attrs) do
     resume
     |> cast(attrs, [:job_title, :field_of_art, :description, :employment_types, :work_schedules])
@@ -66,10 +70,17 @@ defmodule Cen.Publications.Resume do
   end
 
   defp validate_educations(changeset) do
-    cast_embed(changeset, :educations, required: true)
+    cast_embed(changeset, :educations,
+      required: true,
+      sort_param: :educations_order,
+      drop_param: :educations_drop
+    )
   end
 
   defp validate_jobs(changeset) do
-    cast_embed(changeset, :jobs)
+    cast_embed(changeset, :jobs,
+      sort_param: :jobs_order,
+      drop_param: :jobs_drop
+    )
   end
 end
