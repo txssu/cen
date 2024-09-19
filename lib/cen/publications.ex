@@ -56,6 +56,13 @@ defmodule Cen.Publications do
   @spec get_resume!(id :: integer() | binary()) :: Resume.t()
   def get_resume!(id), do: Repo.get!(Resume, id)
 
+  @spec list_resumes_for(user :: User.t()) :: [Resume.t()]
+  def list_resumes_for(user) do
+    user
+    |> Repo.preload(:resumes)
+    |> Map.get(:resumes)
+  end
+
   @spec change_resume(Resume.t(), map()) :: Ecto.Changeset.t()
   def change_resume(resume, attrs \\ %{}) do
     Resume.changeset(resume, attrs)
