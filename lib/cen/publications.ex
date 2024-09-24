@@ -54,7 +54,7 @@ defmodule Cen.Publications do
   end
 
   @spec get_resume!(id :: integer() | binary()) :: Resume.t()
-  def get_resume!(id), do: Repo.get!(Resume, id)
+  def get_resume!(id), do: Resume |> Repo.get!(id) |> Repo.preload([:user])
 
   @spec list_resumes_for(user :: User.t()) :: [Resume.t()]
   def list_resumes_for(user) do
@@ -81,5 +81,10 @@ defmodule Cen.Publications do
     resume
     |> Resume.changeset(attrs)
     |> Repo.update()
+  end
+
+  @spec delete_resume(Resume.t()) :: :ok
+  def delete_resume(resume) do
+    Repo.delete(resume)
   end
 end

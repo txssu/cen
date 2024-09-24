@@ -53,4 +53,20 @@ defmodule Cen.Utils.GettextEnums do
       quote(do: {dgettext("enums", unquote(text)), unquote(value)})
     end)
   end
+
+  @spec enums_to_translation(enums_list(), translations_list()) :: String.t()
+  def enums_to_translation(values, translations) do
+    values
+    |> Enum.map_join(", ", &enum_to_translation(&1, translations))
+    |> String.capitalize()
+  end
+
+  @spec enum_to_translation(String.t(), translations_list()) :: String.t()
+  def enum_to_translation(value, translations) do
+    value = to_string(value)
+
+    translations
+    |> Enum.find(fn {_ts, enum} -> enum == value end)
+    |> elem(0)
+  end
 end
