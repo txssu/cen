@@ -30,6 +30,11 @@
               <%= dgettext("users", "Вакансии") %>
             </.navbar_link>
           </li>
+          <li :if={has_permission?(@current_user, :resumes, :index)}>
+            <.navbar_link href={~p"/resumes"}>
+              <%= dgettext("users", "Резюме") %>
+            </.navbar_link>
+          </li>
           <li class="ml-auto">
             <.link href={~p"/users/settings/personal"}>
               <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>

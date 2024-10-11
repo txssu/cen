@@ -106,6 +106,13 @@ defmodule CenWeb.Router do
         live "/:id", Show
         live "/:id/edit", Form, :update
       end
+
+      scope "/resumes", ResumeLive do
+        live "/", Index
+        live "/new", Form, :create
+        live "/:id", Show
+        live "/:id/edit", Form, :update
+      end
     end
   end
 

@@ -60,7 +60,7 @@ defmodule CenWeb.VacancyLive.Show do
                 <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
                   <%= header %>
                 </p>
-                <p class="text-regulargray mt-4"><%= text %></p>
+                <p class="mt-4"><%= text %></p>
               </div>
             <% end %>
           </div>

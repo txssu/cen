@@ -2,6 +2,7 @@ defmodule Cen.Permissions do
   @moduledoc false
   alias Cen.Accounts.User
   alias Cen.Employers.Organization
+  alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
 
   defmodule NoPermission do
@@ -32,6 +33,11 @@ defmodule Cen.Permissions do
   def has_permission?(%User{role: :employer, id: author_id}, %Vacancy{user_id: author_id}, _action), do: true
   def has_permission?(%User{role: :employer}, %Vacancy{}, action) when action in ~w[create show]a, do: true
   def has_permission?(%User{role: :applicant}, %Vacancy{}, action) when action in ~w[show]a, do: true
+
+  def has_permission?(%User{role: :applicant}, :resumes, :index), do: true
+  def has_permission?(%User{role: :applicant, id: author_id}, %Resume{user_id: author_id}, _action), do: true
+  def has_permission?(%User{role: :applicant}, %Resume{}, action) when action in ~w[create show]a, do: true
+  def has_permission?(%User{role: :employer}, %Resume{}, action) when action in ~w[show]a, do: true
 
   def has_permission?(_subject, _resource, _action), do: false
 end

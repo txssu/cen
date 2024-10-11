@@ -13,5 +13,7 @@ defmodule Cen.Publications.Enums do
   """
   def_translation_enum(:educations, ~w[none secondary secondary_vocational bachelor master doctor]a)
 
+  def_translation_enum(:resume_educations, ~w[secondary secondary_vocational bachelor master doctor]a)
+
   def_translation_enum(:field_of_arts, ~w[music visual performing choreography folklore other]a)
 end

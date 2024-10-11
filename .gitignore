@@ -38,10 +38,6 @@ npm-debug.log
 # Env
 .env
 
-# Nix
-.direnv
-.nix-*
-
 # Dialyzer
 /priv/plts/*.plt
 /priv/plts/*.plt.hash

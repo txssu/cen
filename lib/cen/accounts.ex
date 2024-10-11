@@ -397,4 +397,11 @@ defmodule Cen.Accounts do
 
     :ok
   end
+
+  @spec calculate_user_age(User.t()) :: integer()
+  def calculate_user_age(%User{birthdate: birthdate}) do
+    Date.utc_today()
+    |> Date.diff(birthdate)
+    |> Kernel.div(365)
+  end
 end

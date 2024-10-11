@@ -160,7 +160,6 @@ defmodule CenWeb.VacancyLive.Form do
          |> put_flash(:info, dgettext("publications", "Вакансия успешно создана."))}
 
       {:error, changeset} ->
-        dbg(changeset)
         {:noreply, assign(socket, form: to_form(changeset), check_errors: true)}
     end
   end
