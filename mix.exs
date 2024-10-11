@@ -93,8 +93,8 @@ defmodule Cen.MixProject do
       seed: ["run priv/repo/seeds.exs"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind default", "esbuild default"],
-      "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"],
+      "assets.build": ["tailwind cen", "esbuild cen"],
+      "assets.deploy": ["tailwind cen --minify", "esbuild cen --minify", "phx.digest"],
       locale: ["gettext.extract", "gettext.merge priv/gettext"],
       ci: [
         "compile --all-warnings --warnings-as-errors",
