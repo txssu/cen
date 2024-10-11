@@ -62,8 +62,20 @@ config :cen, CenWeb.Endpoint,
     ]
   ]
 
+config :cen, :csp, s3: "http://localhost:9000"
+
 # Enable dev routes for dashboard and mailbox
 config :cen, dev_routes: true
+
+config :ex_aws,
+  json_codec: Jason,
+  access_key_id: System.fetch_env!("S3_ACCESS_KEY"),
+  secret_access_key: System.fetch_env!("S3_SECRET_KEY"),
+  s3: [
+    scheme: "http://",
+    host: "localhost",
+    port: 9000
+  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
@@ -83,3 +95,8 @@ config :phoenix_live_view,
 
 # Disable swoosh api client as it is only required for production adapters.
 config :swoosh, :api_client, false
+
+config :waffle,
+  storage: Waffle.Storage.S3,
+  bucket: "cen-dev",
+  asset_host: "http://localhost:9000/cen-dev"

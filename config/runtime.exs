@@ -20,28 +20,6 @@ if System.get_env("PHX_SERVER") do
   config :cen, CenWeb.Endpoint, server: true
 end
 
-unless config_env() == :test do
-  s3_uri =
-    "S3_URL"
-    |> System.fetch_env!()
-    |> URI.parse()
-
-  s3_bucket = System.fetch_env!("S3_BUCKET")
-
-  config :cen, :csp, s3: to_string(s3_uri)
-
-  config :ex_aws,
-    json_codec: Jason,
-    access_key_id: System.fetch_env!("S3_ACCESS_KEY"),
-    secret_access_key: System.fetch_env!("S3_SECRET_KEY"),
-    s3: Map.from_struct(s3_uri)
-
-  config :waffle,
-    storage: Waffle.Storage.S3,
-    bucket: s3_bucket,
-    asset_host: s3_uri |> URI.append_path("/#{s3_bucket}") |> to_string()
-end
-
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -51,6 +29,13 @@ if config_env() == :prod do
       """
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
+
+  s3_uri =
+    "S3_URL"
+    |> System.fetch_env!()
+    |> URI.parse()
+
+  s3_bucket = System.fetch_env!("S3_BUCKET")
 
   # The secret key base is used to sign/encrypt cookies and other secrets.
   # A default value is used in config/dev.exs and config/test.exs but you
@@ -85,7 +70,19 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  config :cen, :csp, s3: to_string(s3_uri)
   config :cen, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+
+  config :ex_aws,
+    json_codec: Jason,
+    access_key_id: System.fetch_env!("S3_ACCESS_KEY"),
+    secret_access_key: System.fetch_env!("S3_SECRET_KEY"),
+    s3: Map.from_struct(s3_uri)
+
+  config :waffle,
+    storage: Waffle.Storage.S3,
+    bucket: s3_bucket,
+    asset_host: s3_uri |> URI.append_path("/#{s3_bucket}") |> to_string()
 
   # ## SSL Support
   #
