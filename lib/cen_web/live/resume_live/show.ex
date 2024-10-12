@@ -69,7 +69,7 @@ defmodule CenWeb.ResumeLive.Show do
                 <%= dgettext("publications", "Образование") %>
               </p>
               <ul class="mt-4 space-y-4">
-                <li :for={education <- @resume.educations ++ @resume.educations ++ @resume.educations}>
+                <li :for={education <- @resume.educations}>
                   <p><%= GettextEnums.enum_to_translation(education.level, educations_translations()) %></p>
                   <p><%= education.educational_institution %>, <%= education.year_of_graduation %></p>
                   <p><%= education.department %></p>
