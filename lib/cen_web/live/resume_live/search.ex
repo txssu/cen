@@ -30,7 +30,7 @@ defmodule CenWeb.ResumeLive.Search do
                 </div>
               </div>
               <div class="block lg:hidden">
-                <.button type="button" class="bg-white p-4" phx-click={show_modal(JS.push("show-modal"), "filters-modal")}>
+                <.button type="button" class="bg-white p-4" phx-click={show_modal(JS.push("show_modal"), "filters-modal")}>
                   <.icon name="cen-quick-actions" class="w-3.5 h-3.5" alt={dgettext("search", "Фильтры")} />
                 </.button>
               </div>
@@ -44,7 +44,7 @@ defmodule CenWeb.ResumeLive.Search do
             </.filters_modal>
 
             <div class="lg:col-span-9 lg:col-start-3">
-              <ul class="mt-6">
+              <ul class="mt-6 space-y-4">
                 <li :for={resume <- @search_result}>
                   <.basic_card class="w-full py-7 px-6" header={resume.job_title}>
                     <p class="text-title-text mt-2.5">
@@ -56,6 +56,9 @@ defmodule CenWeb.ResumeLive.Search do
                   </.basic_card>
                 </li>
               </ul>
+              <div class="mt-4">
+                <.pagination metadata={@search_metadata} path={~p"/resumes/search"} />
+              </div>
             </div>
           </div>
         </div>
@@ -116,7 +119,14 @@ defmodule CenWeb.ResumeLive.Search do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    {:ok, do_search(socket, %{})}
+    {:ok, socket}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(params, _uri, socket) do
+    page = Map.get(params, "page", 1)
+
+    {:noreply, do_search(socket, %{"page" => page})}
   end
 
   @impl Phoenix.LiveView
@@ -128,13 +138,13 @@ defmodule CenWeb.ResumeLive.Search do
     {:noreply, push_navigate(socket, to: ~p"/resumes/search")}
   end
 
-  def handle_event("show-modal", _params, socket) do
+  def handle_event("show_modal", _params, socket) do
     {:noreply, assign(socket, render_modal: true)}
   end
 
   defp do_search(socket, params) do
-    search_result = Publications.search_resumes(params)
-    assign(socket, search_result: search_result, search_params: search_form(params), render_modal: false)
+    {:ok, {search_result, metadata}} = Publications.search_resumes(params)
+    assign(socket, search_result: search_result, search_params: search_form(params), search_metadata: metadata, render_modal: false)
   end
 
   defp search_form(params) do

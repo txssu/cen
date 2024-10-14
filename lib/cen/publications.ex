@@ -93,6 +93,7 @@ defmodule Cen.Publications do
     Repo.delete(resume)
   end
 
+  @spec search_resumes(map()) :: {:ok, {[Resume.t()], Flop.Meta.t()}} | {:error, Flop.Meta.t()}
   def search_resumes(params) do
     case %ResumeSearchOptions{} |> ResumeSearchOptions.changeset(params) |> Ecto.Changeset.apply_action(:validate) do
       {:ok, filters} ->
@@ -104,7 +105,7 @@ defmodule Cen.Publications do
         |> Filters.filter_work_experience(filters.min_years_of_work_experience)
         |> Filters.filter_education(filters.education)
         |> preload(:user)
-        |> Repo.all()
+        |> Flop.validate_and_run(%Flop{page_size: 10, order_by: [:inserted_at], order_directions: [:desc], page: params["page"]}, repo: Cen.Repo)
 
       {:error, _} ->
         []

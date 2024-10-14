@@ -54,6 +54,7 @@ defmodule Cen.MixProject do
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
       # Misc
+      {:flop, "~> 0.26.1"},
       {:better_number, "~> 1.0"},
       {:phoenix, "~> 1.7.14"},
       {:phoenix_ecto, "~> 4.5"},

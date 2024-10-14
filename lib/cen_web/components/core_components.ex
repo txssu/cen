@@ -850,6 +850,42 @@ defmodule CenWeb.CoreComponents do
     """
   end
 
+  attr :display_pages_count, :integer, default: 5
+  attr :metadata, Flop.Meta, required: true
+  attr :path, :string, required: true
+
+  def pagination(assigns) do
+    min_page_num = max(1, min(assigns.metadata.current_page - 2, assigns.metadata.total_pages - 4))
+    max_page_num = min(assigns.metadata.total_pages, max(assigns.metadata.current_page + 2, 5))
+
+    assigns = assign(assigns, min_page_num: min_page_num, max_page_num: max_page_num)
+
+    ~H"""
+    <ul :if={@metadata.total_pages > 1} class="flex justify-center gap-4">
+      <li class={@metadata.has_previous_page? || "invisible"}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click={JS.patch("#{@path}?page=#{@metadata.previous_page}")}>
+          <.icon name="cen-arrow-left" />
+        </.button>
+      </li>
+      <li :for={page_num <- @min_page_num..@max_page_num}>
+        <.button
+          class={["h-10 w-10 justify-center", @metadata.current_page == page_num && "bg-accent text-white"]}
+          disabled={@metadata.current_page == page_num}
+          type="button"
+          phx-click={JS.patch("#{@path}?page=#{page_num}")}
+        >
+          <%= page_num %>
+        </.button>
+      </li>
+      <li class={@metadata.has_next_page? || "invisible"}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click={JS.patch("#{@path}?page=#{@metadata.next_page}")}>
+          <.icon name="cen-arrow-right" />
+        </.button>
+      </li>
+    </ul>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
