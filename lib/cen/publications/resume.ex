@@ -14,7 +14,7 @@ defmodule Cen.Publications.Resume do
   schema "resumes" do
     field :description, :string
     field :job_title, :string
-    field :field_of_art, :string
+    field :field_of_art, Ecto.Enum, values: Enums.field_of_arts()
 
     field :employment_types, {:array, Ecto.Enum}, values: Enums.employment_types()
     field :work_schedules, {:array, Ecto.Enum}, values: Enums.work_schedules()

@@ -1,8 +1,13 @@
 defmodule Cen.Publications do
   @moduledoc false
+  import Cen.Utils.QueryFilter
+  import Ecto.Query
+
   alias Cen.Accounts.User
   alias Cen.Employers.Organization
+  alias Cen.Publications.Filters
   alias Cen.Publications.Resume
+  alias Cen.Publications.ResumeSearchOptions
   alias Cen.Publications.Vacancy
   alias Cen.Repo
 
@@ -86,5 +91,23 @@ defmodule Cen.Publications do
   @spec delete_resume(Resume.t()) :: :ok
   def delete_resume(resume) do
     Repo.delete(resume)
+  end
+
+  def search_resumes(params) do
+    case %ResumeSearchOptions{} |> ResumeSearchOptions.changeset(params) |> Ecto.Changeset.apply_action(:validate) do
+      {:ok, filters} ->
+        Resume
+        |> filter(:searchable, :search, filters.query)
+        |> filter(:field_of_art, :eq, filters.field_of_art)
+        |> Filters.filter_employment_types(filters.employment_types)
+        |> Filters.filter_work_schedules(filters.work_schedules)
+        |> Filters.filter_work_experience(filters.min_years_of_work_experience)
+        |> Filters.filter_education(filters.education)
+        |> preload(:user)
+        |> Repo.all()
+
+      {:error, _} ->
+        []
+    end
   end
 end
