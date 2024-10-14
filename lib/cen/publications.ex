@@ -104,7 +104,7 @@ defmodule Cen.Publications do
         |> Filters.filter_employment_types(filters.employment_types)
         |> Filters.filter_work_schedules(filters.work_schedules)
         |> Filters.filter_work_experience(filters.min_years_of_work_experience)
-        |> Filters.filter_education(filters.education)
+        |> Filters.filter_resume_educations(filters.education)
         |> preload(:user)
         |> Flop.validate_and_run(%Flop{page_size: 10, order_by: [:inserted_at], order_directions: [:desc], page: params["page"]}, repo: Cen.Repo)
 

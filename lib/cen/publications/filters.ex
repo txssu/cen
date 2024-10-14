@@ -30,11 +30,11 @@ defmodule Cen.Publications.Filters do
     )
   end
 
-  @spec filter_education(Ecto.Queryable.t(), atom() | nil) :: Ecto.Query.t()
-  def filter_education(query, nil), do: query
+  @spec filter_resume_educations(Ecto.Queryable.t(), atom() | nil) :: Ecto.Query.t()
+  def filter_resume_educations(query, nil), do: query
 
-  def filter_education(query, education) do
-    educations = education |> Atom.to_string() |> smaller_educations()
+  def filter_resume_educations(query, education) do
+    educations = education |> Atom.to_string() |> not_smaller_educations()
 
     from(resume in query,
       where:
@@ -50,13 +50,14 @@ defmodule Cen.Publications.Filters do
   def filter_vacancy_educations(query, nil), do: query
 
   def filter_vacancy_educations(query, education) do
-    educations = education |> Atom.to_string() |> greater_educations()
+    educations = education |> Atom.to_string() |> not_greater_educations()
 
     filter(query, :education, :field_in_value, educations)
   end
 
   @educations Enum.map(Cen.Publications.Enums.educations(), &to_string/1)
+  @educations_reverse Enum.reverse(@educations)
 
-  defp smaller_educations(education), do: Enum.drop_while(@educations, &(&1 != education))
-  defp greater_educations(education), do: Enum.take_while(@educations, &(&1 != education))
+  defp not_smaller_educations(education), do: Enum.drop_while(@educations, &(&1 != education))
+  defp not_greater_educations(education), do: Enum.drop_while(@educations_reverse, &(&1 != education))
 end
