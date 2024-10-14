@@ -4,7 +4,10 @@ defmodule Cen.Publications.Filters do
   import Cen.Utils.QueryFilter
   import Ecto.Query
 
+  @spec filter_work_schedules(Ecto.Queryable.t(), list()) :: Ecto.Query.t()
   def filter_work_schedules(query, work_schedules), do: filter_array(query, :work_schedules, work_schedules)
+
+  @spec filter_employment_types(Ecto.Queryable.t(), list()) :: Ecto.Query.t()
   def filter_employment_types(query, work_schedules), do: filter_array(query, :employment_types, work_schedules)
 
   defp filter_array(query, _field, data) when data in [nil, []], do: query
@@ -13,6 +16,7 @@ defmodule Cen.Publications.Filters do
     filter(query, field, :intersection, Enum.map(data, &Atom.to_string/1))
   end
 
+  @spec filter_work_experience(Ecto.Queryable.t(), integer() | nil) :: Ecto.Query.t()
   def filter_work_experience(query, nil), do: query
 
   def filter_work_experience(query, min_years_of_work_experience) do
@@ -26,6 +30,7 @@ defmodule Cen.Publications.Filters do
     )
   end
 
+  @spec filter_education(Ecto.Queryable.t(), atom() | nil) :: Ecto.Query.t()
   def filter_education(query, nil), do: query
 
   def filter_education(query, education) do

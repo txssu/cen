@@ -140,7 +140,7 @@ defmodule CenWeb.ResumeLive.Show do
   defp get_back_link(params) do
     case params do
       %{"back" => "search"} -> ~p"/resumes/search"
-      _ -> ~p"/resumes"
+      _other -> ~p"/resumes"
     end
   end
 end
