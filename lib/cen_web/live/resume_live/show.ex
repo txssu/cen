@@ -117,7 +117,6 @@ defmodule CenWeb.ResumeLive.Show do
   defp format_date(date) when is_nil(date), do: gettext("Настоящее")
 
   defp format_date(date) do
-    dbg(date)
     Calendar.strftime(date, "%B %Y", month_names: &CalendarTranslations.month_names/1)
   end
 
