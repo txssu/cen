@@ -124,30 +124,34 @@ defmodule CenWeb.ResumeLive.Search do
 
   @impl Phoenix.LiveView
   def handle_params(params, _uri, socket) do
-    page = Map.get(params, "page", 1)
+    {:ok, {search_result, metadata}} = Publications.search_resumes(params)
 
-    {:noreply, do_search(socket, %{"page" => page})}
+    assigns = [
+      params: params,
+      search_result: search_result,
+      search_params: to_form(params, as: "search_params"),
+      search_metadata: metadata,
+      render_modal: false
+    ]
+
+    {:noreply, assign(socket, assigns)}
   end
 
   @impl Phoenix.LiveView
-  def handle_event("save", %{"search_params" => search_params}, socket) do
-    {:noreply, do_search(socket, search_params)}
+  def handle_event("save", %{"search_params" => params}, socket) do
+    {:noreply, push_patch(socket, to: ~p"/resumes/search?#{params}")}
+  end
+
+  def handle_event("goto_page", %{"page" => page}, socket) do
+    params = Map.put(socket.assigns.params, "page", page)
+    {:noreply, push_patch(socket, to: ~p"/resumes/search?#{params}")}
   end
 
   def handle_event("reset", _params, socket) do
-    {:noreply, push_navigate(socket, to: ~p"/resumes/search")}
+    {:noreply, push_patch(socket, to: ~p"/resumes/search")}
   end
 
   def handle_event("show_modal", _params, socket) do
     {:noreply, assign(socket, render_modal: true)}
-  end
-
-  defp do_search(socket, params) do
-    {:ok, {search_result, metadata}} = Publications.search_resumes(params)
-    assign(socket, search_result: search_result, search_params: search_form(params), search_metadata: metadata, render_modal: false)
-  end
-
-  defp search_form(params) do
-    to_form(params, as: "search_params")
   end
 end

@@ -863,7 +863,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <ul :if={@metadata.total_pages > 1} class="flex justify-center gap-4">
       <li class={@metadata.has_previous_page? || "invisible"}>
-        <.button class="h-10 w-10 justify-center" type="button" phx-click={JS.patch("#{@path}?page=#{@metadata.previous_page}")}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click="goto_page" phx-value-page={@metadata.previous_page}>
           <.icon name="cen-arrow-left" />
         </.button>
       </li>
@@ -872,13 +872,14 @@ defmodule CenWeb.CoreComponents do
           class={["h-10 w-10 justify-center", @metadata.current_page == page_num && "bg-accent text-white"]}
           disabled={@metadata.current_page == page_num}
           type="button"
-          phx-click={JS.patch("#{@path}?page=#{page_num}")}
+          phx-click="goto_page"
+          phx-value-page={page_num}
         >
           <%= page_num %>
         </.button>
       </li>
       <li class={@metadata.has_next_page? || "invisible"}>
-        <.button class="h-10 w-10 justify-center" type="button" phx-click={JS.patch("#{@path}?page=#{@metadata.next_page}")}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click="goto_page" phx-value-page={@metadata.next_page}>
           <.icon name="cen-arrow-right" />
         </.button>
       </li>
