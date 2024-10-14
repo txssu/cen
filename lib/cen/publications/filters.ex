@@ -46,7 +46,17 @@ defmodule Cen.Publications.Filters do
     )
   end
 
+  @spec filter_vacancy_educations(Ecto.Queryable.t(), atom() | nil) :: Ecto.Query.t()
+  def filter_vacancy_educations(query, nil), do: query
+
+  def filter_vacancy_educations(query, education) do
+    educations = education |> Atom.to_string() |> greater_educations()
+
+    filter(query, :education, :field_in_value, educations)
+  end
+
   @educations Enum.map(Cen.Publications.Enums.educations(), &to_string/1)
 
   defp smaller_educations(education), do: Enum.drop_while(@educations, &(&1 != education))
+  defp greater_educations(education), do: Enum.take_while(@educations, &(&1 != education))
 end

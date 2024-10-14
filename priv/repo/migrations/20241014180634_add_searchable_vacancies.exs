@@ -2,7 +2,7 @@ defmodule Cen.Repo.Migrations.AddSearchableVacancies do
   use Ecto.Migration
 
   def change do
-    alter table(:resumes) do
+    alter table(:vacancies) do
       add :searchable, :tsvector,
         null: false,
         generated: """
@@ -12,6 +12,6 @@ defmodule Cen.Repo.Migrations.AddSearchableVacancies do
         """
     end
 
-    create index(:resumes, [:searchable], using: "gin")
+    create index(:vacancies, [:searchable], using: "gin")
   end
 end

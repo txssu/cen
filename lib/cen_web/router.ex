@@ -101,6 +101,8 @@ defmodule CenWeb.Router do
       end
 
       scope "/vacancies", VacancyLive do
+        live "/search", Search
+
         live "/", Index
         live "/new", Form, :create
         live "/:id", Show
