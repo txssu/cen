@@ -28,7 +28,7 @@ defmodule CenWeb.UserLoginLive do
             <.regular_link navigate={~p"/users/register"} text={dgettext("users", "Зарегистрироваться")} />
           </p>
           <p>
-            <.regular_link href={~p"/users/reset_password"} text={dgettext("users", "Я не помню пароль")} />
+            <.regular_link navigate={~p"/users/reset_password"} text={dgettext("users", "Я не помню пароль")} />
           </p>
         </div>
       </div>

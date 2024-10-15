@@ -21,33 +21,33 @@
         </li>
         <%= if @current_user do %>
           <li :if={has_permission?(@current_user, :organizations, :index)}>
-            <.navbar_link href={~p"/organizations"}>
+            <.navbar_link navigate={~p"/organizations"}>
               <%= dgettext("users", "Организации") %>
             </.navbar_link>
           </li>
           <li :if={has_permission?(@current_user, :vacancies, :index)}>
-            <.navbar_link href={~p"/vacancies"}>
+            <.navbar_link navigate={~p"/vacancies"}>
               <%= dgettext("users", "Вакансии") %>
             </.navbar_link>
           </li>
           <li :if={has_permission?(@current_user, :resumes, :index)}>
-            <.navbar_link href={~p"/resumes"}>
+            <.navbar_link navigate={~p"/resumes"}>
               <%= dgettext("users", "Резюме") %>
             </.navbar_link>
           </li>
           <li class="ml-auto">
-            <.link href={~p"/users/settings/personal"}>
+            <.link navigate={~p"/users/settings/personal"}>
               <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
             </.link>
           </li>
         <% else %>
           <li class="ml-auto">
-            <.navbar_link href={~p"/users/register"}>
+            <.navbar_link navigate={~p"/users/register"}>
               <%= dgettext("users", "Регистрация") %>
             </.navbar_link>
           </li>
           <li>
-            <.navbar_link href={~p"/users/log_in"}>
+            <.navbar_link navigate={~p"/users/log_in"}>
               <%= dgettext("users", "Вход") %>
             </.navbar_link>
           </li>
