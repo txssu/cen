@@ -3,6 +3,7 @@ defmodule CenWeb.ResumeLive.Search do
   use CenWeb, :live_view
 
   alias Cen.Accounts
+  alias Cen.Permissions
   alias Cen.Publications
 
   @impl Phoenix.LiveView
@@ -119,6 +120,8 @@ defmodule CenWeb.ResumeLive.Search do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
+    Permissions.verify_has_permission!(socket.assigns.current_user, :resumes, :search)
+
     {:ok, socket}
   end
 

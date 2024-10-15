@@ -2,6 +2,7 @@ defmodule CenWeb.VacancyLive.Search do
   @moduledoc false
   use CenWeb, :live_view
 
+  alias Cen.Permissions
   alias Cen.Publications
 
   @impl Phoenix.LiveView
@@ -130,6 +131,8 @@ defmodule CenWeb.VacancyLive.Search do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
+    Permissions.verify_has_permission!(socket.assigns.current_user, :vacancies, :search)
+
     {:ok, socket}
   end
 
