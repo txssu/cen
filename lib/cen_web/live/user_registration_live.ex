@@ -66,7 +66,7 @@ defmodule CenWeb.UserRegistrationLive do
         <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Уже есть аккаунт?") %>
-            <.regular_link href={~p"/users/log_in"} text={dgettext("users", "Войти")} />
+            <.regular_link navigate={~p"/users/log_in"} text={dgettext("users", "Войти")} />
           </p>
         </div>
       </div>

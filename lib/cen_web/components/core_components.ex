@@ -92,6 +92,49 @@ defmodule CenWeb.CoreComponents do
     """
   end
 
+  attr :id, :string, required: true
+  attr :show, :boolean, default: false
+  attr :on_cancel, JS, default: %JS{}
+  slot :inner_block, required: true
+
+  def filters_modal(assigns) do
+    ~H"""
+    <div
+      id={@id}
+      phx-mounted={@show && show_modal(@id)}
+      phx-remove={hide_modal(@id)}
+      data-cancel={JS.exec(@on_cancel, "phx-remove")}
+      class="relative z-50 hidden"
+    >
+      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div
+        class="fixed inset-0 overflow-y-auto"
+        aria-labelledby={"#{@id}-title"}
+        aria-describedby={"#{@id}-description"}
+        role="dialog"
+        aria-modal="true"
+        tabindex="0"
+      >
+        <div class="min-h-full w-full items-center justify-center">
+          <div class="w-full">
+            <.focus_wrap
+              id={"#{@id}-container"}
+              phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
+              phx-key="escape"
+              phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
+              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-5 shadow-lg ring-1 transition"
+            >
+              <div id={"#{@id}-content"}>
+                <%= render_slot(@inner_block) %>
+              </div>
+            </.focus_wrap>
+          </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   @doc """
   Renders flash notices.
 
@@ -544,7 +587,7 @@ defmodule CenWeb.CoreComponents do
   attr :class, :string, default: nil
   attr :header_level, :string, default: "h1"
 
-  attr :header_kind, :string, required: true, values: ~w[blue_center black_left]
+  attr :header_kind, :string, required: true, values: ~w[blue_center black_center black_left]
 
   slot :subtitle
   slot :inner_block, required: true
@@ -569,6 +612,7 @@ defmodule CenWeb.CoreComponents do
   defp header_kind_class(header_kind) do
     case header_kind do
       "blue_center" -> "text-accent text-center"
+      "black_center" -> "text-title-text text-center"
       "black_left" -> "text-title-text"
     end
   end
@@ -803,6 +847,43 @@ defmodule CenWeb.CoreComponents do
   def icon(%{name: "cen-" <> _} = assigns) do
     ~H"""
     <img src={"/images/icons/#{@name}.svg"} alt={@alt} class={[@class]} />
+    """
+  end
+
+  attr :display_pages_count, :integer, default: 5
+  attr :metadata, Flop.Meta, required: true
+  attr :path, :string, required: true
+
+  def pagination(assigns) do
+    min_page_num = max(1, min(assigns.metadata.current_page - 2, assigns.metadata.total_pages - 4))
+    max_page_num = min(assigns.metadata.total_pages, max(assigns.metadata.current_page + 2, 5))
+
+    assigns = assign(assigns, min_page_num: min_page_num, max_page_num: max_page_num)
+
+    ~H"""
+    <ul :if={@metadata.total_pages > 1} class="flex justify-center gap-4">
+      <li class={@metadata.has_previous_page? || "invisible"}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click="goto_page" phx-value-page={@metadata.previous_page}>
+          <.icon name="cen-arrow-left" />
+        </.button>
+      </li>
+      <li :for={page_num <- @min_page_num..@max_page_num}>
+        <.button
+          class={["h-10 w-10 justify-center", @metadata.current_page == page_num && "bg-accent text-white"]}
+          disabled={@metadata.current_page == page_num}
+          type="button"
+          phx-click="goto_page"
+          phx-value-page={page_num}
+        >
+          <%= page_num %>
+        </.button>
+      </li>
+      <li class={@metadata.has_next_page? || "invisible"}>
+        <.button class="h-10 w-10 justify-center" type="button" phx-click="goto_page" phx-value-page={@metadata.next_page}>
+          <.icon name="cen-arrow-right" />
+        </.button>
+      </li>
+    </ul>
     """
   end
 

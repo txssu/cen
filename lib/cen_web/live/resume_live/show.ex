@@ -94,8 +94,8 @@ defmodule CenWeb.ResumeLive.Show do
         </.basic_card>
 
         <div class="col-span-12">
-          <.arrow_button arrow_direction="left" phx-click={JS.navigate(~p"/resumes")}>
-            <%= dgettext("publications", "Вернуться к вакансиям") %>
+          <.arrow_button arrow_direction="left" phx-click={JS.navigate(@back_link)}>
+            <%= dgettext("publications", "Вернуться к списку резюме") %>
           </.arrow_button>
         </div>
       </div>
@@ -117,20 +117,29 @@ defmodule CenWeb.ResumeLive.Show do
   defp format_date(date) when is_nil(date), do: gettext("Настоящее")
 
   defp format_date(date) do
-    dbg(date)
     Calendar.strftime(date, "%B %Y", month_names: &CalendarTranslations.month_names/1)
   end
 
   @impl Phoenix.LiveView
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => id} = params, _session, socket) do
     resume = Publications.get_resume!(id)
     verify_has_permission!(socket.assigns.current_user, resume, :show)
-    {:ok, assign(socket, resume: resume)}
+
+    back_link = get_back_link(params)
+
+    {:ok, assign(socket, resume: resume, back_link: back_link)}
   end
 
   @impl Phoenix.LiveView
   def handle_event("delete_resume", _params, socket) do
     Publications.delete_resume(socket.assigns.resume)
-    {:noreply, push_navigate(socket, to: ~p"/resumes")}
+    {:noreply, push_navigate(socket, to: socket.assigns.back_link)}
+  end
+
+  defp get_back_link(params) do
+    case params do
+      %{"back" => "search"} -> ~p"/resumes/search"
+      _other -> ~p"/resumes"
+    end
   end
 end

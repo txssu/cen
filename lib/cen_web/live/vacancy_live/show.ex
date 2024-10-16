@@ -67,7 +67,7 @@ defmodule CenWeb.VacancyLive.Show do
         </.basic_card>
 
         <div class="col-span-12">
-          <.arrow_button arrow_direction="left" phx-click={JS.navigate(~p"/vacancies")}>
+          <.arrow_button arrow_direction="left" phx-click={JS.navigate(@back_link)}>
             <%= dgettext("publications", "Вернуться к вакансиям") %>
           </.arrow_button>
         </div>
@@ -142,15 +142,25 @@ defmodule CenWeb.VacancyLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def mount(%{"id" => id}, _session, socket) do
+  def mount(%{"id" => id} = params, _session, socket) do
     vacancy = Publications.get_vacancy!(id)
     verify_has_permission!(socket.assigns.current_user, vacancy, :show)
-    {:ok, assign(socket, vacancy: vacancy)}
+
+    back_link = get_back_link(params)
+
+    {:ok, assign(socket, vacancy: vacancy, back_link: back_link)}
   end
 
   @impl Phoenix.LiveView
   def handle_event("delete_vacancy", _params, socket) do
     Publications.delete_vacancy(socket.assigns.vacancy)
     {:noreply, push_navigate(socket, to: ~p"/vacancies")}
+  end
+
+  defp get_back_link(params) do
+    case params do
+      %{"back" => "search"} -> ~p"/vacancies/search"
+      _other -> ~p"/vacancies"
+    end
   end
 end

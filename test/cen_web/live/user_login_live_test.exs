@@ -73,13 +73,13 @@ defmodule CenWeb.UserLoginLiveTest do
     } do
       {:ok, lv, _html} = live(conn, ~p"/users/log_in")
 
-      {:ok, conn} =
+      {:ok, _lv, html} =
         lv
         |> element(~s|main a:fl-contains("Forgot your password?")|)
         |> render_click()
         |> follow_redirect(conn, ~p"/users/reset_password")
 
-      assert conn.resp_body =~ "Password recovery"
+      assert html =~ "Password recovery"
     end
   end
 end
