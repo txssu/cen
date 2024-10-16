@@ -30,41 +30,6 @@ defmodule CenWeb.Router do
     plug :put_secure_browser_headers, %{"content-security-policy" => "style-src 'unsafe-inline'"}
   end
 
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  scope "/", CenWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", CenWeb do
-  #   pipe_through :api
-  # end
-
-  # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:cen, :dev_routes) do
-    # If you want to use the LiveDashboard in production, you should put
-    # it behind authentication and allow only admins to access it.
-    # If your application does not have an admins-only section yet,
-    # you can use Plug.BasicAuth to set up some basic authentication
-    # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
-
-    scope "/dev/dashboard" do
-      pipe_through :dev_dashboard
-      live_dashboard "/", metrics: CenWeb.Telemetry, csp_nonce_assign_key: :csp_nonce
-    end
-
-    scope "/dev/mailbox" do
-      pipe_through :mailbox
-      forward "/", Plug.Swoosh.MailboxPreview
-    end
-  end
-
   ## Authentication routes
 
   scope "/", CenWeb do
@@ -72,6 +37,8 @@ defmodule CenWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{CenWeb.UserAuth, :redirect_if_user_is_authenticated}] do
+      live "/", HomeLive
+
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
@@ -130,6 +97,26 @@ defmodule CenWeb.Router do
       on_mount: [{CenWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+    end
+  end
+
+  # Enable LiveDashboard and Swoosh mailbox preview in development
+  if Application.compile_env(:cen, :dev_routes) do
+    # If you want to use the LiveDashboard in production, you should put
+    # it behind authentication and allow only admins to access it.
+    # If your application does not have an admins-only section yet,
+    # you can use Plug.BasicAuth to set up some basic authentication
+    # as long as you are also using SSL (which you should anyway).
+    import Phoenix.LiveDashboard.Router
+
+    scope "/dev/dashboard" do
+      pipe_through :dev_dashboard
+      live_dashboard "/", metrics: CenWeb.Telemetry, csp_nonce_assign_key: :csp_nonce
+    end
+
+    scope "/dev/mailbox" do
+      pipe_through :mailbox
+      forward "/", Plug.Swoosh.MailboxPreview
     end
   end
 end

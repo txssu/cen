@@ -587,7 +587,7 @@ defmodule CenWeb.CoreComponents do
   attr :class, :string, default: nil
   attr :header_level, :string, default: "h1"
 
-  attr :header_kind, :string, required: true, values: ~w[blue_center black_center black_left]
+  attr :header_kind, :string, required: true, values: ~w[blue_center black_center blue_left black_left]
 
   slot :subtitle
   slot :inner_block, required: true
@@ -613,6 +613,7 @@ defmodule CenWeb.CoreComponents do
     case header_kind do
       "blue_center" -> "text-accent text-center"
       "black_center" -> "text-title-text text-center"
+      "blue_left" -> "text-accent"
       "black_left" -> "text-title-text"
     end
   end
