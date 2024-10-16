@@ -29,7 +29,7 @@ defmodule CenWeb.VacancyLive.Form do
               <.input
                 field={@form[:job_title]}
                 type="text"
-                label={dgettext("publications", "Кого вы ищите?")}
+                label={dgettext("publications", "Кого вы ищете?")}
                 placeholder={dgettext("publications", "Должность")}
                 required
               />

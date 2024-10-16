@@ -19,7 +19,7 @@ defmodule CenWeb.ResumeLive.Search do
           </div>
 
           <div class="lg:col-span-9 lg:col-start-4">
-            <.header header_kind="black_left"><%= dgettext("search", "Кого вы ищите?") %></.header>
+            <.header header_kind="black_left"><%= dgettext("search", "Кого вы ищете?") %></.header>
 
             <div class="mt-4 flex items-center gap-4">
               <div class="relative grow">

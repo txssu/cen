@@ -19,7 +19,7 @@ defmodule CenWeb.ResumeLive.Form do
               <.input
                 field={@form[:job_title]}
                 type="text"
-                label={dgettext("publications", "Какую работу вы ищите?")}
+                label={dgettext("publications", "Какую работу вы ищете?")}
                 placeholder={dgettext("publications", "Должность")}
                 required
               />
