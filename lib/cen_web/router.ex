@@ -37,8 +37,6 @@ defmodule CenWeb.Router do
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{CenWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/", HomeLive
-
       live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
@@ -89,6 +87,8 @@ defmodule CenWeb.Router do
 
   scope "/", CenWeb do
     pipe_through [:browser]
+
+    live "/", HomeLive
 
     delete "/users", UserController, :delete
     delete "/users/log_out", UserSessionController, :delete

@@ -2,6 +2,7 @@ defmodule CenWeb.HomeLive do
   @moduledoc false
   use CenWeb, :live_view
 
+  @impl Phoenix.LiveView
   def render(assigns) do
     ~H"""
     <div class="lg:col-span-6 lg:pl-16">
