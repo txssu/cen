@@ -70,7 +70,8 @@ defmodule CenWeb.Router do
 
         live "/", Index
         live "/new", Form, :create
-        live "/:id", Show
+        live "/:id", Show, :show
+        live "/:id/choose_resume", Show, :choose_resume
         live "/:id/edit", Form, :update
       end
 
@@ -79,9 +80,13 @@ defmodule CenWeb.Router do
 
         live "/", Index
         live "/new", Form, :create
-        live "/:id", Show
+        live "/:id", Show, :show
+        live "/:id/choose_vacancy", Show, :choose_vacancy
         live "/:id/edit", Form, :update
       end
+
+      live "/me/interactions/sended", InteractionLive, :sended
+      live "/me/interactions/received", InteractionLive, :received
     end
   end
 

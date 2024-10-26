@@ -37,6 +37,16 @@
                 <%= dgettext("users", "Вакансии") %>
               </.navbar_link>
             </li>
+            <li>
+              <.navbar_link navigate={~p"/me/interactions/received"}>
+                <%= dgettext("users", "Отклики") %>
+              </.navbar_link>
+            </li>
+            <li>
+              <.navbar_link navigate={~p"/me/interactions/sended"}>
+                <%= dgettext("users", "Приглашения") %>
+              </.navbar_link>
+            </li>
           <% end %>
           <%= if @current_user.role == :applicant do %>
             <li>
@@ -47,6 +57,16 @@
             <li>
               <.navbar_link navigate={~p"/resumes"}>
                 <%= dgettext("users", "Резюме") %>
+              </.navbar_link>
+            </li>
+            <li>
+              <.navbar_link navigate={~p"/me/interactions/sended"}>
+                <%= dgettext("users", "Отклики") %>
+              </.navbar_link>
+            </li>
+            <li>
+              <.navbar_link navigate={~p"/me/interactions/received"}>
+                <%= dgettext("users", "Приглашения") %>
               </.navbar_link>
             </li>
           <% end %>
