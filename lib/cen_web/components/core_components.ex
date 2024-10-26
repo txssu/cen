@@ -596,7 +596,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <header class={@class}>
       <.dynamic_tag
-        name={@header_level}
+        tag_name={@header_level}
         class={[
           "leading-[1.2] text-2xl lg:text-3xl font-medium uppercase",
           header_kind_class(@header_kind)
