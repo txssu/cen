@@ -35,13 +35,20 @@ defmodule CenWeb.ResumeLive.Show do
           </.basic_card>
         </div>
 
-        <div :if={has_permission?(@current_user, @resume, :update)} class="flex gap-2.5 lg:col-span-12">
-          <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/resumes/#{@resume}/edit")}>
-            <%= gettext("Редактировать") %>
-          </.regular_button>
-          <.button class="bg-white p-4" phx-click="delete_resume">
-            <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
-          </.button>
+        <div class="flex gap-2.5 lg:col-span-12">
+          <%= if has_permission?(@current_user, @resume, :update) do %>
+            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/resumes/#{@resume}/edit")}>
+              <%= gettext("Редактировать") %>
+            </.regular_button>
+            <.button class="bg-white p-4" phx-click="delete_resume">
+              <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
+            </.button>
+          <% end %>
+          <%= if @current_user.role == :employer do %>
+            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/resumes/#{@resume}/choose_vacancy")}>
+              <%= dgettext("publications", "Пригласить") %>
+            </.regular_button>
+          <% end %>
         </div>
 
         <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9" header={dgettext("publications", "Описание")}>
@@ -100,6 +107,21 @@ defmodule CenWeb.ResumeLive.Show do
         </div>
       </div>
     </div>
+
+    <.modal id="choose_vacancy" show={@show_vacancy_modal} on_cancel={JS.patch(~p"/resumes/#{@resume}")}>
+      <.header class="mb-4" header_kind="black_left">
+        <%= dgettext("publications", "Выберите вакансию") %>
+        <.simple_form for={@select_vacancy_form} phx-submit="choose_vacancy">
+          <.input field={@select_vacancy_form[:vacancy_id]} type="select" options={@vacancies |> Enum.map(&{&1.job_title, &1.id})} />
+
+          <:actions>
+            <.arrow_button>
+              <%= dgettext("publications", "Выбрать") %>
+            </.arrow_button>
+          </:actions>
+        </.simple_form>
+      </.header>
+    </.modal>
     """
   end
 
@@ -127,13 +149,54 @@ defmodule CenWeb.ResumeLive.Show do
 
     back_link = get_back_link(params)
 
-    {:ok, assign(socket, resume: resume, back_link: back_link)}
+    {:ok, assign(socket, resume: resume, back_link: back_link, select_vacancy_form: to_form(%{}), vacancies: [])}
+  end
+
+  @impl Phoenix.LiveView
+  def handle_params(_params, _uri, socket) do
+    case socket.assigns.live_action do
+      :show -> {:noreply, assign(socket, show_vacancy_modal: false)}
+      :choose_vacancy -> {:noreply, socket |> assign(show_vacancy_modal: true) |> maybe_send_interaction()}
+    end
   end
 
   @impl Phoenix.LiveView
   def handle_event("delete_resume", _params, socket) do
     Publications.delete_resume(socket.assigns.resume)
     {:noreply, push_navigate(socket, to: socket.assigns.back_link)}
+  end
+
+  def handle_event("choose_vacancy", %{"vacancy_id" => vacancy_id}, socket) do
+    vacancy = Enum.find(socket.assigns.vacancies, &(&1.id == String.to_integer(vacancy_id)))
+    {:noreply, send_interaction([vacancy], socket)}
+  end
+
+  defp maybe_send_interaction(socket) do
+    socket.assigns.current_user
+    |> Publications.list_vacancies_for()
+    |> send_interaction(socket)
+  end
+
+  defp send_interaction([], socket) do
+    socket
+    |> put_flash(:error, dgettext("publications", "Сначала вам нужно создать хотя бы одно резюме"))
+    |> push_navigate(to: ~p"/vacancies")
+  end
+
+  defp send_interaction([vacancy], socket) do
+    resume = socket.assigns.resume
+
+    case Publications.create_interaction_from_vacancy(vacancy: vacancy, resume: resume) do
+      {:ok, _interaction} ->
+        socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/resumes/#{resume}")
+
+      {:error, _changeset} ->
+        socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/resumes/#{resume}")
+    end
+  end
+
+  defp send_interaction(vacancies, socket) do
+    assign(socket, vacancies: vacancies)
   end
 
   defp get_back_link(params) do

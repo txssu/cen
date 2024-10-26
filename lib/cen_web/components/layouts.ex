@@ -10,7 +10,5 @@ defmodule CenWeb.Layouts do
   """
   use CenWeb, :html
 
-  import Cen.Permissions
-
   embed_templates "layouts/*"
 end
