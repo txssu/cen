@@ -20,7 +20,7 @@
           </.link>
         </li>
         <%= if @current_user do %>
-        <li :if={has_permission?(@current_user, :resumes, :search)}>
+          <li :if={has_permission?(@current_user, :resumes, :search)}>
             <.navbar_link navigate={~p"/resumes/search"}>
               <%= dgettext("users", "Искать резюме") %>
             </.navbar_link>
