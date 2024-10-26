@@ -155,6 +155,7 @@ defmodule Cen.Publications do
     Repo.insert(interaction)
   end
 
+  @spec list_interactions_for(user :: User.t(), initiator :: :resume | :vacancy) :: [Interaction.t()]
   def list_interactions_for(user, initiator) do
     query =
       from interaction in Interaction,

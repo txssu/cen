@@ -20,7 +20,6 @@
           </.link>
         </li>
         <%= if @current_user do %>
-
           <%= if @current_user.role == :employer do %>
             <li>
               <.navbar_link navigate={~p"/resumes/search"}>

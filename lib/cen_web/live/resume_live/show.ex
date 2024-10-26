@@ -171,7 +171,7 @@ defmodule CenWeb.ResumeLive.Show do
     {:noreply, send_interaction([vacancy], socket)}
   end
 
-  def maybe_send_interaction(socket) do
+  defp maybe_send_interaction(socket) do
     socket.assigns.current_user
     |> Publications.list_vacancies_for()
     |> send_interaction(socket)

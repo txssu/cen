@@ -20,6 +20,7 @@ defmodule Cen.Publications.Interaction do
   end
 
   @doc false
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(interaction, attrs) do
     interaction
     |> cast(attrs, [])
