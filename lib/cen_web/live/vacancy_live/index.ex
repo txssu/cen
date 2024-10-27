@@ -16,7 +16,7 @@ defmodule CenWeb.VacancyLive.Index do
           <%= dgettext("publications", "Мои вакансии") %>
         </.header>
         <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/vacancies/new")}>
+          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/me/jobs/new")}>
             <.icon name="cen-plus" alt={gettext("Создать")} />
           </.button>
         </div>
@@ -31,7 +31,7 @@ defmodule CenWeb.VacancyLive.Index do
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= vacancy.organization.name %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/vacancies/#{vacancy}")}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/me/jobs/#{vacancy}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -49,7 +49,7 @@ defmodule CenWeb.VacancyLive.Index do
     vacancies = Publications.list_vacancies_for(user)
 
     if vacancies == [] do
-      {:ok, push_navigate(socket, to: ~p"/vacancies/new")}
+      {:ok, push_navigate(socket, to: ~p"/me/jobs/new")}
     else
       {:ok, assign(socket, vacancies: vacancies)}
     end

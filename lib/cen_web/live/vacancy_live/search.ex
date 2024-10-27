@@ -53,14 +53,14 @@ defmodule CenWeb.VacancyLive.Search do
                     <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                       <%= vacancy.organization.name %>
                     </p>
-                    <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/vacancies/#{vacancy}?back=search")}>
+                    <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/jobs/#{vacancy}")}>
                       <%= gettext("Открыть") %>
                     </.regular_button>
                   </.basic_card>
                 </li>
               </ul>
               <div class="mt-4">
-                <.pagination metadata={@search_metadata} path={~p"/vacancies/search"} />
+                <.pagination metadata={@search_metadata} path={~p"/jobs/search"} />
               </div>
             </div>
           </div>
@@ -141,7 +141,6 @@ defmodule CenWeb.VacancyLive.Search do
     {:ok, {search_result, metadata}} = Publications.search_vacancies(params)
 
     assigns = [
-      params: params,
       search_result: search_result,
       search_params: to_form(params, as: "search_params"),
       search_metadata: metadata,
@@ -153,16 +152,16 @@ defmodule CenWeb.VacancyLive.Search do
 
   @impl Phoenix.LiveView
   def handle_event("save", %{"search_params" => params}, socket) do
-    {:noreply, push_patch(socket, to: ~p"/vacancies/search?#{params}")}
+    {:noreply, push_patch(socket, to: ~p"/jobs/search?#{params}")}
   end
 
   def handle_event("goto_page", %{"page" => page}, socket) do
-    params = Map.put(socket.assigns.params, "page", page)
-    {:noreply, push_patch(socket, to: ~p"/vacancies/search?#{params}")}
+    params = Map.put(socket.assigns.search_result, "page", page)
+    {:noreply, push_patch(socket, to: ~p"/jobs/search?#{params}")}
   end
 
   def handle_event("reset", _params, socket) do
-    {:noreply, push_patch(socket, to: ~p"/vacancies/search")}
+    {:noreply, push_patch(socket, to: ~p"/jobs/search")}
   end
 
   def handle_event("show_modal", _params, socket) do

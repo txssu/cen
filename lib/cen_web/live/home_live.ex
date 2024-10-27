@@ -13,11 +13,11 @@ defmodule CenWeb.HomeLive do
       </.header>
 
       <div class="mt-10 flex gap-2.5 lg:gap-8">
-        <.arrow_button>
+        <.arrow_button phx-click={JS.navigate(~p"/users/register")}>
           <%= dgettext("home", "Зарегистрироваться") %>
         </.arrow_button>
 
-        <.regular_button class="bg-accent-hover">
+        <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/users/log_in")}>
           <%= dgettext("home", "Войти") %>
         </.regular_button>
       </div>

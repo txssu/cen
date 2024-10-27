@@ -58,35 +58,44 @@ defmodule CenWeb.Router do
         live "/confirm_email/:token", CredentialsLive, :confirm_email
       end
 
-      scope "/organizations", OrganizationLive do
+      scope "/me/orgs", OrganizationLive do
         live "/", Index
         live "/new", Form, :create
         live "/:id", Show
         live "/:id/edit", Form, :update
       end
 
-      scope "/vacancies", VacancyLive do
-        live "/search", Search
-
+      scope "/me/jobs", VacancyLive do
         live "/", Index
         live "/new", Form, :create
         live "/:id", Show, :show
-        live "/:id/choose_resume", Show, :choose_resume
         live "/:id/edit", Form, :update
       end
 
-      scope "/resumes", ResumeLive do
-        live "/search", Search
-
+      scope "/me/cvs", ResumeLive do
         live "/", Index
         live "/new", Form, :create
         live "/:id", Show, :show
-        live "/:id/choose_vacancy", Show, :choose_vacancy
         live "/:id/edit", Form, :update
       end
 
-      live "/me/interactions/sended", InteractionLive, :sended
-      live "/me/interactions/received", InteractionLive, :received
+      live "/orgs/:id", OrganizationLive.Show
+
+      live "/jobs/search", VacancyLive.Search
+      live "/jobs/:id", VacancyLive.Show, :show
+      live "/jobs/:id/choose_resume", VacancyLive.Show, :choose_resume
+
+      live "/cvs/search", ResumeLive.Search
+      live "/cvs/:id", ResumeLive.Show, :show
+      live "/cvs/:id/choose_vacancy", ResumeLive.Show, :choose_resume
+
+      live "/me/res", InteractionLive, :responses
+      live "/me/res/jobs/:id", VacancyLive.Show, :show
+      live "/me/res/cvs/:id", ResumeLive.Show, :show
+
+      live "/me/invs", InteractionLive, :invitations
+      live "/me/invs/jobs/:id", VacancyLive.Show, :show
+      live "/me/invs/cvs/:id", ResumeLive.Show, :show
     end
   end
 

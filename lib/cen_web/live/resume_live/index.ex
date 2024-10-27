@@ -17,7 +17,7 @@ defmodule CenWeb.ResumeLive.Index do
           <%= dgettext("publications", "Мои резюме") %>
         </.header>
         <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/resumes/new")}>
+          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/me/cvs/new")}>
             <.icon name="cen-plus" alt={gettext("Создать")} />
           </.button>
         </div>
@@ -29,7 +29,7 @@ defmodule CenWeb.ResumeLive.Index do
               <p class="text-title-text mt-2.5">
                 <%= @current_user.fullname %>, <%= Accounts.calculate_user_age(@current_user) %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/resumes/#{resume}")}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/me/cvs/#{resume}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -47,7 +47,7 @@ defmodule CenWeb.ResumeLive.Index do
     resumes = Publications.list_resumes_for(user)
 
     if resumes == [] do
-      {:ok, push_navigate(socket, to: ~p"/resumes/new")}
+      {:ok, push_navigate(socket, to: ~p"/me/cvs/new")}
     else
       {:ok, assign(socket, resumes: resumes)}
     end

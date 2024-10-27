@@ -176,7 +176,7 @@ defmodule CenWeb.OrganizationLive.Form do
       {:ok, organization} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/organizations/#{organization}")
+         |> push_navigate(to: ~p"/me/orgs/#{organization}")
          |> put_flash(:info, dgettext("orgs", "Организация успешно создана."))}
 
       {:error, changeset} ->
@@ -191,7 +191,7 @@ defmodule CenWeb.OrganizationLive.Form do
       {:ok, _organization} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/organizations/#{organization}")
+         |> push_navigate(to: ~p"/me/orgs/#{organization}")
          |> put_flash(:info, dgettext("orgs", "Организация успешно обновлена."))}
 
       {:error, changeset} ->

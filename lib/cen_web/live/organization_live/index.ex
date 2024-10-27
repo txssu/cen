@@ -16,7 +16,7 @@ defmodule CenWeb.OrganizationLive.Index do
           <%= dgettext("orgs", "Мои организации") %>
         </.header>
         <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/organizations/new")}>
+          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/me/orgs/new")}>
             <.icon name="cen-plus" alt={dgettext("orgs", "Создать")} />
           </.button>
         </div>
@@ -28,7 +28,7 @@ defmodule CenWeb.OrganizationLive.Index do
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= organization.address %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/organizations/#{organization}")}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/me/orgs/#{organization}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -46,7 +46,7 @@ defmodule CenWeb.OrganizationLive.Index do
     organizations = Employers.list_organizations_for(user)
 
     if organizations == [] do
-      {:ok, push_navigate(socket, to: ~p"/organizations/new")}
+      {:ok, push_navigate(socket, to: ~p"/me/orgs/new")}
     else
       {:ok, assign(socket, organizations: organizations)}
     end

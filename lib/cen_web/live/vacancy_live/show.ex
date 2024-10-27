@@ -40,7 +40,7 @@ defmodule CenWeb.VacancyLive.Show do
 
         <div class="flex gap-2.5 lg:col-span-12">
           <%= if has_permission?(@current_user, @vacancy, :update) do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/vacancies/#{@vacancy}/edit")}>
+            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/me/jobs/#{@vacancy}/edit")}>
               <%= gettext("Редактировать") %>
             </.regular_button>
             <.button class="bg-white p-4" phx-click="delete_vacancy">
@@ -48,7 +48,7 @@ defmodule CenWeb.VacancyLive.Show do
             </.button>
           <% end %>
           <%= if @current_user.role == :applicant do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/vacancies/#{@vacancy}/choose_resume")}>
+            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/choose_resume")}>
               <%= dgettext("publications", "Откликнуться") %>
             </.regular_button>
           <% end %>
@@ -81,7 +81,7 @@ defmodule CenWeb.VacancyLive.Show do
       </div>
     </div>
 
-    <.modal id="choose_resume" show={@show_resume_modal} on_cancel={JS.patch(~p"/vacancies/#{@vacancy}")}>
+    <.modal id="choose_resume" show={@show_resume_modal} on_cancel={JS.patch(~p"/jobs/#{@vacancy}")}>
       <.header class="mb-4" header_kind="black_left">
         <%= dgettext("publications", "Выберите резюме") %>
         <.simple_form for={@select_resume_form} phx-submit="choose_resume">
@@ -164,27 +164,41 @@ defmodule CenWeb.VacancyLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def mount(%{"id" => id} = params, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
     vacancy = Publications.get_vacancy!(id)
     verify_has_permission!(socket.assigns.current_user, vacancy, :show)
 
-    back_link = get_back_link(params)
-
-    {:ok, assign(socket, vacancy: vacancy, back_link: back_link, select_resume_form: to_form(%{}), resumes: [])}
+    {:ok, assign(socket, vacancy: vacancy, select_resume_form: to_form(%{}), resumes: [])}
   end
 
   @impl Phoenix.LiveView
-  def handle_params(_params, _uri, socket) do
+  def handle_params(_params, uri, socket) do
+    {:noreply, socket |> assign_interactions() |> assign_back_link(uri)}
+  end
+
+  defp assign_interactions(socket) do
     case socket.assigns.live_action do
-      :show -> {:noreply, assign(socket, show_resume_modal: false)}
-      :choose_resume -> {:noreply, socket |> assign(show_resume_modal: true) |> maybe_send_interaction()}
+      :show -> assign(socket, show_resume_modal: false)
+      :choose_resume -> socket |> assign(show_resume_modal: true) |> maybe_send_interaction()
     end
+  end
+
+  defp assign_back_link(socket, uri) do
+    back_link =
+      case uri |> String.split("/", trim: true) |> Enum.drop(2) |> dbg() do
+        ["me", "invs" | _rest] -> ~p"/me/invs"
+        ["me", "res" | _rest] -> ~p"/me/res"
+        ["me" | _rest] -> ~p"/me/jobs"
+        _other -> ~p"/jobs/search"
+      end
+
+    assign(socket, back_link: back_link)
   end
 
   @impl Phoenix.LiveView
   def handle_event("delete_vacancy", _params, socket) do
     Publications.delete_vacancy(socket.assigns.vacancy)
-    {:noreply, push_navigate(socket, to: ~p"/vacancies")}
+    {:noreply, push_navigate(socket, to: ~p"/me/jobs")}
   end
 
   def handle_event("choose_resume", %{"resume_id" => resume_id}, socket) do
@@ -201,7 +215,7 @@ defmodule CenWeb.VacancyLive.Show do
   defp send_interaction([], socket) do
     socket
     |> put_flash(:error, dgettext("publications", "Сначала вам нужно создать хотя бы одно резюме"))
-    |> push_navigate(to: ~p"/resumes")
+    |> push_navigate(to: ~p"/me/cvs")
   end
 
   defp send_interaction([resume], socket) do
@@ -209,21 +223,14 @@ defmodule CenWeb.VacancyLive.Show do
 
     case Publications.create_interaction_from_resume(resume: resume, vacancy: vacancy) do
       {:ok, _interaction} ->
-        socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/vacancies/#{vacancy}")
+        socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
 
       {:error, _changeset} ->
-        socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/vacancies/#{vacancy}")
+        socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
     end
   end
 
   defp send_interaction(resumes, socket) do
     assign(socket, resumes: resumes)
-  end
-
-  defp get_back_link(params) do
-    case params do
-      %{"back" => "search"} -> ~p"/vacancies/search"
-      _other -> ~p"/vacancies"
-    end
   end
 end

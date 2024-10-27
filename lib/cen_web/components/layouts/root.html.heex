@@ -22,49 +22,49 @@
         <%= if @current_user do %>
           <%= if @current_user.role == :employer do %>
             <li>
-              <.navbar_link navigate={~p"/resumes/search"}>
+              <.navbar_link navigate={~p"/cvs/search"}>
                 <%= dgettext("users", "Искать резюме") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/organizations"}>
+              <.navbar_link navigate={~p"/me/orgs"}>
                 <%= dgettext("users", "Организации") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/vacancies"}>
+              <.navbar_link navigate={~p"/me/jobs"}>
                 <%= dgettext("users", "Вакансии") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/me/interactions/received"}>
+              <.navbar_link navigate={~p"/me/res"}>
                 <%= dgettext("users", "Отклики") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/me/interactions/sended"}>
+              <.navbar_link navigate={~p"/me/invs"}>
                 <%= dgettext("users", "Приглашения") %>
               </.navbar_link>
             </li>
           <% end %>
           <%= if @current_user.role == :applicant do %>
             <li>
-              <.navbar_link navigate={~p"/vacancies/search"}>
+              <.navbar_link navigate={~p"/jobs/search"}>
                 <%= dgettext("users", "Искать вакансии") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/resumes"}>
+              <.navbar_link navigate={~p"/me/cvs"}>
                 <%= dgettext("users", "Резюме") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/me/interactions/sended"}>
+              <.navbar_link navigate={~p"/me/res"}>
                 <%= dgettext("users", "Отклики") %>
               </.navbar_link>
             </li>
             <li>
-              <.navbar_link navigate={~p"/me/interactions/received"}>
+              <.navbar_link navigate={~p"/me/invs"}>
                 <%= dgettext("users", "Приглашения") %>
               </.navbar_link>
             </li>

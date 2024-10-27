@@ -14,7 +14,7 @@ defmodule CenWeb.InteractionLive do
       </.header>
       <ul class="mt-7 space-y-6">
         <%= for interaction <- @interactions do %>
-          <.interest_list_item interaction={interaction} rendered_entity={@rendered_entity} />
+          <.interest_list_item interaction={interaction} initiator={@initiator} rendered_entity={@rendered_entity} />
         <% end %>
         <%= if @interactions == [] do %>
           <%= gettext("Тут пока пусто") %>
@@ -24,8 +24,16 @@ defmodule CenWeb.InteractionLive do
     """
   end
 
-  defp interest_list_item(%{rendered_entity: :resume} = assigns) do
-    assigns = assign(assigns, resume: assigns.interaction.resume)
+  defp interest_list_item(%{rendered_entity: :resume, initiator: initiator} = assigns) do
+    resume = assigns.interaction.resume
+
+    resume_link =
+      case initiator do
+        :resume -> ~p"/me/res/cvs/#{resume.id}"
+        :vacancy -> ~p"/me/invs/cvs/#{resume.id}"
+      end
+
+    assigns = assign(assigns, resume: resume, resume_link: resume_link)
 
     ~H"""
     <li>
@@ -33,7 +41,7 @@ defmodule CenWeb.InteractionLive do
         <p class="text-title-text mt-2.5">
           <%= @resume.user.fullname %>, <%= Accounts.calculate_user_age(@resume.user) %>
         </p>
-        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/resumes/#{@resume}")}>
+        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(@resume_link)}>
           <%= gettext("Открыть") %>
         </.regular_button>
       </.basic_card>
@@ -41,8 +49,16 @@ defmodule CenWeb.InteractionLive do
     """
   end
 
-  defp interest_list_item(%{rendered_entity: :vacancy} = assigns) do
-    assigns = assign(assigns, vacancy: assigns.interaction.vacancy)
+  defp interest_list_item(%{rendered_entity: :vacancy, initiator: initiator} = assigns) do
+    vacancy = assigns.interaction.vacancy
+
+    vacancy_link =
+      case initiator do
+        :resume -> ~p"/me/res/jobs/#{vacancy.id}"
+        :vacancy -> ~p"/me/invs/jobs/#{vacancy.id}"
+      end
+
+    assigns = assign(assigns, vacancy: vacancy, vacancy_link: vacancy_link)
 
     ~H"""
     <li>
@@ -53,7 +69,7 @@ defmodule CenWeb.InteractionLive do
         <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
           <%= @vacancy.organization.name %>
         </p>
-        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/vacancies/#{@vacancy}")}>
+        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(@vacancy_link)}>
           <%= gettext("Открыть") %>
         </.regular_button>
       </.basic_card>
@@ -66,11 +82,9 @@ defmodule CenWeb.InteractionLive do
     user = socket.assigns.current_user
 
     initiator =
-      case {socket.assigns.live_action, user.role} do
-        {:received, :employer} -> :resume
-        {:sended, :applicant} -> :resume
-        {:received, :applicant} -> :vacancy
-        {:sended, :employer} -> :vacancy
+      case socket.assigns.live_action do
+        :responses -> :resume
+        :invitations -> :vacancy
       end
 
     interactions = Publications.list_interactions_for(user, initiator)
