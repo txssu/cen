@@ -642,18 +642,6 @@ defmodule CenWeb.CoreComponents do
     """
   end
 
-  attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)
-
-  slot :inner_block, required: true
-
-  def navbar_link(assigns) do
-    ~H"""
-    <.link class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent" {@rest}>
-      <%= render_slot(@inner_block) %>
-    </.link>
-    """
-  end
-
   attr :text, :string, required: true
 
   attr :rest, :global, include: ~w(navigate patch href replace method csrf_token download hreflang referrerpolicy rel target type)

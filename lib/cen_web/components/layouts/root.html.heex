@@ -13,80 +13,35 @@
   </head>
   <body class="bg-background flex h-screen flex-col justify-between">
     <div class="shadow-navbar relative z-10">
-      <ul class="h-[5.125rem] container mx-auto flex items-center justify-start gap-10">
+      <ul class="container mx-auto hidden h-20 items-center justify-start gap-10 lg:flex">
         <li>
           <.link href={~p"/"}>
             <img src={~p"/images/logo.svg"} height="30" alt={dgettext("alt", "Логотип ТОН")} />
           </.link>
         </li>
-        <%= if @current_user do %>
-          <%= if @current_user.role == :employer do %>
-            <li>
-              <.navbar_link navigate={~p"/cvs/search"}>
-                <%= dgettext("users", "Искать резюме") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/orgs"}>
-                <%= dgettext("users", "Организации") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/jobs"}>
-                <%= dgettext("users", "Вакансии") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/res"}>
-                <%= dgettext("users", "Отклики") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/invs"}>
-                <%= dgettext("users", "Приглашения") %>
-              </.navbar_link>
-            </li>
-          <% end %>
-          <%= if @current_user.role == :applicant do %>
-            <li>
-              <.navbar_link navigate={~p"/jobs/search"}>
-                <%= dgettext("users", "Искать вакансии") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/cvs"}>
-                <%= dgettext("users", "Резюме") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/res"}>
-                <%= dgettext("users", "Отклики") %>
-              </.navbar_link>
-            </li>
-            <li>
-              <.navbar_link navigate={~p"/me/invs"}>
-                <%= dgettext("users", "Приглашения") %>
-              </.navbar_link>
-            </li>
-          <% end %>
-          <li class="ml-auto">
-            <.link navigate={~p"/users/settings/personal"}>
-              <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
-            </.link>
-          </li>
-        <% else %>
-          <li class="ml-auto">
-            <.navbar_link navigate={~p"/users/register"}>
-              <%= dgettext("users", "Регистрация") %>
-            </.navbar_link>
-          </li>
-          <li>
-            <.navbar_link navigate={~p"/users/log_in"}>
-              <%= dgettext("users", "Вход") %>
-            </.navbar_link>
-          </li>
-        <% end %>
+        <.menu_items current_user={@current_user} horizontal />
       </ul>
+      <div class="lg:hidden">
+        <div class="container mx-auto h-20">
+          <div class="flex h-full items-center gap-9">
+            <.link href={~p"/"}>
+              <img src={~p"/images/logo.svg"} height="30" alt={dgettext("alt", "Логотип ТОН")} />
+            </.link>
+            <div class="translate-x-[27px] ml-auto h-20 w-20">
+              <button type="button" class="h-full w-full" title={dgettext("alt", "Open menu")} phx-click={toggle_menu()}>
+                <div class="flex justify-center">
+                  <.icon name="cen-menu" />
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="container mx-auto">
+          <ul id="navbar-menu" class="hidden -translate-y-3 flex-col">
+            <.menu_items current_user={@current_user} />
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="cen-background grow">
       <%= @inner_content %>
