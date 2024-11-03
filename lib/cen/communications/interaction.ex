@@ -1,4 +1,4 @@
-defmodule Cen.Publications.Interaction do
+defmodule Cen.Communications.Interaction do
   @moduledoc false
   use Ecto.Schema
 

@@ -3,6 +3,7 @@ defmodule CenWeb.InteractionLive do
   use CenWeb, :live_view
 
   alias Cen.Accounts
+  alias Cen.Communications
   alias Cen.Publications
 
   @impl Phoenix.LiveView
@@ -87,7 +88,7 @@ defmodule CenWeb.InteractionLive do
         :invitations -> :vacancy
       end
 
-    interactions = Publications.list_interactions_for(user, initiator)
+    interactions = Communications.list_interactions_for(user, initiator)
 
     rendered_entity =
       case user.role do

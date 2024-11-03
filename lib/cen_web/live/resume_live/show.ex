@@ -5,6 +5,7 @@ defmodule CenWeb.ResumeLive.Show do
   import Cen.Permissions
   import Cen.Publications.Enums
 
+  alias Cen.Communications
   alias Cen.Publications
   alias Cen.Utils.CalendarTranslations
   alias Cen.Utils.GettextEnums
@@ -200,7 +201,7 @@ defmodule CenWeb.ResumeLive.Show do
   defp send_interaction([vacancy], socket) do
     resume = socket.assigns.resume
 
-    case Publications.create_interaction_from_vacancy(vacancy: vacancy, resume: resume) do
+    case Communications.create_interaction_from_vacancy(vacancy: vacancy, resume: resume) do
       {:ok, _interaction} ->
         socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/cvs/#{resume}")
 

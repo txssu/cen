@@ -5,6 +5,7 @@ defmodule CenWeb.VacancyLive.Show do
   import Cen.Permissions
   import Cen.Publications.Enums
 
+  alias Cen.Communications
   alias Cen.Publications
   alias Cen.Publications.Vacancy
 
@@ -221,7 +222,7 @@ defmodule CenWeb.VacancyLive.Show do
   defp send_interaction([resume], socket) do
     vacancy = socket.assigns.vacancy
 
-    case Publications.create_interaction_from_resume(resume: resume, vacancy: vacancy) do
+    case Communications.create_interaction_from_resume(resume: resume, vacancy: vacancy) do
       {:ok, _interaction} ->
         socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
 
