@@ -4,6 +4,7 @@ defmodule Cen.Communications.Interaction do
 
   import Ecto.Changeset
 
+  alias Cen.Communications.Message
   alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
 
@@ -15,6 +16,10 @@ defmodule Cen.Communications.Interaction do
 
     field :initiator, Ecto.Enum, values: [:resume, :vacancy]
     field :status, Ecto.Enum, values: [:pending, :accepted, :rejected], default: :pending
+
+    has_many :messages, Message
+
+    field :latest_message, :map, virtual: true
 
     timestamps(type: :utc_datetime)
   end

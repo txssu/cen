@@ -50,7 +50,7 @@ defmodule CenWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{CenWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [{CenWeb.UserAuth, :ensure_authenticated}, CenWeb.ChatHook] do
       scope "/users/settings", UserSettings do
         live "/personal", PersonalInfoLive
         live "/personal/delete", PersonalInfoLive, :confirm_delete_user
@@ -87,7 +87,7 @@ defmodule CenWeb.Router do
 
       live "/cvs/search", ResumeLive.Search
       live "/cvs/:id", ResumeLive.Show, :show
-      live "/cvs/:id/choose_vacancy", ResumeLive.Show, :choose_resume
+      live "/cvs/:id/choose_vacancy", ResumeLive.Show, :choose_vacancy
 
       live "/me/res", InteractionLive, :responses
       live "/me/res/jobs/:id", VacancyLive.Show, :show
@@ -102,13 +102,12 @@ defmodule CenWeb.Router do
   scope "/", CenWeb do
     pipe_through [:browser]
 
-    live "/", HomeLive
-
     delete "/users", UserController, :delete
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
-      on_mount: [{CenWeb.UserAuth, :mount_current_user}] do
+      on_mount: [{CenWeb.UserAuth, :mount_current_user}, CenWeb.ChatHook] do
+      live "/", HomeLive
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
     end

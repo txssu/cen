@@ -34,7 +34,6 @@ defmodule Cen.Publications do
   def create_vacancy_for(user, organization, attrs) do
     %Vacancy{user_id: user.id, organization_id: organization.id}
     |> Vacancy.changeset(attrs)
-    |> dbg()
     |> Repo.insert()
   end
 

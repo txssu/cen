@@ -115,6 +115,8 @@ defmodule CenWeb.ResumeLive.Show do
         <.simple_form for={@select_vacancy_form} phx-submit="choose_vacancy">
           <.input field={@select_vacancy_form[:vacancy_id]} type="select" options={@vacancies |> Enum.map(&{&1.job_title, &1.id})} />
 
+          <.input field={@select_vacancy_form[:message_text]} type="textarea" label={dgettext("publications", "Сообщение")} />
+
           <:actions>
             <.arrow_button>
               <%= dgettext("publications", "Выбрать") %>
@@ -148,7 +150,7 @@ defmodule CenWeb.ResumeLive.Show do
     resume = Publications.get_resume!(id)
     verify_has_permission!(socket.assigns.current_user, resume, :show)
 
-    {:ok, assign(socket, resume: resume, select_vacancy_form: to_form(%{}), vacancies: [])}
+    {:ok, assign(socket, resume: resume, select_vacancy_form: to_form(%{}, as: "select_vacancy_params"), vacancies: [])}
   end
 
   @impl Phoenix.LiveView
@@ -181,9 +183,10 @@ defmodule CenWeb.ResumeLive.Show do
     {:noreply, push_navigate(socket, to: ~p"/me/cvs")}
   end
 
-  def handle_event("choose_vacancy", %{"vacancy_id" => vacancy_id}, socket) do
+  def handle_event("choose_vacancy", %{"select_vacancy_params" => select_vacancy_params}, socket) do
+    %{"vacancy_id" => vacancy_id, "message_text" => message_text} = select_vacancy_params
     vacancy = Enum.find(socket.assigns.vacancies, &(&1.id == String.to_integer(vacancy_id)))
-    {:noreply, send_interaction([vacancy], socket)}
+    {:noreply, send_interaction(vacancy, message_text, socket)}
   end
 
   defp maybe_send_interaction(socket) do
@@ -198,19 +201,22 @@ defmodule CenWeb.ResumeLive.Show do
     |> push_navigate(to: ~p"/me/jobs")
   end
 
-  defp send_interaction([vacancy], socket) do
-    resume = socket.assigns.resume
+  defp send_interaction(vacancies, socket) do
+    assign(socket, vacancies: vacancies)
+  end
 
-    case Communications.create_interaction_from_vacancy(vacancy: vacancy, resume: resume) do
+  defp send_interaction(vacancy, message_text, socket) do
+    resume = socket.assigns.resume
+    user_id = socket.assigns.current_user.id
+
+    message_attrs = %{user_id: user_id, text: message_text}
+
+    case Communications.create_interaction_from_vacancy(vacancy: vacancy, resume: resume, message_attrs: message_attrs) do
       {:ok, _interaction} ->
         socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/cvs/#{resume}")
 
       {:error, _changeset} ->
         socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/cvs/#{resume}")
     end
-  end
-
-  defp send_interaction(vacancies, socket) do
-    assign(socket, vacancies: vacancies)
   end
 end

@@ -22,7 +22,22 @@ defmodule CenWeb.RootComponents do
         <.navbar_link navigate={~p"/me/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
         <.navbar_link navigate={~p"/me/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
       <% end %>
-      <.navbar_link navigate={~p"/users/settings/personal"} horizontal={@horizontal} to_right>
+      <.navbar_list_item horizontal={@horizontal} to_right>
+        <button
+          type="button"
+          class="text-navbargray leading-[1.35] block h-full w-full text-left text-xl font-light no-underline hover:text-accent"
+          phx-click={show_modal("chat_modal")}
+        >
+          <%= if @horizontal do %>
+            <div class="h-6 w-6">
+              <.icon name="cen-chat" />
+            </div>
+          <% else %>
+            <%= dgettext("users", "Сообщения") %>
+          <% end %>
+        </button>
+      </.navbar_list_item>
+      <.navbar_link navigate={~p"/users/settings/personal"} horizontal={@horizontal}>
         <%= if @horizontal do %>
           <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
         <% else %>
@@ -71,12 +86,32 @@ defmodule CenWeb.RootComponents do
     assigns = assign(assigns, :class, class)
 
     ~H"""
-    <li class={@class}>
+    <.navbar_list_item horizontal={@horizontal} to_right={@to_right}>
       <.link class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent w-full h-full block" phx-click={hide_menu()} {@rest}>
         <div class="flex h-full items-center">
           <%= render_slot(@inner_block) %>
         </div>
       </.link>
+    </.navbar_list_item>
+    """
+  end
+
+  attr :horizontal, :boolean, default: false
+  attr :to_right, :boolean, default: false
+
+  slot :inner_block, required: true
+
+  defp navbar_list_item(assigns) do
+    height = if not assigns.horizontal, do: "h-12"
+    to_right = if assigns.to_right and assigns.horizontal, do: "ml-auto"
+
+    class = [height, to_right] |> Enum.filter(& &1) |> Enum.join(" ")
+
+    assigns = assign(assigns, :class, class)
+
+    ~H"""
+    <li class={@class}>
+      <%= render_slot(@inner_block) %>
     </li>
     """
   end

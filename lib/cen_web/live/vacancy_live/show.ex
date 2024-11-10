@@ -88,6 +88,8 @@ defmodule CenWeb.VacancyLive.Show do
         <.simple_form for={@select_resume_form} phx-submit="choose_resume">
           <.input field={@select_resume_form[:resume_id]} type="select" options={@resumes |> Enum.map(&{&1.job_title, &1.id})} />
 
+          <.input field={@select_resume_form[:message_text]} type="textarea" label={dgettext("publications", "Сообщение")} />
+
           <:actions>
             <.arrow_button>
               <%= dgettext("publications", "Выбрать") %>
@@ -169,7 +171,7 @@ defmodule CenWeb.VacancyLive.Show do
     vacancy = Publications.get_vacancy!(id)
     verify_has_permission!(socket.assigns.current_user, vacancy, :show)
 
-    {:ok, assign(socket, vacancy: vacancy, select_resume_form: to_form(%{}), resumes: [])}
+    {:ok, assign(socket, vacancy: vacancy, select_resume_form: to_form(%{}, as: "select_resume_form"), resumes: [])}
   end
 
   @impl Phoenix.LiveView
@@ -186,7 +188,7 @@ defmodule CenWeb.VacancyLive.Show do
 
   defp assign_back_link(socket, uri) do
     back_link =
-      case uri |> String.split("/", trim: true) |> Enum.drop(2) |> dbg() do
+      case uri |> String.split("/", trim: true) |> Enum.drop(2) do
         ["me", "invs" | _rest] -> ~p"/me/invs"
         ["me", "res" | _rest] -> ~p"/me/res"
         ["me" | _rest] -> ~p"/me/jobs"
@@ -202,9 +204,10 @@ defmodule CenWeb.VacancyLive.Show do
     {:noreply, push_navigate(socket, to: ~p"/me/jobs")}
   end
 
-  def handle_event("choose_resume", %{"resume_id" => resume_id}, socket) do
+  def handle_event("choose_resume", %{"select_resume_form" => select_resume_params}, socket) do
+    %{"resume_id" => resume_id, "message_text" => message_text} = select_resume_params
     resume = Enum.find(socket.assigns.resumes, &(&1.id == String.to_integer(resume_id)))
-    {:noreply, send_interaction([resume], socket)}
+    {:noreply, send_interaction(resume, message_text, socket)}
   end
 
   defp maybe_send_interaction(socket) do
@@ -219,19 +222,23 @@ defmodule CenWeb.VacancyLive.Show do
     |> push_navigate(to: ~p"/me/cvs")
   end
 
-  defp send_interaction([resume], socket) do
+  defp send_interaction(resumes, socket) do
+    assign(socket, resumes: resumes)
+  end
+
+  defp send_interaction(resume, message_text, socket) do
     vacancy = socket.assigns.vacancy
 
-    case Communications.create_interaction_from_resume(resume: resume, vacancy: vacancy) do
+    user_id = socket.assigns.current_user.id
+
+    message_attrs = %{user_id: user_id, text: message_text}
+
+    case Communications.create_interaction_from_resume(resume: resume, vacancy: vacancy, message_attrs: message_attrs) do
       {:ok, _interaction} ->
         socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
 
       {:error, _changeset} ->
         socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
     end
-  end
-
-  defp send_interaction(resumes, socket) do
-    assign(socket, resumes: resumes)
   end
 end
