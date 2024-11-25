@@ -40,7 +40,7 @@ defmodule Cen.MixProject do
       {:bcrypt_elixir, "~> 3.0"},
       # Code quality
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:styler, "~> 1.1.1", only: [:dev, :test], runtime: false},
+      {:styler, "~> 1.2.1", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       {:mix_audit, "~> 2.1.2", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
