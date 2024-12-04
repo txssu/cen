@@ -10,6 +10,11 @@ defmodule Cen.Employers do
   @spec get_organization!(id :: integer() | binary()) :: Organization.t()
   def get_organization!(id), do: Repo.get!(Organization, id)
 
+  @spec list_organizations() :: [Organization.t()]
+  def list_organizations do
+    Repo.all(Organization)
+  end
+
   @spec list_organizations_for(User.t()) :: [Organization.t()]
   def list_organizations_for(user) do
     user

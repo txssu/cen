@@ -80,6 +80,7 @@ defmodule CenWeb.Router do
       end
 
       live "/orgs/:id", OrganizationLive.Show
+      live "/orgs", OrganizationLive.Index, :admin_index
 
       live "/jobs/search", VacancyLive.Search
       live "/jobs/:id", VacancyLive.Show, :show

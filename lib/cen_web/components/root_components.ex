@@ -22,6 +22,11 @@ defmodule CenWeb.RootComponents do
         <.navbar_link navigate={~p"/me/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
         <.navbar_link navigate={~p"/me/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
       <% end %>
+      <%= if @current_user.role == :admin do %>
+        <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>
+        <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}><%= dgettext("users", "Вакансии") %></.navbar_link>
+        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
+      <% end %>
       <.navbar_list_item horizontal={@horizontal} to_right>
         <button
           type="button"
