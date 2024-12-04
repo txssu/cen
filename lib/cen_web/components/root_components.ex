@@ -11,16 +11,16 @@ defmodule CenWeb.RootComponents do
     <%= if @current_user do %>
       <%= if @current_user.role == :employer do %>
         <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Искать резюме") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/jobs"} horizontal={@horizontal}><%= dgettext("users", "Вакансии") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
+        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
+        <.navbar_link navigate={~p"/jobs"} horizontal={@horizontal}><%= dgettext("users", "Вакансии") %></.navbar_link>
+        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
+        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
       <% end %>
       <%= if @current_user.role == :applicant do %>
         <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}><%= dgettext("users", "Искать вакансии") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/cvs"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
-        <.navbar_link navigate={~p"/me/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
+        <.navbar_link navigate={~p"/cvs"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>
+        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
+        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
       <% end %>
       <%= if @current_user.role == :admin do %>
         <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>

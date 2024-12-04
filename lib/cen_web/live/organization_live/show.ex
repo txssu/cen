@@ -37,7 +37,7 @@ defmodule CenWeb.OrganizationLive.Show do
         </div>
 
         <div :if={has_permission?(@current_user, @organization, :update)} class="flex gap-2.5 lg:col-span-12">
-          <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/me/orgs/#{@organization}/edit")}>
+          <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/orgs/#{@organization}/edit")}>
             <%= gettext("Редактировать") %>
           </.regular_button>
           <.button class="bg-white p-4" phx-click="delete_organization">
@@ -59,7 +59,7 @@ defmodule CenWeb.OrganizationLive.Show do
         </section>
 
         <div class="col-span-12">
-          <.arrow_button arrow_direction="left" phx-click={JS.navigate(~p"/me/orgs")}>
+          <.arrow_button arrow_direction="left" phx-click={JS.navigate(~p"/orgs")}>
             <%= dgettext("orgs", "Вернуться к организациям") %>
           </.arrow_button>
         </div>
@@ -78,7 +78,7 @@ defmodule CenWeb.OrganizationLive.Show do
   @impl Phoenix.LiveView
   def handle_event("delete_organization", _params, socket) do
     Employers.delete_organization(socket.assigns.organization)
-    {:noreply, push_navigate(socket, to: ~p"/me/orgs")}
+    {:noreply, push_navigate(socket, to: ~p"/orgs")}
   end
 
   defp contacts_list(organization) do

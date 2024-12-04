@@ -13,10 +13,10 @@ defmodule CenWeb.OrganizationLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= title_text(@action) %>
+          <%= title_text(@current_user.role) %>
         </.header>
         <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/me/orgs/new")}>
+          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/orgs/new")}>
             <.icon name="cen-plus" alt={dgettext("orgs", "Создать")} />
           </.button>
         </div>
@@ -28,7 +28,7 @@ defmodule CenWeb.OrganizationLive.Index do
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
                 <%= organization.address %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/me/orgs/#{organization}")}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/orgs/#{organization}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -39,37 +39,29 @@ defmodule CenWeb.OrganizationLive.Index do
     """
   end
 
-  defp title_text(action) do
-    case action do
-      :index -> dgettext("orgs", "Мои организации")
-      :admin_index -> dgettext("orgs", "Организации")
+  defp title_text(role) do
+    case role do
+      :admin -> dgettext("orgs", "Организации")
+      _other -> dgettext("orgs", "Мои организации")
     end
   end
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     user = socket.assigns.current_user
-    action = fetch_action(socket)
 
-    verify_has_permission!(user, :organizations, action)
+    verify_has_permission!(user, :organizations, :index)
 
     organizations =
-      case action do
-        :index -> Employers.list_organizations_for(user)
-        :admin_index -> Employers.list_organizations()
+      case user.role do
+        :admin -> Employers.list_organizations()
+        _other -> Employers.list_organizations_for(user)
       end
 
-    if organizations == [] do
-      {:ok, push_navigate(socket, to: ~p"/me/orgs/new")}
+    if organizations == [] and user.role != :admin do
+      {:ok, push_navigate(socket, to: ~p"/orgs/new")}
     else
-      {:ok, assign(socket, organizations: organizations, action: action)}
-    end
-  end
-
-  defp fetch_action(socket) do
-    case socket.assigns.live_action do
-      nil -> :index
-      action -> action
+      {:ok, assign(socket, organizations: organizations, current_user: user)}
     end
   end
 end

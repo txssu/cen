@@ -209,7 +209,7 @@ defmodule CenWeb.ResumeLive.Form do
       {:ok, resume} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/me/cvs/#{resume}")
+         |> push_navigate(to: ~p"/cvs/#{resume}")
          |> put_flash(:info, dgettext("publications", "Резюме успешно создано."))}
 
       {:error, changeset} ->
@@ -224,7 +224,7 @@ defmodule CenWeb.ResumeLive.Form do
       {:ok, _resume} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/me/cvs/#{resume}")
+         |> push_navigate(to: ~p"/cvs/#{resume}")
          |> put_flash(:info, dgettext("publications", "Резюме успешно обновлено."))}
 
       {:error, changeset} ->

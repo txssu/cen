@@ -58,45 +58,44 @@ defmodule CenWeb.Router do
         live "/confirm_email/:token", CredentialsLive, :confirm_email
       end
 
-      scope "/me/orgs", OrganizationLive do
+      scope "/orgs", OrganizationLive do
         live "/", Index
         live "/new", Form, :create
         live "/:id", Show
         live "/:id/edit", Form, :update
       end
 
-      scope "/me/jobs", VacancyLive do
+      scope "/jobs", VacancyLive do
         live "/", Index
+
+        live "/search", Search
+
         live "/new", Form, :create
-        live "/:id", Show, :show
         live "/:id/edit", Form, :update
+
+        live "/:id", Show, :show
+        live "/:id/choose_resume", Show, :choose_resume
       end
 
-      scope "/me/cvs", ResumeLive do
+      scope "/cvs", ResumeLive do
         live "/", Index
+
+        live "/search", Search
+
         live "/new", Form, :create
-        live "/:id", Show, :show
         live "/:id/edit", Form, :update
+
+        live "/:id", Show, :show
+        live "/:id/choose_vacancy", Show, :choose_vacancy
       end
 
-      live "/orgs/:id", OrganizationLive.Show
-      live "/orgs", OrganizationLive.Index, :admin_index
+      live "/res", InteractionLive, :responses
+      live "/res/jobs/:id", VacancyLive.Show, :show
+      live "/res/cvs/:id", ResumeLive.Show, :show
 
-      live "/jobs/search", VacancyLive.Search
-      live "/jobs/:id", VacancyLive.Show, :show
-      live "/jobs/:id/choose_resume", VacancyLive.Show, :choose_resume
-
-      live "/cvs/search", ResumeLive.Search
-      live "/cvs/:id", ResumeLive.Show, :show
-      live "/cvs/:id/choose_vacancy", ResumeLive.Show, :choose_vacancy
-
-      live "/me/res", InteractionLive, :responses
-      live "/me/res/jobs/:id", VacancyLive.Show, :show
-      live "/me/res/cvs/:id", ResumeLive.Show, :show
-
-      live "/me/invs", InteractionLive, :invitations
-      live "/me/invs/jobs/:id", VacancyLive.Show, :show
-      live "/me/invs/cvs/:id", ResumeLive.Show, :show
+      live "/invs", InteractionLive, :invitations
+      live "/invs/jobs/:id", VacancyLive.Show, :show
+      live "/invs/cvs/:id", ResumeLive.Show, :show
     end
   end
 

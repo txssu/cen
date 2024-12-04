@@ -30,8 +30,8 @@ defmodule CenWeb.InteractionLive do
 
     resume_link =
       case initiator do
-        :resume -> ~p"/me/res/cvs/#{resume.id}"
-        :vacancy -> ~p"/me/invs/cvs/#{resume.id}"
+        :resume -> ~p"/res/cvs/#{resume.id}"
+        :vacancy -> ~p"/invs/cvs/#{resume.id}"
       end
 
     assigns = assign(assigns, resume: resume, resume_link: resume_link)
@@ -55,8 +55,8 @@ defmodule CenWeb.InteractionLive do
 
     vacancy_link =
       case initiator do
-        :resume -> ~p"/me/res/jobs/#{vacancy.id}"
-        :vacancy -> ~p"/me/invs/jobs/#{vacancy.id}"
+        :resume -> ~p"/res/jobs/#{vacancy.id}"
+        :vacancy -> ~p"/invs/jobs/#{vacancy.id}"
       end
 
     assigns = assign(assigns, vacancy: vacancy, vacancy_link: vacancy_link)

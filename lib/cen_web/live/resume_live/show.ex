@@ -38,7 +38,7 @@ defmodule CenWeb.ResumeLive.Show do
 
         <div class="flex gap-2.5 lg:col-span-12">
           <%= if has_permission?(@current_user, @resume, :update) do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/me/cvs/#{@resume}/edit")}>
+            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/edit")}>
               <%= gettext("Редактировать") %>
             </.regular_button>
             <.button class="bg-white p-4" phx-click="delete_resume">
@@ -100,12 +100,6 @@ defmodule CenWeb.ResumeLive.Show do
             </div>
           </div>
         </.basic_card>
-
-        <div class="col-span-12">
-          <.arrow_button arrow_direction="left" phx-click={JS.navigate(@back_link)}>
-            <%= dgettext("publications", "Вернуться к списку резюме") %>
-          </.arrow_button>
-        </div>
       </div>
     </div>
 
@@ -154,8 +148,8 @@ defmodule CenWeb.ResumeLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def handle_params(_params, uri, socket) do
-    {:noreply, socket |> assign_interactions() |> assign_back_link(uri)}
+  def handle_params(_params, _uri, socket) do
+    {:noreply, assign_interactions(socket)}
   end
 
   defp assign_interactions(socket) do
@@ -165,22 +159,10 @@ defmodule CenWeb.ResumeLive.Show do
     end
   end
 
-  defp assign_back_link(socket, uri) do
-    back_link =
-      case uri |> String.split("/", trim: true) |> Enum.drop(2) do
-        ["me", "invs" | _rest] -> ~p"/me/invs"
-        ["me", "res" | _rest] -> ~p"/me/res"
-        ["me" | _rest] -> ~p"/me/cvs"
-        _other -> ~p"/cvs/search"
-      end
-
-    assign(socket, back_link: back_link)
-  end
-
   @impl Phoenix.LiveView
   def handle_event("delete_resume", _params, socket) do
     Publications.delete_resume(socket.assigns.resume)
-    {:noreply, push_navigate(socket, to: ~p"/me/cvs")}
+    {:noreply, push_navigate(socket, to: ~p"/cvs")}
   end
 
   def handle_event("choose_vacancy", %{"select_vacancy_params" => select_vacancy_params}, socket) do
@@ -198,7 +180,7 @@ defmodule CenWeb.ResumeLive.Show do
   defp send_interaction([], socket) do
     socket
     |> put_flash(:error, dgettext("publications", "Сначала вам нужно создать хотя бы одно резюме"))
-    |> push_navigate(to: ~p"/me/jobs")
+    |> push_navigate(to: ~p"/jobs")
   end
 
   defp send_interaction(vacancies, socket) do

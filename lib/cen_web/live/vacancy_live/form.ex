@@ -119,7 +119,7 @@ defmodule CenWeb.VacancyLive.Form do
       {:ok,
        socket
        |> put_flash(:error, dgettext("publications", "Сначала вам нужно создать хотя бы одну организацию"))
-       |> push_navigate(to: ~p"/me/orgs/new")}
+       |> push_navigate(to: ~p"/orgs/new")}
     else
       vacancy =
         case action do
@@ -156,7 +156,7 @@ defmodule CenWeb.VacancyLive.Form do
       {:ok, vacancy} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/me/jobs/#{vacancy}")
+         |> push_navigate(to: ~p"/jobs/#{vacancy}")
          |> put_flash(:info, dgettext("publications", "Вакансия успешно создана."))}
 
       {:error, changeset} ->
@@ -171,7 +171,7 @@ defmodule CenWeb.VacancyLive.Form do
       {:ok, _vacancy} ->
         {:noreply,
          socket
-         |> push_navigate(to: ~p"/me/jobs/#{vacancy}")
+         |> push_navigate(to: ~p"/jobs/#{vacancy}")
          |> put_flash(:info, dgettext("publications", "Вакансия успешно обновлена."))}
 
       {:error, changeset} ->
