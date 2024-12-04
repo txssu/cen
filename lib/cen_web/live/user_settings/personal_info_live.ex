@@ -18,11 +18,18 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
           <div class="w-[4.375rem] h-[4.375rem] bg-accent inline-block rounded-full lg:w-[6.75rem] lg:h-[6.75rem]"></div>
         </div>
         <div class="flex flex-grow-0 flex-col justify-center">
+          <.link href={~p"/users/log_out"} method="delete">
+            <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
+              <%= dgettext("users", "Выйти") %>
+            </.button>
+          </.link>
+          <!--
           <.link patch={~p"/users/settings/personal/delete"}>
             <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
               <%= dgettext("users", "Удалить аккаунт") %>
             </.button>
           </.link>
+          -->
         </div>
       </div>
 
@@ -45,7 +52,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
         </.simple_form>
       </div>
     </div>
-
+    <!--
     <.modal :if={@live_action == :confirm_delete_user} show id="confirm_delete_user" on_cancel={JS.navigate(~p"/users/settings/personal")}>
       <p>
         <%= dgettext("users", "Вы действительно хотите удалить пользователя?") %>
@@ -58,6 +65,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
         </.link>
       </div>
     </.modal>
+    -->
     """
   end
 
