@@ -43,8 +43,9 @@ defmodule Cen.Publications.Resume do
     |> validate_jobs()
   end
 
-  def set_reviewed_at(changeset) do
-    change(changeset, %{reviewed_at: DateTime.utc_now(:second)})
+  @spec set_reviewed_at(t()) :: Ecto.Changeset.t()
+  def set_reviewed_at(resume) do
+    change(resume, %{reviewed_at: DateTime.utc_now(:second)})
   end
 
   defp validate_job_title(changeset) do
