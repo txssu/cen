@@ -88,7 +88,6 @@ defmodule CenWeb.Router do
 
         live "/:id", Show, :show
         live "/:id/choose_vacancy", Show, :choose_vacancy
-        live "/:id/review", Show, :review
       end
 
       live "/res", InteractionLive, :responses

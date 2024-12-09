@@ -16,11 +16,13 @@ defmodule CenWeb.ResumeLive.Index do
         <.header header_kind="black_left">
           <%= @title %>
         </.header>
-        <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/cvs/new")}>
-            <.icon name="cen-plus" alt={gettext("Создать")} />
-          </.button>
-        </div>
+        <%= if @live_action == :index_for_user do %>
+          <div class="ml-auto">
+            <.button class="bg-white p-4" phx-click={JS.navigate(~p"/cvs/new")}>
+              <.icon name="cen-plus" alt={gettext("Создать")} />
+            </.button>
+          </div>
+        <% end %>
       </div>
       <ul class="mt-7 space-y-6">
         <%= for resume <- @resumes do %>
@@ -29,7 +31,7 @@ defmodule CenWeb.ResumeLive.Index do
               <p class="text-title-text mt-2.5">
                 <%= resume.user.fullname %>, <%= Accounts.calculate_user_age(resume.user) %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(resume_path(@live_action, resume))}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -46,7 +48,7 @@ defmodule CenWeb.ResumeLive.Index do
 
     verify_has_permission!(socket.assigns.current_user, :resumes, action)
 
-    {:ok, socket |> assign_title(action) |> load_resumes(action)}
+    {:ok, socket |> assign_title(action) |> load_resumes(action) |> assign(action: action)}
   end
 
   defp assign_title(socket, live_action) do
@@ -70,7 +72,4 @@ defmodule CenWeb.ResumeLive.Index do
     resumes = Publications.list_not_reviewed_resumes()
     assign(socket, resumes: resumes)
   end
-
-  defp resume_path(:index_for_user, resume), do: ~p"/cvs/#{resume}"
-  defp resume_path(:index_for_review, resume), do: ~p"/cvs/#{resume}/review"
 end

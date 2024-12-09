@@ -36,19 +36,34 @@ defmodule CenWeb.ResumeLive.Show do
           </.basic_card>
         </div>
 
-        <div class="flex gap-2.5 lg:col-span-12">
-          <%= if has_permission?(@current_user, @resume, :update) do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/edit")}>
-              <%= gettext("Редактировать") %>
-            </.regular_button>
-            <.button class="bg-white p-4" phx-click="delete_resume">
-              <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
-            </.button>
-          <% end %>
-          <%= if @current_user.role == :employer do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/choose_vacancy")}>
-              <%= dgettext("publications", "Пригласить") %>
-            </.regular_button>
+        <div class="space-y-4 lg:col-span-12">
+          <div class="flex gap-2.5">
+            <%= if has_permission?(@current_user, @resume, :update) do %>
+              <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/edit")}>
+                <%= gettext("Редактировать") %>
+              </.regular_button>
+              <.button class="bg-white p-4" phx-click="delete_resume">
+                <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
+              </.button>
+            <% end %>
+            <%= if @current_user.role == :employer do %>
+              <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/choose_vacancy")}>
+                <%= dgettext("publications", "Пригласить") %>
+              </.regular_button>
+            <% end %>
+          </div>
+          <%= if has_permission?(@current_user, @resume, :review) do %>
+            <div class="flex gap-2.5">
+              <%= if @resume.reviewed_at do %>
+                <.regular_button class="bg-accent-hover" phx-click="unapprove_resume">
+                  <%= gettext("На ревью") %>
+                </.regular_button>
+              <% else %>
+                <.regular_button class="bg-accent-hover" phx-click="approve_resume">
+                  <%= gettext("Одобрить") %>
+                </.regular_button>
+              <% end %>
+            </div>
           <% end %>
         </div>
 
@@ -169,6 +184,16 @@ defmodule CenWeb.ResumeLive.Show do
     %{"vacancy_id" => vacancy_id, "message_text" => message_text} = select_vacancy_params
     vacancy = Enum.find(socket.assigns.vacancies, &(&1.id == String.to_integer(vacancy_id)))
     {:noreply, send_interaction(vacancy, message_text, socket)}
+  end
+
+  def handle_event("approve_resume", _params, socket) do
+    resume = Publications.approve_resume(socket.assigns.resume)
+    {:noreply, assign(socket, resume: resume)}
+  end
+
+  def handle_event("unapprove_resume", _params, socket) do
+    resume = Publications.unapprove_resume(socket.assigns.resume)
+    {:noreply, assign(socket, resume: resume)}
   end
 
   defp maybe_send_interaction(socket) do

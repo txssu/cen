@@ -134,11 +134,18 @@ defmodule Cen.Publications do
     end
   end
 
-  @spec review_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
-  def review_resume(resume) do
+  @spec approve_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
+  def approve_resume(resume) do
     resume
-    |> Resume.set_reviewed_at()
-    |> Repo.update()
+    |> Resume.set_reviewed_at(DateTime.utc_now(:second))
+    |> Repo.update!()
+  end
+
+  @spec unapprove_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
+  def unapprove_resume(resume) do
+    resume
+    |> Resume.set_reviewed_at(nil)
+    |> Repo.update!()
   end
 
   @spec list_not_reviewed_resumes() :: [Resume.t()]
