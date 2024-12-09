@@ -133,4 +133,11 @@ defmodule Cen.Publications do
         []
     end
   end
+
+  @spec review_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
+  def review_resume(resume) do
+    resume
+    |> Resume.set_reviewed_at()
+    |> Repo.update()
+  end
 end

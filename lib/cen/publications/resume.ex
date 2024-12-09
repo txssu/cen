@@ -43,6 +43,10 @@ defmodule Cen.Publications.Resume do
     |> validate_jobs()
   end
 
+  def set_reviewed_at(changeset) do
+    change(changeset, %{reviewed_at: DateTime.utc_now(:second)})
+  end
+
   defp validate_job_title(changeset) do
     changeset
     |> validate_required(:job_title)
