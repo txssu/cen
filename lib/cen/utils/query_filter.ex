@@ -2,7 +2,7 @@ defmodule Cen.Utils.QueryFilter do
   @moduledoc false
   import Ecto.Query, warn: false
 
-  @type operator :: :eq | :value_in_field | :field_in_value | :intersection | :not_gt | :not_lt | :search | :is_nil
+  @type operator :: :eq | :value_in_field | :field_in_value | :intersection | :not_gt | :not_lt | :search
 
   @spec filter(Ecto.Queryable.t(), term(), operator, term()) :: Ecto.Query.t()
   def filter(query, field_name, operator, value)
@@ -51,5 +51,12 @@ defmodule Cen.Utils.QueryFilter do
           )
         }
     )
+  end
+
+  @type is_nil_operator :: :is_not_nil
+
+  @spec filter(Ecto.Queryable.t(), term(), is_nil_operator) :: Ecto.Query.t()
+  def filter(query, field_name, :is_not_nil) do
+    where(query, [record], not is_nil(field(record, ^field_name)))
   end
 end
