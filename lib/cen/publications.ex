@@ -140,4 +140,13 @@ defmodule Cen.Publications do
     |> Resume.set_reviewed_at()
     |> Repo.update()
   end
+
+  @spec list_not_reviewed_resumes() :: [Resume.t()]
+  def list_not_reviewed_resumes do
+    Resume
+    |> where([resume], is_nil(resume.reviewed_at))
+    |> order_by([resume], asc: resume.inserted_at)
+    |> preload(:user)
+    |> Repo.all()
+  end
 end
