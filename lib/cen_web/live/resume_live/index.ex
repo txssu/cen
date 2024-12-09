@@ -14,7 +14,7 @@ defmodule CenWeb.ResumeLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= dgettext("publications", "Мои резюме") %>
+          <%= @title %>
         </.header>
         <div class="ml-auto">
           <.button class="bg-white p-4" phx-click={JS.navigate(~p"/cvs/new")}>
@@ -27,9 +27,9 @@ defmodule CenWeb.ResumeLive.Index do
           <li>
             <.basic_card class="w-full py-7 px-6" header={resume.job_title}>
               <p class="text-title-text mt-2.5">
-                <%= @current_user.fullname %>, <%= Accounts.calculate_user_age(@current_user) %>
+                <%= resume.user.fullname %>, <%= Accounts.calculate_user_age(resume.user) %>
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
+              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(resume_path(@live_action, resume))}>
                 <%= gettext("Открыть") %>
               </.regular_button>
             </.basic_card>
@@ -42,14 +42,35 @@ defmodule CenWeb.ResumeLive.Index do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    verify_has_permission!(user, :resumes, :index)
-    resumes = Publications.list_resumes_for(user)
+    action = socket.assigns.live_action
 
-    if resumes == [] do
-      {:ok, push_navigate(socket, to: ~p"/cvs/new")}
-    else
-      {:ok, assign(socket, resumes: resumes)}
+    verify_has_permission!(socket.assigns.current_user, :resumes, action)
+
+    {:ok, socket |> assign_title(action) |> load_resumes(action)}
+  end
+
+  defp assign_title(socket, live_action) do
+    case live_action do
+      :index_for_user -> assign(socket, :title, dgettext("publications", "Мои резюме"))
+      :index_for_review -> assign(socket, :title, dgettext("publications", "Резюме на проверке"))
     end
   end
+
+  defp load_resumes(socket, :index_for_user) do
+    resumes = Publications.list_resumes_for(socket.assigns.current_user)
+
+    if resumes == [] do
+      push_navigate(socket, to: ~p"/cvs/new")
+    else
+      assign(socket, resumes: resumes)
+    end
+  end
+
+  defp load_resumes(socket, :index_for_review) do
+    resumes = Publications.list_not_reviewed_resumes()
+    assign(socket, resumes: resumes)
+  end
+
+  defp resume_path(:index_for_user, resume), do: ~p"/cvs/#{resume}"
+  defp resume_path(:index_for_review, resume), do: ~p"/cvs/#{resume}/review"
 end

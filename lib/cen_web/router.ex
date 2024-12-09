@@ -78,7 +78,8 @@ defmodule CenWeb.Router do
       end
 
       scope "/cvs", ResumeLive do
-        live "/", Index
+        live "/", Index, :index_for_user
+        live "/review", Index, :index_for_review
 
         live "/search", Search
 
@@ -87,6 +88,7 @@ defmodule CenWeb.Router do
 
         live "/:id", Show, :show
         live "/:id/choose_vacancy", Show, :choose_vacancy
+        live "/:id/review", Show, :review
       end
 
       live "/res", InteractionLive, :responses
