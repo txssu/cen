@@ -19,6 +19,8 @@ defmodule Cen.Publications.Resume do
     field :employment_types, {:array, Ecto.Enum}, values: Enums.employment_types()
     field :work_schedules, {:array, Ecto.Enum}, values: Enums.work_schedules()
 
+    field :reviewed_at, :utc_datetime
+
     embeds_many :educations, Education, on_replace: :delete
     embeds_many :jobs, Job, on_replace: :delete
 
