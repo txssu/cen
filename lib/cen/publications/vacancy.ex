@@ -57,6 +57,11 @@ defmodule Cen.Publications.Vacancy do
     |> validate_proposed_salary()
   end
 
+  @spec set_reviewed_at(t(), DateTime.t() | nil) :: Ecto.Changeset.t()
+  def set_reviewed_at(vacancy, reviewed_at) do
+    change(vacancy, %{reviewed_at: reviewed_at})
+  end
+
   defp validate_job_title(changeset) do
     changeset
     |> validate_required(:job_title)

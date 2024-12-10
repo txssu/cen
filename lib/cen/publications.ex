@@ -156,4 +156,27 @@ defmodule Cen.Publications do
     |> preload(:user)
     |> Repo.all()
   end
+
+  @spec approve_vacancy(Vacancy.t()) :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
+  def approve_vacancy(vacancy) do
+    vacancy
+    |> Vacancy.set_reviewed_at(DateTime.utc_now(:second))
+    |> Repo.update!()
+  end
+
+  @spec unapprove_vacancy(Vacancy.t()) :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
+  def unapprove_vacancy(vacancy) do
+    vacancy
+    |> Vacancy.set_reviewed_at(nil)
+    |> Repo.update!()
+  end
+
+  @spec list_not_reviewed_vacancies() :: [Vacancy.t()]
+  def list_not_reviewed_vacancies do
+    Vacancy
+    |> where([vacancy], is_nil(vacancy.reviewed_at))
+    |> order_by([vacancy], asc: vacancy.updated_at)
+    |> preload(:organization)
+    |> Repo.all()
+  end
 end
