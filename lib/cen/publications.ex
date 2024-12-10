@@ -65,7 +65,7 @@ defmodule Cen.Publications do
   @spec list_resumes_for(user :: User.t()) :: [Resume.t()]
   def list_resumes_for(user) do
     user
-    |> Repo.preload(:resumes)
+    |> Repo.preload(resumes: :user)
     |> Map.get(:resumes)
   end
 
