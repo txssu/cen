@@ -29,13 +29,13 @@ defmodule Cen.Permissions do
   def has_permission?(%User{role: :employer}, %Organization{}, action) when action in ~w[create show]a, do: true
   def has_permission?(%User{role: :applicant}, %Organization{}, action) when action in ~w[show]a, do: true
 
-  def has_permission?(%User{role: :employer}, :vacancies, :index), do: true
+  def has_permission?(%User{role: :employer}, :vacancies, :index_for_user), do: true
   def has_permission?(%User{role: :applicant}, :vacancies, :search), do: true
   def has_permission?(%User{role: :employer, id: author_id}, %Vacancy{user_id: author_id}, _action), do: true
   def has_permission?(%User{role: :employer}, %Vacancy{}, action) when action in ~w[create show]a, do: true
   def has_permission?(%User{role: :applicant}, %Vacancy{}, action) when action in ~w[show]a, do: true
 
-  def has_permission?(%User{role: :applicant}, :resumes, :index), do: true
+  def has_permission?(%User{role: :applicant}, :resumes, :index_for_user), do: true
   def has_permission?(%User{role: :employer}, :resumes, :search), do: true
   def has_permission?(%User{role: :applicant, id: author_id}, %Resume{user_id: author_id}, _action), do: true
   def has_permission?(%User{role: :applicant}, %Resume{}, action) when action in ~w[create show]a, do: true

@@ -13,13 +13,15 @@ defmodule CenWeb.VacancyLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= dgettext("publications", "Мои вакансии") %>
+          <%= @title %>
         </.header>
-        <div class="ml-auto">
-          <.button class="bg-white p-4" phx-click={JS.navigate(~p"/jobs/new")}>
-            <.icon name="cen-plus" alt={gettext("Создать")} />
-          </.button>
-        </div>
+        <%= if @live_action == :index_for_user do %>
+          <div class="ml-auto">
+            <.button class="bg-white p-4" phx-click={JS.navigate(~p"/jobs/new")}>
+              <.icon name="cen-plus" alt={gettext("Создать")} />
+            </.button>
+          </div>
+        <% end %>
       </div>
       <ul class="mt-7 space-y-6">
         <%= for vacancy <- @vacancies do %>
@@ -44,14 +46,32 @@ defmodule CenWeb.VacancyLive.Index do
 
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
-    verify_has_permission!(user, :vacancies, :index)
-    vacancies = Publications.list_vacancies_for(user)
+    action = socket.assigns.live_action
+
+    verify_has_permission!(socket.assigns.current_user, :vacancies, action)
+
+    {:ok, socket |> assign_title(action) |> load_vacancies(action) |> assign(action: action)}
+  end
+
+  defp assign_title(socket, live_action) do
+    case live_action do
+      :index_for_user -> assign(socket, :title, dgettext("publications", "Мои вакансии"))
+      :index_for_review -> assign(socket, :title, dgettext("publications", "Вакансии на проверке"))
+    end
+  end
+
+  defp load_vacancies(socket, :index_for_user) do
+    vacancies = Publications.list_vacancies_for(socket.assigns.current_user)
 
     if vacancies == [] do
-      {:ok, push_navigate(socket, to: ~p"/jobs/new")}
+      push_navigate(socket, to: ~p"/jobs/new")
     else
-      {:ok, assign(socket, vacancies: vacancies)}
+      assign(socket, vacancies: vacancies)
     end
+  end
+
+  defp load_vacancies(socket, :index_for_review) do
+    vacancies = Publications.list_not_reviewed_vacancies()
+    assign(socket, vacancies: vacancies)
   end
 end

@@ -66,7 +66,8 @@ defmodule CenWeb.Router do
       end
 
       scope "/jobs", VacancyLive do
-        live "/", Index
+        live "/", Index, :index_for_user
+        live "/review", Index, :index_for_review
 
         live "/search", Search
 
