@@ -404,4 +404,9 @@ defmodule Cen.Accounts do
     |> Date.diff(birthdate)
     |> Kernel.div(365)
   end
+
+  @spec list_users() :: [User.t()]
+  def list_users do
+    Repo.all(User)
+  end
 end

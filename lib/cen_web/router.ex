@@ -58,6 +58,10 @@ defmodule CenWeb.Router do
         live "/confirm_email/:token", CredentialsLive, :confirm_email
       end
 
+      scope "/users", UserLive do
+        live "/", Index
+      end
+
       scope "/orgs", OrganizationLive do
         live "/", Index
         live "/new", Form, :create

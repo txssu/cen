@@ -28,6 +28,7 @@ defmodule CenWeb.RootComponents do
         <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
         <.navbar_link navigate={~p"/cvs/review"} horizontal={@horizontal}><%= dgettext("users", "Резюме на проверке") %></.navbar_link>
         <.navbar_link navigate={~p"/jobs/review"} horizontal={@horizontal}><%= dgettext("users", "Вакансии на проверке") %></.navbar_link>
+        <.navbar_link navigate={~p"/users"} horizontal={@horizontal}><%= dgettext("users", "Пользователи") %></.navbar_link>
       <% end %>
       <.navbar_list_item horizontal={@horizontal} to_right>
         <button
