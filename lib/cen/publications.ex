@@ -126,6 +126,7 @@ defmodule Cen.Publications do
         |> Filters.filter_employment_types(filters.employment_types)
         |> Filters.filter_work_schedules(filters.work_schedules)
         |> Filters.filter_vacancy_educations(filters.education)
+        |> filter(:reviewed_at, :is_not_nil)
         |> preload(organization: [:user])
         |> Flop.validate_and_run(%Flop{page_size: 10, order_by: [:inserted_at], order_directions: [:desc], page: params["page"]}, repo: Cen.Repo)
 
