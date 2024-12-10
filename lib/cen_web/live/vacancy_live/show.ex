@@ -39,19 +39,34 @@ defmodule CenWeb.VacancyLive.Show do
           </.basic_card>
         </div>
 
-        <div class="flex gap-2.5 lg:col-span-12">
-          <%= if has_permission?(@current_user, @vacancy, :update) do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/edit")}>
-              <%= gettext("Редактировать") %>
-            </.regular_button>
-            <.button class="bg-white p-4" phx-click="delete_vacancy">
-              <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
-            </.button>
-          <% end %>
-          <%= if @current_user.role == :applicant do %>
-            <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/choose_resume")}>
-              <%= dgettext("publications", "Откликнуться") %>
-            </.regular_button>
+        <div class="space-y-4 lg:col-span-12">
+          <div class="flex gap-2.5">
+            <%= if has_permission?(@current_user, @vacancy, :update) do %>
+              <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/edit")}>
+                <%= gettext("Редактировать") %>
+              </.regular_button>
+              <.button class="bg-white p-4" phx-click="delete_vacancy">
+                <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
+              </.button>
+            <% end %>
+            <%= if @current_user.role == :applicant do %>
+              <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/choose_resume")}>
+                <%= dgettext("publications", "Откликнуться") %>
+              </.regular_button>
+            <% end %>
+          </div>
+          <%= if has_permission?(@current_user, @vacancy, :review) do %>
+            <div class="flex gap-2.5">
+              <%= if @vacancy.reviewed_at do %>
+                <.regular_button class="bg-accent-hover" phx-click="unapprove_vacancy">
+                  <%= gettext("На ревью") %>
+                </.regular_button>
+              <% else %>
+                <.regular_button class="bg-accent-hover" phx-click="approve_vacancy">
+                  <%= gettext("Одобрить") %>
+                </.regular_button>
+              <% end %>
+            </div>
           <% end %>
         </div>
 
@@ -190,6 +205,16 @@ defmodule CenWeb.VacancyLive.Show do
     %{"resume_id" => resume_id, "message_text" => message_text} = select_resume_params
     resume = Enum.find(socket.assigns.resumes, &(&1.id == String.to_integer(resume_id)))
     {:noreply, send_interaction(resume, message_text, socket)}
+  end
+
+  def handle_event("approve_vacancy", _params, socket) do
+    vacancy = Publications.approve_vacancy(socket.assigns.vacancy)
+    {:noreply, assign(socket, vacancy: vacancy)}
+  end
+
+  def handle_event("unapprove_vacancy", _params, socket) do
+    vacancy = Publications.unapprove_vacancy(socket.assigns.vacancy)
+    {:noreply, assign(socket, vacancy: vacancy)}
   end
 
   defp maybe_send_interaction(socket) do
