@@ -23,6 +23,8 @@ defmodule Cen.Publications.Vacancy do
     field :min_years_of_work_experience, :integer
     field :proposed_salary, :integer
 
+    field :reviewed_at, :utc_datetime
+
     belongs_to :user, User
     belongs_to :organization, Organization
 
