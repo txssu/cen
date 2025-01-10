@@ -14,6 +14,7 @@ defmodule Cen.Application do
       {Phoenix.PubSub, name: Cen.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Cen.Finch},
+      Cen.PCKE.Storage,
       # Start a worker by calling: Cen.Worker.start_link(arg)
       # {Cen.Worker, arg},
       # Start to serve requests, typically the last entry

@@ -18,10 +18,12 @@ defmodule Cen.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
 
+    field :vk_id, :integer
+
     field :fullname, :string
     field :phone_number, :string
     field :birthdate, :date
-    field :role, Ecto.Enum, values: [:applicant, :employer, :admin], default: :applicant
+    field :role, Ecto.Enum, values: [:applicant, :employer, :admin]
 
     has_many :organizations, Organization
     has_many :vacancies, Vacancy
@@ -115,6 +117,14 @@ defmodule Cen.Accounts.User do
     end
   end
 
+  @spec vk_id_changeset(t(), map()) :: Ecto.Changeset.t()
+  def vk_id_changeset(user, attrs) do
+    user
+    |> cast(attrs, ~w[email fullname phone_number role birthdate vk_id]a)
+    |> validate_vk_id()
+    |> validate_personal_info()
+  end
+
   @spec personal_info_changeset(t(), map()) :: Ecto.Changeset.t()
   def personal_info_changeset(user, attrs) do
     user
@@ -146,6 +156,10 @@ defmodule Cen.Accounts.User do
     changeset
     |> validate_required([:phone_number])
     |> validate_length(:phone_number, max: 20)
+  end
+
+  defp validate_vk_id(changeset) do
+    validate_required(changeset, [:vk_id])
   end
 
   @doc """
@@ -182,6 +196,13 @@ defmodule Cen.Accounts.User do
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: dgettext("errors", "does not match password"))
     |> validate_password(opts)
+  end
+
+  @spec role_changeset(t(), map()) :: Ecto.Changeset.t()
+  def role_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:role])
+    |> validate_role()
   end
 
   @doc """

@@ -9,6 +9,9 @@ defmodule CenWeb.RootComponents do
   def menu_items(assigns) do
     ~H"""
     <%= if @current_user do %>
+      <%= if @current_user.role == nil do %>
+        <.navbar_link navigate={~p"/users/choose_role"} horizontal={@horizontal}><%= dgettext("users", "Выбрать роль") %></.navbar_link>
+      <% end %>
       <%= if @current_user.role == :employer do %>
         <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Искать резюме") %></.navbar_link>
         <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>

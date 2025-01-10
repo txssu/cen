@@ -12,7 +12,15 @@ defmodule CenWeb.UserSettings.CredentialsLive do
       <Components.navigation current_page={:credentials} />
     </div>
 
-    <div class="col-span-4 lg:col-start-5">
+    <div :if={not @has_password?} class="col-span-4 lg:col-span-8">
+      <p class="font leading-[1.5] mt-5">
+        Вы вошли через VK ID и почтой: <span class="font-bold"><%= @current_user.email %></span> <br />
+        Для редактирования адреса электронной почты вам необходимо сбросить пароль. <br />
+        Чтобы это сделать, выйдите из аккаунта и нажмите "Я не помню пароль".
+      </p>
+    </div>
+
+    <div :if={@has_password?} class="col-span-4 lg:col-start-5">
       <section>
         <.header header_level="h2" header_kind="black_left">
           <%= dgettext("users", "Обновить почту") %>
@@ -106,6 +114,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> assign(:has_password?, user.hashed_password != nil)
 
     {:ok, socket}
   end

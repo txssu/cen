@@ -35,6 +35,23 @@ defmodule CenWeb.UserSessionController do
     end
   end
 
+  @spec auth_vkid(Plug.Conn.t(), map()) :: Plug.Conn.t()
+  def auth_vkid(conn, params) do
+    host = Application.get_env(:cen, :vk_id_redirect_host)
+
+    if user = Accounts.get_user_by_vkid_data(params, host <> ~p"/users/auth/vkid") do
+      redirect_to = if user.role == nil, do: ~p"/users/choose_role"
+
+      conn
+      |> put_flash(:info, dgettext("users", "Вы успешно вошли через VK ID."))
+      |> UserAuth.log_in_user(user, %{}, redirect_to)
+    else
+      conn
+      |> put_flash(:error, dgettext("users", "Во время входа произошла ошибка."))
+      |> redirect(to: ~p"/users/log_in")
+    end
+  end
+
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, _params) do
     conn

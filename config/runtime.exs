@@ -20,6 +20,18 @@ if System.get_env("PHX_SERVER") do
   config :cen, CenWeb.Endpoint, server: true
 end
 
+vkid_client_id =
+  if client_id = System.get_env("VKID_CLIENT_ID") do
+    client_id
+  else
+    config_env() == :prod &&
+      raise """
+      environment variable VKID_CLIENT_ID is missing.
+      """
+  end
+
+config :cen, Cen.Accounts.VKIDAuthProvider, client_id: vkid_client_id
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -72,6 +84,7 @@ if config_env() == :prod do
 
   config :cen, :csp, s3: to_string(s3_uri)
   config :cen, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+  config :cen, :vk_id_redirect_host, "https://#{host}"
 
   config :ex_aws,
     json_codec: Jason,

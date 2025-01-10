@@ -22,9 +22,11 @@ import { Socket } from "phoenix"
 import { LiveSocket } from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import Croppr from "./croppr"
+import {VKIDOneTap} from "./vkid"
 
 const hooks = {
-  Croppr
+  Croppr,
+  VKIDOneTap
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

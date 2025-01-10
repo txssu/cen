@@ -15,6 +15,7 @@ defmodule CenWeb.Router do
     plug CenWeb.Plugs.PutSecureHeaders
 
     plug :fetch_current_user
+    plug CenWeb.Plugs.AlertUserChooseRole
   end
 
   pipeline :dev_dashboard do
@@ -44,6 +45,7 @@ defmodule CenWeb.Router do
     end
 
     post "/users/log_in", UserSessionController, :create
+    get "/users/auth/vkid", UserSessionController, :auth_vkid
   end
 
   scope "/", CenWeb do
@@ -60,6 +62,7 @@ defmodule CenWeb.Router do
 
       scope "/users", UserLive do
         live "/", Index
+        live "/choose_role", ChooseRole
       end
 
       scope "/orgs", OrganizationLive do

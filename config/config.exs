@@ -27,6 +27,13 @@ config :cen, CenWeb.Endpoint,
   pubsub_server: Cen.PubSub,
   live_view: [signing_salt: "E9Av9SG/"]
 
+config :cen, CenWeb.PCKE.Storage,
+  gc_interval: :timer.hours(1),
+  max_size: 1_000_000,
+  allocated_memory: 200_000_000,
+  gc_cleanup_min_timeout: :timer.seconds(10),
+  gc_cleanup_max_timeout: :timer.minutes(10)
+
 config :cen,
   ecto_repos: [Cen.Repo],
   generators: [timestamp_type: :utc_datetime]
