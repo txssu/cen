@@ -8,6 +8,7 @@ defmodule Cen.Accounts do
   alias Cen.Accounts.User
   alias Cen.Accounts.UserNotifier
   alias Cen.Accounts.UserToken
+  alias Cen.Accounts.VKIDAuthProvider
   alias Cen.Repo
 
   @type user_changeset :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
@@ -408,5 +409,77 @@ defmodule Cen.Accounts do
   @spec list_users() :: [User.t()]
   def list_users do
     Repo.all(User)
+  end
+
+  @spec get_user_by_vk_id(integer()) :: User.t() | nil
+  def get_user_by_vk_id(vk_id) do
+    Repo.get_by(User, vk_id: vk_id)
+  end
+
+  @spec get_user_by_vkid_data(map(), String.t()) :: User.t() | nil
+  def get_user_by_vkid_data(params, redirect_uri) do
+    case VKIDAuthProvider.auth(params, redirect_uri) do
+      {:ok, user_vk_id, access_token} ->
+        if user = get_user_by_vk_id(user_vk_id) do
+          user
+        else
+          create_user_with_by_access_token(access_token)
+        end
+
+      :error ->
+        nil
+    end
+  end
+
+  @spec create_user_with_by_access_token(String.t()) :: User.t() | nil
+  def create_user_with_by_access_token(access_token) do
+    with {:ok, user_info} <- VKIDAuthProvider.get_info(access_token) do
+      if user = get_user_by_email(user_info["email"]) do
+        user
+        |> Ecto.Changeset.change(%{vk_id: user_info["user_id"]})
+        |> Repo.update!()
+      else
+        attrs = format_vk_user_info(user_info)
+
+        insert_result =
+          %User{}
+          |> User.vk_id_changeset(attrs)
+          |> Repo.insert()
+
+        case insert_result do
+          {:error, _changeset} -> nil
+          {:ok, user} -> user
+        end
+      end
+    end
+  end
+
+  defp format_vk_user_info(user_info) do
+    %{
+      birthdate: convert_ru_date_to_iso(user_info["birthday"]),
+      email: user_info["email"],
+      fullname: user_info["last_name"] <> " " <> user_info["first_name"],
+      phone_number: "+" <> user_info["phone"],
+      vk_id: user_info["user_id"]
+    }
+  end
+
+  defp convert_ru_date_to_iso(ru_date) do
+    ru_date
+    |> String.split(".")
+    |> Enum.reverse()
+    |> Enum.join("-")
+  end
+
+  @spec change_user_role(User.t(), map()) :: Ecto.Changeset.t()
+  def change_user_role(user, attrs \\ %{}) do
+    User.role_changeset(user, attrs)
+  end
+
+  @spec update_user_role(User.t(), map()) :: user_changeset()
+  def update_user_role(user, attrs) do
+    user
+    |> User.role_changeset(attrs)
+    |> Repo.update()
   end
 end

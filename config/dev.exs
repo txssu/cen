@@ -67,6 +67,9 @@ config :cen, :csp, s3: "http://localhost:9000"
 # Enable dev routes for dashboard and mailbox
 config :cen, dev_routes: true
 
+# Works only on 80 port
+config :cen, vk_id_redirect_host: "http://localhost"
+
 config :ex_aws,
   json_codec: Jason,
   access_key_id: System.fetch_env!("S3_ACCESS_KEY"),

@@ -7,6 +7,7 @@ defmodule CenWeb.UserRegistrationLive do
 
   alias Cen.Accounts
   alias Cen.Accounts.User
+  alias Cen.PCKE
 
   @impl Phoenix.LiveView
   def render(assigns) do
@@ -63,6 +64,14 @@ defmodule CenWeb.UserRegistrationLive do
           </:actions>
         </.simple_form>
 
+        <div class="mt-4">
+          <p class="text-center text-lg uppercase"><%= gettext("или") %></p>
+        </div>
+
+        <div class="max-w-60 mx-auto mt-4">
+          <CenWeb.VKIDComponent.one_tap code={@vkid_code} state={@vkid_state} />
+        </div>
+
         <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
             <%= dgettext("users", "Уже есть аккаунт?") %>
@@ -82,6 +91,7 @@ defmodule CenWeb.UserRegistrationLive do
       socket
       |> assign(trigger_submit: false, check_errors: false)
       |> assign_form(changeset)
+      |> assign_vkid_data()
 
     {:ok, socket, temporary_assigns: [form: nil]}
   end
@@ -118,5 +128,10 @@ defmodule CenWeb.UserRegistrationLive do
     else
       assign(socket, form: form)
     end
+  end
+
+  defp assign_vkid_data(socket) do
+    {state, code} = PCKE.start_challenge()
+    assign(socket, vkid_state: state, vkid_code: code)
   end
 end
