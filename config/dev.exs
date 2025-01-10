@@ -72,8 +72,8 @@ config :cen, vk_id_redirect_host: "http://localhost"
 
 config :ex_aws,
   json_codec: Jason,
-  access_key_id: System.fetch_env!("S3_ACCESS_KEY"),
-  secret_access_key: System.fetch_env!("S3_SECRET_KEY"),
+  access_key_id: "cen-storage",
+  secret_access_key: "secret1234",
   s3: [
     scheme: "http://",
     host: "localhost",

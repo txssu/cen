@@ -11,6 +11,11 @@ services:
     restart: unless-stopped
     ports:
       - 5432:5432
+    healthcheck:
+      test: pg_isready -U postgres -h localhost
+      interval: 5s
+      timeout: 5s
+      retries: 10
   
   minio:
     image: minio/minio:latest
@@ -21,13 +26,25 @@ services:
       - 9000:9000
       - 9001:9001
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: cen-storage
+      MINIO_ROOT_PASSWORD: secret1234
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
       interval: 5s
       timeout: 5s
       retries: 5
+
+  minio-createbucket:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      /usr/bin/mc alias set cen-minio http://minio:9000 cen-storage secret1234;
+      /usr/bin/mc mb cen-minio/cen;
+      exit 0;
+      "
 
 volumes:
   database:
