@@ -6,13 +6,13 @@ defmodule Cen.Accounts.UserNotifier do
   alias Cen.Mailer
 
   # Delivers the email using the application mailer.
-  defp deliver(recipient, subject, body) do
+  defp deliver(recipient, subject, text) do
     email =
       new()
       |> to(recipient)
-      |> from({"Cen", "contact@example.com"})
+      |> from({"ТОН: Вакансии", email_from()})
       |> subject(subject)
-      |> text_body(body)
+      |> text_body(text)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do
       {:ok, email}
@@ -24,19 +24,15 @@ defmodule Cen.Accounts.UserNotifier do
   """
   @spec deliver_confirmation_instructions(User.t(), String.t()) :: {:ok, Swoosh.Email.t()} | {:error, term()}
   def deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
+    deliver(user.email, "Инструкции по подтверждению", """
 
-    ==============================
+    Здравствуйте, #{user.email},
 
-    Hi #{user.email},
-
-    You can confirm your account by visiting the URL below:
+    Вы можете подтвердить свою учетную запись, посетив следующий URL:
 
     #{url}
 
-    If you didn't create an account with us, please ignore this.
-
-    ==============================
+    Если вы не создавали учетную запись у нас, просто проигнорируйте это сообщение.
     """)
   end
 
@@ -45,19 +41,15 @@ defmodule Cen.Accounts.UserNotifier do
   """
   @spec deliver_reset_password_instructions(User.t(), String.t()) :: {:ok, Swoosh.Email.t()} | {:error, term()}
   def deliver_reset_password_instructions(user, url) do
-    deliver(user.email, "Reset password instructions", """
+    deliver(user.email, "Инструкции по сбросу пароля", """
 
-    ==============================
+    Здравствуйте, #{user.email},
 
-    Hi #{user.email},
-
-    You can reset your password by visiting the URL below:
+    Вы можете сбросить свой пароль, посетив следующий URL:
 
     #{url}
 
-    If you didn't request this change, please ignore this.
-
-    ==============================
+    Если вы не запрашивали сброс пароля, просто проигнорируйте это сообщение.
     """)
   end
 
@@ -66,19 +58,19 @@ defmodule Cen.Accounts.UserNotifier do
   """
   @spec deliver_update_email_instructions(User.t(), String.t()) :: {:ok, Swoosh.Email.t()} | {:error, term()}
   def deliver_update_email_instructions(user, url) do
-    deliver(user.email, "Update email instructions", """
+    deliver(user.email, "Инструкции по обновлению email", """
 
-    ==============================
+    Здравствуйте, #{user.email},
 
-    Hi #{user.email},
-
-    You can change your email by visiting the URL below:
+    Вы можете изменить свой email, посетив следующий URL:
 
     #{url}
 
-    If you didn't request this change, please ignore this.
-
-    ==============================
+    Если вы не запрашивали обновление email, просто проигнорируйте это сообщение.
     """)
+  end
+
+  defp email_from do
+    Application.get_env(:cen, :email_from)
   end
 end

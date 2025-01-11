@@ -34,6 +34,8 @@ config :cen, CenWeb.PCKE.Storage,
   gc_cleanup_min_timeout: :timer.seconds(10),
   gc_cleanup_max_timeout: :timer.minutes(10)
 
+config :cen, :email_from, "cen@example.com"
+
 config :cen,
   ecto_repos: [Cen.Repo],
   generators: [timestamp_type: :utc_datetime]

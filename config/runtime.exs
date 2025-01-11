@@ -64,6 +64,36 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
+  smtp_port =
+    "SMTP_PORT"
+    |> System.get_env("465")
+    |> String.to_integer()
+
+  smtp_host_tls =
+    "SMTP_HOST_TLS"
+    |> System.get_env()
+    |> String.to_charlist()
+
+  config :cen, Cen.Mailer,
+    adapter: Swoosh.Adapters.SMTP,
+    relay: System.get_env("SMTP_HOST"),
+    username: System.get_env("SMTP_USERNAME"),
+    password: System.get_env("SMTP_PASSWORD"),
+    port: smtp_port,
+    tls: :never,
+    ssl: true,
+    auth: :always,
+    retries: 2,
+    no_mx_lookups: false,
+    # Thx
+    # https://github.com/gen-smtp/gen_smtp/issues/328#issuecomment-1620381613
+    sockopts: [
+      verify: :verify_peer,
+      cacerts: :public_key.cacerts_get(),
+      depth: 99,
+      server_name_indication: smtp_host_tls
+    ]
+
   config :cen, Cen.Repo,
     # ssl: true,
     url: database_url,
@@ -84,6 +114,7 @@ if config_env() == :prod do
 
   config :cen, :csp, s3: to_string(s3_uri)
   config :cen, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
+  config :cen, :email_from, System.get_env("EMAIL_FROM")
   config :cen, :vk_id_redirect_host, "https://#{host}"
 
   config :ex_aws,
