@@ -64,12 +64,6 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  config :cen, Cen.Mailer,
-    adapter: Swoosh.Adapters.Mua,
-    relay: System.get_env("SMTP_HOST"),
-    port: System.get_env("SMTP_PORT"),
-    auth: [username: System.get_env("SMTP_USERNAME"), password: System.get_env("SMTP_PASSWORD")]
-
   config :cen, Cen.Repo,
     # ssl: true,
     url: database_url,
@@ -90,7 +84,6 @@ if config_env() == :prod do
 
   config :cen, :csp, s3: to_string(s3_uri)
   config :cen, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
-  config :cen, :email_form, System.get_env("EMAIL_FROM")
   config :cen, :vk_id_redirect_host, "https://#{host}"
 
   config :ex_aws,
@@ -142,6 +135,10 @@ if config_env() == :prod do
   # Also, you may need to configure the Swoosh API client of your choice if you
   # are not using SMTP. Here is an example of the configuration:
   #
+  #     config :cen, Cen.Mailer,
+  #       adapter: Swoosh.Adapters.Mailgun,
+  #       api_key: System.get_env("MAILGUN_API_KEY"),
+  #       domain: System.get_env("MAILGUN_DOMAIN")
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
