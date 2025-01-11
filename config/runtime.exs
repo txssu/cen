@@ -67,7 +67,7 @@ if config_env() == :prod do
   config :cen, Cen.Mailer,
     adapter: Swoosh.Adapters.Mua,
     relay: System.get_env("SMTP_HOST"),
-    port: "SMTP_PORT" |> System.get_env("465") |> String.to_integer(),
+    port: System.get_env("SMTP_PORT"),
     auth: [username: System.get_env("SMTP_USERNAME"), password: System.get_env("SMTP_PASSWORD")]
 
   config :cen, Cen.Repo,
