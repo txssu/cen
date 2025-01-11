@@ -10,7 +10,7 @@ defmodule Cen.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Cen", "contact@example.com"})
+      |> from({"Cen", email_from()})
       |> subject(subject)
       |> text_body(body)
 
@@ -80,5 +80,9 @@ defmodule Cen.Accounts.UserNotifier do
 
     ==============================
     """)
+  end
+
+  defp email_from do
+    Application.get_env(:cen, :email_from, "contact@example.com")
   end
 end
