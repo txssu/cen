@@ -436,7 +436,7 @@ defmodule Cen.Accounts do
     with {:ok, user_info} <- VKIDAuthProvider.get_info(access_token) do
       if user = get_user_by_email(user_info["email"]) do
         user
-        |> Ecto.Changeset.change(%{vk_id: user_info["user_id"]})
+        |> Ecto.Changeset.cast(%{vk_id: user_info["user_id"]}, [:vk_id])
         |> Repo.update!()
       else
         attrs = format_vk_user_info(user_info)
