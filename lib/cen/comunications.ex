@@ -5,6 +5,8 @@ defmodule Cen.Communications do
   alias Cen.Accounts.User
   alias Cen.Communications.Interaction
   alias Cen.Communications.Message
+  alias Cen.Communications.Notification
+  alias Cen.Communications.NotificationStatus
   alias Cen.Repo
 
   @type interaction_changeset :: {:ok, Interaction.t()} | {:error, Ecto.Changeset.t()}
@@ -107,5 +109,61 @@ defmodule Cen.Communications do
     Message
     |> where([message], message.interaction_id == ^interaction_id)
     |> Flop.run(%Flop{limit: 30, order_by: [:inserted_at], order_directions: [:desc], offset: offset}, repo: Cen.Repo)
+  end
+
+  def send_notification(attrs) do
+    with {:ok, notification} <- create_notification(attrs),
+         :ok <- deliver_notification(notification) do
+      {:ok, notification}
+    end
+  end
+
+  defp create_notification(attrs) do
+    %Notification{}
+    |> Notification.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  defp deliver_notification(%Notification{} = notification) do
+    topic =
+      if notification.is_broadcast do
+        broadcast_topic()
+      else
+        user_topic(notification.user_id)
+      end
+
+    Phoenix.PubSub.broadcast(Cen.PubSub, topic, {:new_notification, notification})
+  end
+
+  def subscribe_to_notifications(user)
+
+  def subscribe_to_notifications(%User{id: id}) do
+    with :ok <- Phoenix.PubSub.subscribe(Cen.PubSub, broadcast_topic()) do
+      Phoenix.PubSub.subscribe(Cen.PubSub, user_topic(id))
+      :ok
+    end
+  end
+
+  defp broadcast_topic, do: "notifications:all"
+  defp user_topic(user_id), do: "notifications:#{user_id}"
+
+  def list_notifications_for_user(user_id) do
+    query =
+      from n in Notification,
+        where: n.is_broadcast == true or n.user_id == ^user_id,
+        left_join: ns in NotificationStatus,
+        on: ns.notification_id == n.id and ns.user_id == ^user_id,
+        select_merge: %{is_read: not is_nil(ns.id)}
+
+    Repo.all(query)
+  end
+
+  def read_notification(user_id, notification_id) do
+    %NotificationStatus{}
+    |> NotificationStatus.changeset(%{notification_id: notification_id, user_id: user_id})
+    |> Repo.insert(
+      on_conflict: :nothing,
+      conflict_target: [:notification_id, :user_id]
+    )
   end
 end

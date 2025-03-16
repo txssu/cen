@@ -24,6 +24,10 @@ defmodule CenWeb.ChatHook do
   def handle_info({:new_message, message}, socket) do
     send_update(ChatComponent, id: "chat", new_message: message)
 
+    {:halt, socket}
+  end
+
+  def handle_info(_message, socket) do
     {:cont, socket}
   end
 end

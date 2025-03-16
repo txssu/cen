@@ -1,4 +1,7 @@
 <main class="container mx-auto">
+  <div class="relative">
+    <.live_component module={CenWeb.NotificationsComponent} id="notifications" :if={assigns[:notifications]} notifications={assigns[:notifications]} />
+  </div>
   <.flash_group flash={@flash} />
   <div class="py-[3.4375rem] lg:py-[7.1875rem] lg:grid lg:grid-cols-12 lg:gap-x-10">
     <%= @inner_content %>
