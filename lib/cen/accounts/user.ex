@@ -5,6 +5,7 @@ defmodule Cen.Accounts.User do
 
   import Ecto.Changeset
 
+  alias Cen.Communications.Notification
   alias Cen.Employers.Organization
   alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
@@ -28,6 +29,7 @@ defmodule Cen.Accounts.User do
     has_many :organizations, Organization
     has_many :vacancies, Vacancy
     has_many :resumes, Resume
+    has_many :notifications, Notification
 
     timestamps(type: :utc_datetime)
   end

@@ -34,19 +34,34 @@ defmodule CenWeb.RootComponents do
         <.navbar_link navigate={~p"/users"} horizontal={@horizontal}><%= dgettext("users", "Пользователи") %></.navbar_link>
       <% end %>
       <.navbar_list_item horizontal={@horizontal} to_right>
-        <button
-          type="button"
-          class="text-navbargray leading-[1.35] block h-full w-full text-left text-xl font-light no-underline hover:text-accent"
-          phx-click={show_modal("chat_modal")}
-        >
-          <%= if @horizontal do %>
-            <div class="h-6 w-6">
-              <.icon name="cen-chat" />
-            </div>
-          <% else %>
-            <%= dgettext("users", "Сообщения") %>
-          <% end %>
-        </button>
+        <div class="flex gap-10">
+          <button
+            type="button"
+            class="text-navbargray leading-[1.35] block h-full w-full text-left text-xl font-light no-underline hover:text-accent"
+            phx-click={toggle_notifications()}
+          >
+            <%= if @horizontal do %>
+              <div class="h-6 w-6">
+                <.icon name="cen-notification" />
+              </div>
+            <% else %>
+              <%= dgettext("users", "Уведомления") %>
+            <% end %>
+          </button>
+          <button
+            type="button"
+            class="text-navbargray leading-[1.35] block h-full w-full text-left text-xl font-light no-underline hover:text-accent"
+            phx-click={show_modal("chat_modal")}
+          >
+            <%= if @horizontal do %>
+              <div class="h-6 w-6">
+                <.icon name="cen-chat" />
+              </div>
+            <% else %>
+              <%= dgettext("users", "Сообщения") %>
+            <% end %>
+          </button>
+        </div>
       </.navbar_list_item>
       <.navbar_link navigate={~p"/users/settings/personal"} horizontal={@horizontal}>
         <%= if @horizontal do %>
@@ -74,6 +89,20 @@ defmodule CenWeb.RootComponents do
       in: {base, hidden, visible},
       out: {base, visible, hidden},
       time: 200
+    )
+  end
+
+  @spec toggle_notifications() :: JS.t()
+  def toggle_notifications do
+    base = "duration-100"
+    hidden = "opacity-0"
+    visible = "opacity-100"
+
+    JS.toggle(
+      to: "#notifications_wrapper",
+      in: {base, hidden, visible},
+      out: {base, visible, hidden},
+      time: 100
     )
   end
 
