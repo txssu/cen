@@ -4,7 +4,6 @@ defmodule CenWeb.NotificationsHook do
   import Phoenix.LiveView
 
   alias Cen.Communications
-  alias Cen.Communications.Notification
   alias Phoenix.LiveView.Socket
 
   @spec on_mount(atom(), map(), map(), Socket.t()) :: {:cont, Socket.t()}
@@ -29,6 +28,7 @@ defmodule CenWeb.NotificationsHook do
     {:cont, socket}
   end
 
+  @spec handle_event(String.t(), map(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_event("read_notifications", _unsigned_params, socket) do
     dbg(Communications.read_notifications(socket.assigns.current_user, socket.assigns.unread_notifications))
     send_update(CenWeb.NotificationsComponent, %{id: "notifications", unread_notifications: []})
@@ -39,7 +39,7 @@ defmodule CenWeb.NotificationsHook do
     {:cont, socket}
   end
 
-  @spec handle_info({:new_notification, Notification.t()}, Socket.t()) :: {:cont, Socket.t()}
+  @spec handle_info(term(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_info({:new_notification, notification}, socket) do
     {:halt, put_flash(socket, :info, notification.message)}
   end

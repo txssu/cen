@@ -22,6 +22,7 @@ defmodule Cen.Communications.Notification do
   end
 
   @doc false
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(notification, attrs) do
     notification
     |> cast(attrs, [:title, :message, :type, :is_broadcast, :user_id])

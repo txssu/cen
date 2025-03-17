@@ -111,6 +111,7 @@ defmodule Cen.Communications do
     |> Flop.run(%Flop{limit: 30, order_by: [:inserted_at], order_directions: [:desc], offset: offset}, repo: Cen.Repo)
   end
 
+  @spec send_notification(map()) :: {:ok, Notification.t()} | {:error, term()}
   def send_notification(attrs) do
     with {:ok, notification} <- create_notification(attrs),
          :ok <- deliver_notification(notification) do
@@ -135,24 +136,26 @@ defmodule Cen.Communications do
     Phoenix.PubSub.broadcast(Cen.PubSub, topic, {:new_notification, notification})
   end
 
+  @spec subscribe_to_notifications(User.t()) :: :ok | {:error, term()}
   def subscribe_to_notifications(user)
 
   def subscribe_to_notifications(%User{id: id}) do
     with :ok <- Phoenix.PubSub.subscribe(Cen.PubSub, broadcast_topic()) do
       Phoenix.PubSub.subscribe(Cen.PubSub, user_topic(id))
-      :ok
     end
   end
 
   defp broadcast_topic, do: "notifications:all"
   defp user_topic(user_id), do: "notifications:#{user_id}"
 
+  @spec list_notifications_for_user(integer()) :: [Notification.t()]
   def list_notifications_for_user(user_id) do
     user_id
     |> list_notifications_query()
     |> Repo.all()
   end
 
+  @spec list_unread_notifications_for_user(integer()) :: [Notification.t()]
   def list_unread_notifications_for_user(user_id) do
     user_id
     |> list_notifications_query()
@@ -160,6 +163,7 @@ defmodule Cen.Communications do
     |> Repo.all()
   end
 
+  @spec list_notifications_query(integer()) :: Ecto.Queryable.t()
   def list_notifications_query(user_id) do
     from n in Notification,
       left_join: ns in NotificationStatus,

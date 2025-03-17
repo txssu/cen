@@ -15,6 +15,7 @@ defmodule Cen.Communications.NotificationStatus do
   end
 
   @doc false
+  @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(status, attrs) do
     status
     |> cast(attrs, [:notification_id, :user_id])
