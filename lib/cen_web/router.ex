@@ -105,6 +105,8 @@ defmodule CenWeb.Router do
       live "/invs", InteractionLive, :invitations
       live "/invs/jobs/:id", VacancyLive.Show, :show
       live "/invs/cvs/:id", ResumeLive.Show, :show
+
+      live "/notifications", NotificationLive
     end
   end
 

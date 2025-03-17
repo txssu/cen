@@ -148,14 +148,24 @@ defmodule Cen.Communications do
   defp user_topic(user_id), do: "notifications:#{user_id}"
 
   def list_notifications_for_user(user_id) do
-    query =
-      from n in Notification,
-        left_join: ns in NotificationStatus,
-        on: ns.notification_id == n.id and ns.user_id == ^user_id,
-        select_merge: %{is_read: not is_nil(ns.id)},
-        where: (n.is_broadcast == true or n.user_id == ^user_id) and is_nil(ns.id)
+    user_id
+    |> list_notifications_query()
+    |> Repo.all()
+  end
 
-    Repo.all(query)
+  def list_unread_notifications_for_user(user_id) do
+    user_id
+    |> list_notifications_query()
+    |> where([ns], is_nil(ns.id))
+    |> Repo.all()
+  end
+
+  def list_notifications_query(user_id) do
+    from n in Notification,
+      left_join: ns in NotificationStatus,
+      on: ns.notification_id == n.id and ns.user_id == ^user_id,
+      select_merge: %{is_read: not is_nil(ns.id)},
+      where: n.is_broadcast == true or n.user_id == ^user_id
   end
 
   @spec read_notifications(User.t(), [Notification.t()]) :: {non_neg_integer(), nil | [NotificationStatus.t()]}

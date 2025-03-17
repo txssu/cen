@@ -1,6 +1,11 @@
 <main class="container mx-auto">
   <div id="notifications_wrapper" class="relative hidden">
-    <.live_component module={CenWeb.NotificationsComponent} id="notifications" :if={assigns[:notifications]} notifications={assigns[:notifications]} />
+    <.live_component
+      :if={assigns[:notifications]}
+      module={CenWeb.NotificationsComponent}
+      id="notifications"
+      unread_notifications={assigns[:unread_notifications]}
+    />
   </div>
   <.flash_group flash={@flash} />
   <div class="py-[3.4375rem] lg:py-[7.1875rem] lg:grid lg:grid-cols-12 lg:gap-x-10">

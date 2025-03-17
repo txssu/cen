@@ -16,7 +16,7 @@ defmodule CenWeb.NotificationsComponent do
           </button>
         </div>
         <ul class="mt-7 space-y-4">
-          <li :for={notification <- @notifications}>
+          <li :for={notification <- @unread_notifications}>
             <div class="shadow-notification-card flex gap-12 rounded-lg px-2.5 py-4">
               <div class="flex w-6 shrink-0 items-center">
                 <.notification_icon type={notification.type} />
@@ -28,7 +28,7 @@ defmodule CenWeb.NotificationsComponent do
               </div>
             </div>
           </li>
-          <li :if={@notifications == []}>
+          <li :if={@unread_notifications == []}>
             <p class="mb-4">
               <%= dgettext("publications", "У вас нет непрочитанных уведомлений") %>
             </p>
