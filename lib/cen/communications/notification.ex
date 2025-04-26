@@ -11,7 +11,6 @@ defmodule Cen.Communications.Notification do
 
   schema "notifications" do
     field :message, :string
-    field :title, :string
     field :is_broadcast, :boolean, default: false
     field :type, Ecto.Enum, values: Enums.notification_types()
     field :is_read, :boolean, virtual: true
@@ -25,8 +24,8 @@ defmodule Cen.Communications.Notification do
   @spec changeset(t(), map()) :: Ecto.Changeset.t()
   def changeset(notification, attrs) do
     notification
-    |> cast(attrs, [:title, :message, :type, :is_broadcast, :user_id])
-    |> validate_required([:title, :message, :type, :is_broadcast])
+    |> cast(attrs, [:message, :type, :is_broadcast, :user_id])
+    |> validate_required([:message, :type, :is_broadcast])
     |> validate_user_id()
   end
 
