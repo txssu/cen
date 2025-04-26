@@ -159,7 +159,7 @@ defmodule Cen.Communications do
   def list_unread_notifications_for_user(user_id) do
     user_id
     |> list_notifications_query()
-    |> where([ns], is_nil(ns.id))
+    |> where([_n, ns], is_nil(ns.id))
     |> Repo.all()
   end
 
