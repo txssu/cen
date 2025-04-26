@@ -24,7 +24,7 @@ msgstr "Хореография"
 #: lib/cen/publications/enums.ex:1
 #, elixir-autogen, elixir-format
 msgid "Doctor"
-msgstr "Научная степень"
+msgstr "Учёная степень"
 
 #: lib/cen/publications/enums.ex:1
 #, elixir-autogen, elixir-format
