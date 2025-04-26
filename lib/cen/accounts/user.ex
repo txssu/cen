@@ -160,7 +160,7 @@ defmodule Cen.Accounts.User do
   defp validate_phone_number(changeset) do
     changeset
     |> validate_required([:phone_number])
-    |> validate_length(:phone_number, max: 20)
+    |> validate_format(:phone_number, ~r/^\+7\d{10}$/, message: "должен быть в формате +7XXXXXXXXXX")
   end
 
   defp validate_vk_id(changeset) do
