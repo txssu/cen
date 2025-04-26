@@ -4,6 +4,8 @@ defmodule Cen.Publications.Resume.Job do
 
   import Ecto.Changeset
 
+  @year_month_regex ~r/^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])$/
+
   @type t :: %__MODULE__{}
 
   embedded_schema do
@@ -43,29 +45,23 @@ defmodule Cen.Publications.Resume.Job do
     validate_length(changeset, :description, max: 255)
   end
 
-  defp validate_start_month(changeset) do
-    changeset = validate_required(changeset, :start_month)
+  defp validate_start_month(changeset), do: put_year_month_date(changeset, :start_month, :start_date)
 
-    case get_change(changeset, :start_month) do
-      nil ->
-        changeset
+  defp validate_end_month(changeset), do: put_year_month_date(changeset, :end_month, :end_date)
 
-      year_with_month ->
-        [year, month] = year_with_month |> String.split("-") |> Enum.map(&String.to_integer/1)
-        put_change(changeset, :start_date, Date.new!(year, month, 1))
-    end
-  end
+  defp put_year_month_date(changeset, src_field, dest_field) do
+    changeset
+    |> validate_required(src_field)
+    |> validate_change(src_field, fn ^src_field, val ->
+      case Regex.named_captures(@year_month_regex, to_string(val)) do
+        %{"year" => y, "month" => m} ->
+          {:ok, date} = Date.new(String.to_integer(y), String.to_integer(m), 1)
+          put_change(changeset, dest_field, date)
+          []
 
-  defp validate_end_month(changeset) do
-    changeset = validate_required(changeset, :end_month)
-
-    case get_change(changeset, :end_month) do
-      nil ->
-        changeset
-
-      year_with_month ->
-        [year, month] = year_with_month |> String.split("-") |> Enum.map(&String.to_integer/1)
-        put_change(changeset, :end_date, Date.new!(year, month, 1))
-    end
+        _ ->
+          [{src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)"}]
+      end
+    end)
   end
 end
