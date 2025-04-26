@@ -55,7 +55,7 @@ defmodule Cen.Employers.Organization do
   defp validate_inn(changeset) do
     changeset
     |> validate_required(:inn)
-    |> validate_length(:inn, is: 10)
+    |> validate_format(:inn, ~r/^\d{10}$/, message: "должно быть 10 цифр")
   end
 
   defp validate_description(changeset) do
