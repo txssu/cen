@@ -10,6 +10,8 @@ defmodule Cen.Accounts.User do
   alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
 
+  @cyrillic_or_space ~r/^[\p{Cyrillic}\s]+$/u
+
   @type t() :: %__MODULE__{}
 
   schema "users" do
@@ -152,6 +154,7 @@ defmodule Cen.Accounts.User do
     changeset
     |> validate_required([:fullname])
     |> validate_length(:fullname, max: 60)
+    |> validate_format(:fullname, @cyrillic_or_space, message: "Содержит недопустимые символы")
   end
 
   defp validate_phone_number(changeset) do
