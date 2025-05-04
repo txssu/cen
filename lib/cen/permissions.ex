@@ -24,6 +24,8 @@ defmodule Cen.Permissions do
 
   def has_permission?(%User{role: :admin}, _resource, _action), do: true
 
+  def has_permission?(_user, _resource, :review), do: false
+
   def has_permission?(%User{role: :employer}, :organizations, :index), do: true
   def has_permission?(%User{role: :employer, id: author_id}, %Organization{user_id: author_id}, _action), do: true
   def has_permission?(%User{role: :employer}, %Organization{}, action) when action in ~w[create show]a, do: true
