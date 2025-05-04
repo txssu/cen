@@ -1,5 +1,5 @@
 <main class="container mx-auto">
-  <div id="notifications_wrapper" class="relative hidden z-40">
+  <div id="notifications_wrapper" class="relative z-40 hidden" phx-click-away={toggle_notifications()}>
     <.live_component
       :if={assigns[:unread_notifications]}
       module={CenWeb.NotificationsComponent}
