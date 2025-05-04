@@ -16,6 +16,9 @@ export const VKIDOneTap = {
     oneTap.render({
       container: this.el,
       showAlternativeLogin: true,
+      // Fast auth ain't work cause of CORS problem (maybe)
+      // So I decided to disable loading
+      fastAuthEnabled: false,
       styles: {
         borderRadius: 23,
         height: 46
