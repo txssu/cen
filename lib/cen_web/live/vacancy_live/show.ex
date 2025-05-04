@@ -59,7 +59,7 @@ defmodule CenWeb.VacancyLive.Show do
             <div class="flex gap-2.5">
               <%= if @vacancy.reviewed_at do %>
                 <.regular_button class="bg-accent-hover" phx-click="unapprove_vacancy">
-                  <%= gettext("На ревью") %>
+                  <%= gettext("На проверку") %>
                 </.regular_button>
               <% else %>
                 <.regular_button class="bg-accent-hover" phx-click="approve_vacancy">
