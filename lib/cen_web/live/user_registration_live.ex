@@ -46,10 +46,8 @@ defmodule CenWeb.UserRegistrationLive do
           <.input
             :if={@form[:role].value == "applicant" or @form[:role].value == :applicant}
             field={@form[:birthdate]}
-            type="text"
-            onfocus="(this.type='date')"
-            onblur="(this.type='text')"
-            placeholder={dgettext("users", "Дата рождения")}
+            type="date"
+            title="Дата рождения"
             implicit_required
           />
 

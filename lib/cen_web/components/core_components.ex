@@ -541,7 +541,7 @@ defmodule CenWeb.CoreComponents do
         id={@id}
         value={Form.normalize_value(@type, @value)}
         class={[
-          "h-[3.625rem] shadow-input text-regulargray mt-[0.9375rem] block w-full rounded-lg border-0 font-light placeholder:text-text focus:ring-0",
+          "h-[3.625rem] shadow-input text-regulargray mt-[0.9375rem] flex w-full items-center rounded-lg border-0 font-light placeholder:text-text focus:ring-0",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
