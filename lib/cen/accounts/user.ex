@@ -72,7 +72,10 @@ defmodule Cen.Accounts.User do
   defp validate_role(changeset) do
     changeset
     |> validate_required([:role])
-    |> validate_exclusion(:role, in: [:admin], message: dgettext("errors", "cannot be admin"))
+    |> validate_change(:role, fn
+      :role, :admin -> [role: dgettext("errors", "cannot be admin")]
+      :role, _otherwise -> []
+    end)
   end
 
   defp validate_email(changeset, opts) do
