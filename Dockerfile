@@ -46,7 +46,11 @@ COPY config/config.exs config/${MIX_ENV}.exs config/
 RUN mix deps.compile
 
 COPY priv priv
+
 COPY .git .git
+ENV GIT_DIR=/app
+
+RUN ls -la /app
 
 COPY lib lib
 
