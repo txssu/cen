@@ -55,11 +55,15 @@ defmodule Cen.Publications.Resume.Job do
     |> validate_change(src_field, fn ^src_field, val ->
       case Regex.named_captures(@year_month_regex, to_string(val)) do
         %{"year" => y, "month" => m} ->
-          {:ok, date} = Date.new(String.to_integer(y), String.to_integer(m), 1)
+          {:ok, date} =
+            y
+            |> String.to_integer()
+            |> Date.new(String.to_integer(m), 1)
+
           put_change(changeset, dest_field, date)
           []
 
-        _ ->
+        _otherwise ->
           [{src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)"}]
       end
     end)
