@@ -111,8 +111,12 @@ defmodule Cen.Communications do
     |> Flop.run(%Flop{limit: 30, order_by: [:inserted_at], order_directions: [:desc], offset: offset}, repo: Cen.Repo)
   end
 
-  @spec send_notification(map()) :: {:ok, Notification.t()} | {:error, term()}
-  def send_notification(attrs) do
+  @spec send_notification(map() | String.t()) :: {:ok, Notification.t()} | {:error, term()}
+  def send_notification(message) when is_binary(message) do
+    send_notification(%{message: message, is_broadcast: true, type: :success})
+  end
+
+  def send_notification(attrs) when is_map(attrs) do
     with {:ok, notification} <- create_notification(attrs),
          :ok <- deliver_notification(notification) do
       {:ok, notification}
@@ -123,6 +127,11 @@ defmodule Cen.Communications do
     %Notification{}
     |> Notification.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @spec change_notification(Notification.t(), map()) :: Ecto.Changeset.t()
+  def change_notification(%Notification{} = notification, attrs \\ %{}) do
+    Notification.changeset(notification, attrs)
   end
 
   defp deliver_notification(%Notification{} = notification) do
@@ -169,7 +178,8 @@ defmodule Cen.Communications do
       left_join: ns in NotificationStatus,
       on: ns.notification_id == n.id and ns.user_id == ^user_id,
       select_merge: %{is_read: not is_nil(ns.id)},
-      where: n.is_broadcast == true or n.user_id == ^user_id
+      where: n.is_broadcast == true or n.user_id == ^user_id,
+      order_by: [desc: n.inserted_at]
   end
 
   @spec read_notifications(User.t(), [Notification.t()]) :: {non_neg_integer(), nil | [NotificationStatus.t()]}

@@ -1,6 +1,7 @@
 defmodule Cen.Permissions do
   @moduledoc false
   alias Cen.Accounts.User
+  alias Cen.Communications.Notification
   alias Cen.Employers.Organization
   alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
@@ -25,6 +26,7 @@ defmodule Cen.Permissions do
   def has_permission?(%User{role: :admin}, _resource, _action), do: true
 
   def has_permission?(_user, _resource, :review), do: false
+  def has_permission?(_user, %Notification{}, :new), do: false
 
   def has_permission?(%User{role: :employer}, :organizations, :index), do: true
   def has_permission?(%User{role: :employer, id: author_id}, %Organization{user_id: author_id}, _action), do: true

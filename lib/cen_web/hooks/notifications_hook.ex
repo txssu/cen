@@ -31,7 +31,8 @@ defmodule CenWeb.NotificationsHook do
   @spec handle_event(String.t(), map(), Socket.t()) :: {:cont | :halt, Socket.t()}
   def handle_event("read_notifications", _unsigned_params, socket) do
     send_update(CenWeb.NotificationsComponent, %{id: "notifications", unread_notifications: []})
-    {:halt, socket}
+    Communications.read_notifications(socket.assigns.current_user, socket.assigns.unread_notifications)
+    {:halt, Phoenix.Component.assign(socket, :unread_notifications, [])}
   end
 
   def handle_event(_event, _params, socket) do

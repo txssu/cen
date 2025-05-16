@@ -35,7 +35,7 @@ defmodule Cen.Communications.Notification do
 
     if broadcast? do
       if user_id do
-        add_error(changeset, :user_id, "не должен быть указан для массовых уведомлений")
+        put_change(changeset, :user_id, nil)
       else
         changeset
       end
