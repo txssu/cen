@@ -11,6 +11,9 @@ defmodule CenWeb.NotificationsComponent do
           <p class="text-title-text text-xl font-medium uppercase">
             <%= dgettext("publications", "Уведомления") %>
           </p>
+          <.link navigate={~p"/notifications"} class="ml-4 flex items-center text-accent">
+            <%= dgettext("publications", "Показать все") %>
+          </.link>
           <button class="text-accent ml-auto" phx-click="read_notifications">
             <%= dgettext("publications", "Пометить прочитанными") %>
           </button>
