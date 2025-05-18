@@ -21,6 +21,8 @@ defmodule Cen.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
 
+    field :privacy_consent, :boolean, virtual: true, default: false
+
     field :vk_id, :integer
 
     field :fullname, :string
@@ -62,10 +64,11 @@ defmodule Cen.Accounts.User do
   @spec registration_changeset(t(), map(), keyword()) :: Ecto.Changeset.t()
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, ~w[email password fullname phone_number role birthdate]a)
+    |> cast(attrs, ~w[email password fullname phone_number role birthdate privacy_consent]a)
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_role()
+    |> validate_privacy_consent()
     |> validate_personal_info()
   end
 
@@ -168,6 +171,12 @@ defmodule Cen.Accounts.User do
 
   defp validate_vk_id(changeset) do
     validate_required(changeset, [:vk_id])
+  end
+
+  defp validate_privacy_consent(changeset) do
+    changeset
+    |> validate_required(:privacy_consent)
+    |> validate_acceptance(:privacy_consent, message: "необходимо согласие")
   end
 
   @doc """

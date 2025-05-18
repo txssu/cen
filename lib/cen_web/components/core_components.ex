@@ -381,6 +381,8 @@ defmodule CenWeb.CoreComponents do
   attr :rest, :global, include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly rows size step)
 
+  slot :label_block
+
   def input(%{field: %FormField{} = field} = assigns) do
     errors = if Phoenix.Component.used_input?(field), do: field.errors, else: []
 
@@ -445,6 +447,7 @@ defmodule CenWeb.CoreComponents do
           {@rest}
         />
         <%= @label %>
+        <%= render_slot(@label_block) %>
       </label>
       <.error :for={msg <- @errors}><%= msg %></.error>
     </div>

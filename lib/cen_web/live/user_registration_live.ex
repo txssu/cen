@@ -55,6 +55,14 @@ defmodule CenWeb.UserRegistrationLive do
           <.input field={@form[:phone_number]} type="text" placeholder={dgettext("users", "Номер телефона")} implicit_required />
           <.input field={@form[:password]} type="password" placeholder={dgettext("users", "Пароль")} implicit_required />
 
+          <div class="mt-6">
+            <.input field={@form[:privacy_consent]} type="checkbox">
+              <:label_block>
+                <span>Даю согласие на <.link navigate={~p"/privacy"} class="text-accent">обработку персональных данных</.link></span>
+              </:label_block>
+            </.input>
+          </div>
+
           <:actions>
             <.arrow_button class="mx-auto">
               <%= dgettext("users", "Зарегистрироваться") %>
