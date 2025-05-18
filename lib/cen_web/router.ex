@@ -124,6 +124,8 @@ defmodule CenWeb.Router do
       live "/", HomeLive
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+
+      live "/privacy", PrivacyLive
     end
   end
 
