@@ -1,5 +1,5 @@
 <main class="container mx-auto">
-  <div id="notifications_wrapper" class="relative z-40 hidden" phx-click-away={toggle_notifications()}>
+  <div id="notifications_wrapper" class="relative z-10 hidden" phx-click-away={toggle_notifications()}>
     <.live_component
       :if={assigns[:unread_notifications]}
       module={CenWeb.NotificationsComponent}
@@ -7,9 +7,13 @@
       unread_notifications={assigns[:unread_notifications]}
     />
   </div>
+  <div class="relative z-20">
+    <.live_component :if={not assigns[:cookies_consent_accepted]} module={CenWeb.CookiesConsentComponent} id="cookies_consent" />
+  </div>
   <.flash_group flash={@flash} />
   <div class="py-[3.4375rem] lg:py-[7.1875rem] lg:grid lg:grid-cols-12 lg:gap-x-10">
     <%= @inner_content %>
   </div>
 </main>
+
 <.live_component module={CenWeb.ChatComponent} id="chat" current_user={assigns[:current_user]} />
