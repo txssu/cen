@@ -52,20 +52,34 @@ defmodule Cen.Publications.Resume.Job do
   defp put_year_month_date(changeset, src_field, dest_field) do
     changeset
     |> validate_required(src_field)
-    |> validate_change(src_field, fn ^src_field, val ->
-      case Regex.named_captures(@year_month_regex, to_string(val)) do
-        %{"year" => y, "month" => m} ->
-          {:ok, date} =
-            y
-            |> String.to_integer()
-            |> Date.new(String.to_integer(m), 1)
+    |> put_date(src_field, dest_field)
+    |> validate_change(dest_field, &validate_year(src_field, &1, &2))
+  end
 
-          put_change(changeset, dest_field, date)
-          []
+  defp put_date(changeset, src_field, dest_field) do
+    val = get_change(changeset, src_field)
 
-        _otherwise ->
-          [{src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)"}]
-      end
-    end)
+    case Regex.named_captures(@year_month_regex, to_string(val)) do
+      %{"year" => y, "month" => m} ->
+        {:ok, date} =
+          y
+          |> String.to_integer()
+          |> Date.new(String.to_integer(m), 1)
+
+        put_change(changeset, dest_field, date)
+
+      _otherwise ->
+        add_error(changeset, src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)")
+    end
+  end
+
+  defp validate_year(src_field, _dest_field, date) do
+    year = date.year
+
+    if year < 1950 do
+      [{src_field, "Не может быть раньше 1950-01"}]
+    else
+      []
+    end
   end
 end
