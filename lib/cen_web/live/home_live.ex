@@ -12,7 +12,7 @@ defmodule CenWeb.HomeLive do
         </span>
       </.header>
 
-      <div class="mt-10 flex gap-2.5 lg:gap-8">
+      <div :if={is_nil(@current_user)} class="mt-10 flex gap-2.5 lg:gap-8">
         <.arrow_button phx-click={JS.navigate(~p"/users/register")}>
           <%= dgettext("home", "Зарегистрироваться") %>
         </.arrow_button>
