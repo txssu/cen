@@ -4,8 +4,6 @@ defmodule Cen.Publications.Resume.Job do
 
   import Ecto.Changeset
 
-  @year_month_regex ~r/^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])$/
-
   @type t :: %__MODULE__{}
 
   embedded_schema do
@@ -27,8 +25,11 @@ defmodule Cen.Publications.Resume.Job do
     |> validate_organization_name()
     |> validate_job_title()
     |> validate_description()
+    |> put_start_month()
+    |> put_start_date()
+    |> put_end_month()
+    |> put_end_date()
     |> validate_start_month()
-    |> validate_end_month()
   end
 
   defp validate_organization_name(changeset) do
@@ -45,41 +46,56 @@ defmodule Cen.Publications.Resume.Job do
     validate_length(changeset, :description, max: 255)
   end
 
-  defp validate_start_month(changeset), do: put_year_month_date(changeset, :start_month, :start_date)
+  defp validate_start_month(changeset) do
+    validate_required(changeset, :start_month)
+  end
 
-  defp validate_end_month(changeset), do: put_year_month_date(changeset, :end_month, :end_date)
+  defp put_start_date(changeset) do
+    put_date(changeset, :start_month, :start_date)
+  end
 
-  defp put_year_month_date(changeset, src_field, dest_field) do
-    changeset
-    |> validate_required(src_field)
-    |> put_date(src_field, dest_field)
-    |> validate_change(dest_field, &validate_year(src_field, &1, &2))
+  defp put_end_date(changeset) do
+    put_date(changeset, :end_month, :end_date)
   end
 
   defp put_date(changeset, src_field, dest_field) do
-    val = get_change(changeset, src_field)
+    if val = get_change(changeset, src_field) do
+      case Regex.named_captures(~r/^(?<year>\d{4})-(?<month>0[1-9]|1[0-2])$/, to_string(val)) do
+        %{"year" => y, "month" => m} ->
+          {:ok, date} =
+            y
+            |> String.to_integer()
+            |> Date.new(String.to_integer(m), 1)
 
-    case Regex.named_captures(@year_month_regex, to_string(val)) do
-      %{"year" => y, "month" => m} ->
-        {:ok, date} =
-          y
-          |> String.to_integer()
-          |> Date.new(String.to_integer(m), 1)
+          put_change(changeset, dest_field, date)
 
-        put_change(changeset, dest_field, date)
-
-      _otherwise ->
-        add_error(changeset, src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)")
+        _otherwise ->
+          add_error(changeset, src_field, "Должно быть в формате ГГГГ-ММ (пример 2025-04)")
+      end
+    else
+      changeset
     end
   end
 
-  defp validate_year(src_field, _dest_field, date) do
-    year = date.year
+  defp put_start_month(changeset) do
+    put_month(changeset, :start_date, :start_month)
+  end
 
-    if year < 1950 do
-      [{src_field, "Не может быть раньше 1950-01"}]
+  defp put_end_month(changeset) do
+    put_month(changeset, :end_date, :end_month)
+  end
+
+  defp put_month(changeset, src_field, dest_field) do
+    if val = get_field(changeset, src_field) do
+      month =
+        val.month
+        |> to_string()
+        |> String.pad_leading(2, "0")
+
+      result = "#{val.year}-#{month}"
+      put_change(changeset, dest_field, result)
     else
-      []
+      changeset
     end
   end
 end

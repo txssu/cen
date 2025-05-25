@@ -140,7 +140,12 @@ defmodule CenWeb.ResumeLive.Form do
                   </div>
 
                   <div class="lg:col-span-4 lg:col-start-6">
-                    <.input field={job[:end_month]} type="month" label={dgettext("publications", "Окончание")} required />
+                    <.input
+                      field={job[:end_month]}
+                      type="month"
+                      label={dgettext("publications", "Окончание")}
+                      placeholder="Оставьте пустым, если ещё работаете"
+                    />
                   </div>
 
                   <div class="lg:col-span-4 lg:col-start-1">
