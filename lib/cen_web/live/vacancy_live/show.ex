@@ -101,7 +101,7 @@ defmodule CenWeb.VacancyLive.Show do
 
           <:actions>
             <.arrow_button>
-              <%= dgettext("publications", "Выбрать") %>
+              <%= dgettext("publications", "Отправить") %>
             </.arrow_button>
           </:actions>
         </.simple_form>
