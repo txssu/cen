@@ -10,7 +10,7 @@ defmodule Cen.Accounts.User do
   alias Cen.Publications.Resume
   alias Cen.Publications.Vacancy
 
-  @cyrillic_or_space ~r/^[\p{Cyrillic}\s]+$/u
+  # @cyrillic_or_space ~r/^[\p{Cyrillic}\s]+$/u
 
   @type t() :: %__MODULE__{}
 
