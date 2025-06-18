@@ -11,12 +11,10 @@ config :cen, CenWeb.Endpoint, cache_static_manifest: "priv/static/cache_manifest
 config :logger, level: :info
 
 # Configures Swoosh API Client
-# TODO: Revert to 6d39b493
-config :swoosh, api_client: false
+config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Cen.Finch
 
 # Disable Swoosh Local Memory Storage
-# TODO: Revert to 6d39b493
-config :swoosh, local: true
+config :swoosh, local: false
 
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
