@@ -66,7 +66,7 @@ if config_env() == :prod do
 
   smtp_enabled? =
     case System.get_env("SMTP_ENABLE") do
-      value in ~w(true 1) -> true
+      value when value in ~w(true 1) -> true
       _otherwise -> false
     end
 
