@@ -240,7 +240,17 @@ defmodule CenWeb.VacancyLive.Show do
 
     message_attrs = %{user_id: user_id, text: message_text}
 
-    case Communications.create_interaction_from_resume(resume: resume, vacancy: vacancy, message_attrs: message_attrs) do
+    url_fun = fn
+      :vacancy, id -> url(~p"/invs/jobs/#{id}")
+      :resume, id -> url(~p"/res/cvs/#{id}")
+    end
+
+    case Communications.create_interaction_from_resume(
+           resume: resume,
+           vacancy: vacancy,
+           message_attrs: message_attrs,
+           url_fun: url_fun
+         ) do
       {:ok, _interaction} ->
         socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
 

@@ -4,6 +4,7 @@ defmodule Cen.Communications do
 
   alias Cen.Accounts.User
   alias Cen.Communications.Interaction
+  alias Cen.Communications.InteractionNotifier
   alias Cen.Communications.Message
   alias Cen.Communications.Notification
   alias Cen.Communications.NotificationStatus
@@ -26,6 +27,7 @@ defmodule Cen.Communications do
     resume = Keyword.fetch!(entities, :resume)
     vacancy = Keyword.fetch!(entities, :vacancy)
     message_attrs = Keyword.fetch!(entities, :message_attrs)
+    url_fun = Keyword.fetch!(entities, :url_fun)
 
     interaction = Interaction.changeset(%Interaction{resume_id: resume.id, vacancy_id: vacancy.id, initiator: initiator}, %{})
 
@@ -36,8 +38,13 @@ defmodule Cen.Communications do
     end)
     |> Repo.transaction()
     |> case do
-      {:ok, %{interaction: interaction}} -> {:ok, interaction}
-      {:error, _operation, changeset, _changes} -> {:error, changeset}
+      {:ok, %{interaction: interaction}} ->
+        send_email(interaction, message_attrs.text, url_fun)
+
+        {:ok, interaction}
+
+      {:error, _operation, changeset, _changes} ->
+        {:error, changeset}
     end
   end
 
@@ -199,5 +206,11 @@ defmodule Cen.Communications do
       on_conflict: :nothing,
       conflict_target: [:notification_id, :user_id]
     )
+  end
+
+  defp send_email(interaction, text, url_fun) do
+    Task.start(fn ->
+      InteractionNotifier.deliver_interaction_email(interaction, text, url_fun)
+    end)
   end
 end
