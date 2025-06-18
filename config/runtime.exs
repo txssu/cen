@@ -64,7 +64,13 @@ if config_env() == :prod do
   host = System.get_env("PHX_HOST") || "example.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
-  if System.get_env("SMTP_ENABLE") do
+  smtp_enabled? =
+    case System.get_env("SMTP_ENABLE") do
+      value in ~w(true 1) -> true
+      _otherwise -> false
+    end
+
+  if smtp_enabled? do
     smtp_port =
       "SMTP_PORT"
       |> System.get_env("465")
