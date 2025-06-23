@@ -62,8 +62,8 @@ defmodule Cen.MixProject do
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-      {:heroicons, github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
-      {:swoosh, "~> 1.17.6"},
+      {:heroicons, github: "tailwindlabs/heroicons", tag: "v2.2.0", sparse: "optimized", app: false, compile: false, depth: 1},
+      {:swoosh, "~> 1.19.3"},
       {:gen_smtp, "~> 1.2"},
       {:tls_certificate_check, "~> 1.26"},
       {:finch, "~> 0.13"},
@@ -71,7 +71,7 @@ defmodule Cen.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
+      {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
       {:nebulex, "~> 2.6"}
     ]
