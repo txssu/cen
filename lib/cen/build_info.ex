@@ -19,7 +19,7 @@ defmodule Cen.BuildInfo do
       end
     end
 
-  if File.exists?(git_hash_file), do: @external_resource(git_hash_file)
+  if git_hash_file && File.exists?(git_hash_file), do: @external_resource(git_hash_file)
 
   hash =
     if File.exists?(git_hash_file) do
