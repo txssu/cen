@@ -5,16 +5,15 @@
 
 version: 2
 updates:
-  - package-ecosystem: 'mix'
-    directory: '/'
+  - package-ecosystem: "mix"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
+    groups:
+      elixir-deps:
+        patterns:
+          - "*"
     reviewers:
       - txssu
     assignees:
       - txssu
-    groups:
-      production-dependencies:
-        dependency-type: 'production'
-      development-dependencies:
-        dependency-type: 'development'
