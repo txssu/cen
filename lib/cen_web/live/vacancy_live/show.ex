@@ -15,7 +15,7 @@ defmodule CenWeb.VacancyLive.Show do
     <div class="lg:col-span-12">
       <div class="space-y-6 lg:grid lg:grid-flow-dense lg:grid-cols-12 lg:gap-10 lg:space-y-0">
         <.header class="lg:col-span-12" header_kind="black_left">
-          <%= @vacancy.job_title %>
+          {@vacancy.job_title}
         </.header>
 
         <div class="relative pt-16 lg:order-1 lg:col-span-3 lg:col-start-10 lg:pt-0">
@@ -28,9 +28,9 @@ defmodule CenWeb.VacancyLive.Show do
               <%= for {value, icon} <- contacts_list(@vacancy.organization) do %>
                 <.render_not_nil value={value}>
                   <li class="flex items-center gap-2.5">
-                    <.icon name={icon} class="w-4 h-4" />
+                    <.icon name={icon} class="h-4 w-4" />
                     <div class="leading-[1.2] text-sm font-light text-black">
-                      <%= value %>
+                      {value}
                     </div>
                   </li>
                 </.render_not_nil>
@@ -43,7 +43,7 @@ defmodule CenWeb.VacancyLive.Show do
           <div class="flex gap-2.5">
             <%= if has_permission?(@current_user, @vacancy, :update) do %>
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/edit")}>
-                <%= gettext("Редактировать") %>
+                {gettext("Редактировать")}
               </.regular_button>
               <.button class="bg-white p-4" phx-click="delete_vacancy">
                 <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
@@ -51,7 +51,7 @@ defmodule CenWeb.VacancyLive.Show do
             <% end %>
             <%= if @current_user.role == :applicant do %>
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/choose_resume")}>
-                <%= dgettext("publications", "Откликнуться") %>
+                {dgettext("publications", "Откликнуться")}
               </.regular_button>
             <% end %>
           </div>
@@ -59,31 +59,31 @@ defmodule CenWeb.VacancyLive.Show do
             <div class="flex gap-2.5">
               <%= if @vacancy.reviewed_at do %>
                 <.regular_button class="bg-accent-hover" phx-click="unapprove_vacancy">
-                  <%= gettext("На проверку") %>
+                  {gettext("На проверку")}
                 </.regular_button>
               <% else %>
                 <.regular_button class="bg-accent-hover" phx-click="approve_vacancy">
-                  <%= gettext("Одобрить") %>
+                  {gettext("Одобрить")}
                 </.regular_button>
               <% end %>
             </div>
           <% end %>
         </div>
 
-        <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9" header={dgettext("publications", "Описание")}>
+        <.basic_card class="w-full px-6 py-10 lg:col-span-9 lg:py-12" header={dgettext("publications", "Описание")}>
           <p class="mt-6">
-            <%= @vacancy.description %>
+            {@vacancy.description}
           </p>
         </.basic_card>
 
-        <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9">
+        <.basic_card class="w-full px-6 py-10 lg:col-span-9 lg:py-12">
           <div class="space-y-14">
             <%= for {header, text} <- format_vacancy_info(@vacancy) do %>
               <div>
                 <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                  <%= header %>
+                  {header}
                 </p>
-                <p class="mt-4"><%= text %></p>
+                <p class="mt-4">{text}</p>
               </div>
             <% end %>
           </div>
@@ -93,7 +93,7 @@ defmodule CenWeb.VacancyLive.Show do
 
     <.modal id="choose_resume" show={@show_resume_modal} on_cancel={JS.patch(~p"/jobs/#{@vacancy}")}>
       <.header class="mb-4" header_kind="black_left">
-        <%= dgettext("publications", "Выберите резюме") %>
+        {dgettext("publications", "Выберите резюме")}
         <.simple_form for={@select_resume_form} phx-submit="choose_resume">
           <.input field={@select_resume_form[:resume_id]} type="select" options={@resumes |> Enum.map(&{&1.job_title, &1.id})} />
 
@@ -101,7 +101,7 @@ defmodule CenWeb.VacancyLive.Show do
 
           <:actions>
             <.arrow_button>
-              <%= dgettext("publications", "Отправить") %>
+              {dgettext("publications", "Отправить")}
             </.arrow_button>
           </:actions>
         </.simple_form>

@@ -108,14 +108,14 @@ defmodule CenWeb.ResumeLive.Form do
                       value={education.index}
                       phx-click={JS.dispatch("change")}
                     >
-                      <%= dgettext("misc", "Удалить") %>
+                      {dgettext("misc", "Удалить")}
                     </.regular_button>
                   </div>
                 </.inputs_for>
               </div>
               <input type="hidden" name="resume[educations_drop][]" />
               <.arrow_button type="button" name="resume[educations_order][]" value="new" class="mt-4" phx-click={JS.dispatch("change")}>
-                <%= gettext("Добавить ещё") %>
+                {gettext("Добавить ещё")}
               </.arrow_button>
             </.fieldset>
           </div>
@@ -154,14 +154,14 @@ defmodule CenWeb.ResumeLive.Form do
 
                   <div class="lg:col-span-9 lg:col-start-1">
                     <.regular_button type="button" class="mt-4" name="resume[jobs_drop][]" value={job.index} phx-click={JS.dispatch("change")}>
-                      <%= gettext("Удалить") %>
+                      {gettext("Удалить")}
                     </.regular_button>
                   </div>
                 </.inputs_for>
               </div>
               <input type="hidden" name="resume[jobs_drop][]" />
               <.arrow_button type="button" name="resume[jobs_order][]" value="new" class="mt-4" phx-click={JS.dispatch("change")}>
-                <%= gettext("Добавить") %>
+                {gettext("Добавить")}
               </.arrow_button>
             </.fieldset>
           </div>
@@ -169,7 +169,7 @@ defmodule CenWeb.ResumeLive.Form do
 
         <:actions>
           <.arrow_button>
-            <%= dgettext("publications", "Сохранить резюме") %>
+            {dgettext("publications", "Сохранить резюме")}
           </.arrow_button>
         </:actions>
       </.simple_form>

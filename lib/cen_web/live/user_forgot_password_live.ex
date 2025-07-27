@@ -9,21 +9,21 @@ defmodule CenWeb.UserForgotPasswordLive do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Восстановление пароля") %>
+        {dgettext("users", "Восстановление пароля")}
       </.header>
 
       <p class="mt-10 mb-12">
-        <%= dgettext(
+        {dgettext(
           "users",
           "Введите адрес электронной почты от вашей учётной записи. На него мы вышлем ссылку для сброса пароля."
-        ) %>
+        )}
       </p>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
         <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
         <:actions>
           <.arrow_button class="mx-auto">
-            <%= dgettext("users", "Сбросить пароль") %>
+            {dgettext("users", "Сбросить пароль")}
           </.arrow_button>
         </:actions>
       </.simple_form>

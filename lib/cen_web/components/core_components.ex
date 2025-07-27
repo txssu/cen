@@ -82,7 +82,7 @@ defmodule CenWeb.CoreComponents do
                 </button>
               </div>
               <div id={"#{@id}-content"}>
-                <%= render_slot(@inner_block) %>
+                {render_slot(@inner_block)}
               </div>
             </.focus_wrap>
           </div>
@@ -125,7 +125,7 @@ defmodule CenWeb.CoreComponents do
               class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-5 shadow-lg ring-1 transition"
             >
               <div id={"#{@id}-content"}>
-                <%= render_slot(@inner_block) %>
+                {render_slot(@inner_block)}
               </div>
             </.focus_wrap>
           </div>
@@ -170,9 +170,9 @@ defmodule CenWeb.CoreComponents do
       <p :if={@title} class="flex items-center gap-1.5 text-sm font-semibold leading-6">
         <.icon :if={@kind == :info} name="hero-information-circle-mini" class="h-4 w-4" />
         <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="h-4 w-4" />
-        <%= @title %>
+        {@title}
       </p>
-      <p class="mt-2 text-sm leading-5"><%= msg %></p>
+      <p class="mt-2 text-sm leading-5">{msg}</p>
       <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
         <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
@@ -203,7 +203,7 @@ defmodule CenWeb.CoreComponents do
         phx-connected={hide("#client-error")}
         hidden
       >
-        <%= gettext("Attempting to reconnect") %>
+        {gettext("Attempting to reconnect")}
         <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
 
@@ -215,7 +215,7 @@ defmodule CenWeb.CoreComponents do
         phx-connected={hide("#server-error")}
         hidden
       >
-        <%= gettext("Hang in there while we get back on track") %>
+        {gettext("Hang in there while we get back on track")}
         <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
     </div>
@@ -249,9 +249,9 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
       <div>
-        <%= render_slot(@inner_block, f) %>
+        {render_slot(@inner_block, f)}
         <div :for={action <- @actions} class="mt-[1.875rem]">
-          <%= render_slot(action, f) %>
+          {render_slot(action, f)}
         </div>
       </div>
     </.form>
@@ -275,7 +275,7 @@ defmodule CenWeb.CoreComponents do
   def button(assigns) do
     ~H"""
     <button type={@type} class={["shadow-default-1 flex items-center rounded-full font-normal uppercase", @class]} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </button>
     """
   end
@@ -289,17 +289,10 @@ defmodule CenWeb.CoreComponents do
 
   def arrow_button(assigns) do
     ~H"""
-    <.button
-      class={[
-        "bg-accent pl-[0.4375rem] gap-2.5 py-2 pr-5 text-[0.9375rem]",
-        @class
-      ]}
-      type={@type}
-      {@rest}
-    >
-      <.icon class="h-[1.875rem] bg-white rounded-full shadow-icon" name={"cen-arrow-#{@arrow_direction}"} />
+    <.button class={["bg-accent pl-[0.4375rem] text-[0.9375rem] gap-2.5 py-2 pr-5", @class]} type={@type} {@rest}>
+      <.icon class="h-[1.875rem] shadow-icon rounded-full bg-white" name={"cen-arrow-#{@arrow_direction}"} />
       <span class="text-white">
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </span>
     </.button>
     """
@@ -313,16 +306,9 @@ defmodule CenWeb.CoreComponents do
 
   def regular_button(assigns) do
     ~H"""
-    <.button
-      class={[
-        "py-4 px-5 text-[0.9375rem] ",
-        @class
-      ]}
-      type={@type}
-      {@rest}
-    >
+    <.button class={["text-[0.9375rem] px-5 py-4 ", @class]} type={@type} {@rest}>
       <span class="text-title-text">
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </span>
     </.button>
     """
@@ -405,7 +391,7 @@ defmodule CenWeb.CoreComponents do
     <div>
       <input type="hidden" name={@name} value="" disabled={@rest[:disabled]} />
       <.label for={@id}>
-        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+        {@label}{if @required && @label && !@implicit_required, do: "*"}
       </.label>
       <div class="mt-4 ml-2 flex flex-col">
         <label :for={{option_label, option_value} <- @options} class="text-lg">
@@ -418,10 +404,10 @@ defmodule CenWeb.CoreComponents do
             class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
             {@rest}
           />
-          <%= option_label %>
+          {option_label}
         </label>
       </div>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -446,10 +432,10 @@ defmodule CenWeb.CoreComponents do
           class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
           {@rest}
         />
-        <%= @label %>
-        <%= render_slot(@label_block) %>
+        {@label}
+        {render_slot(@label_block)}
       </label>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -459,7 +445,7 @@ defmodule CenWeb.CoreComponents do
     <div>
       <input :if={@multiple} type="hidden" name={@name} />
       <.label for={@id}>
-        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+        {@label}{if @required && @label && !@implicit_required, do: "*"}
       </.label>
       <select
         id={@id}
@@ -473,10 +459,10 @@ defmodule CenWeb.CoreComponents do
         required={@required}
         {@rest}
       >
-        <option :if={@prompt} value=""><%= @prompt %></option>
-        <%= Form.options_for_select(@options, @value) %>
+        <option :if={@prompt} value="">{@prompt}</option>
+        {Form.options_for_select(@options, @value)}
       </select>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -485,7 +471,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <div>
       <.label for={@id}>
-        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+        {@label}{if @required && @label && !@implicit_required, do: "*"}
       </.label>
       <textarea
         id={@id}
@@ -498,7 +484,7 @@ defmodule CenWeb.CoreComponents do
         required={@required}
         {@rest}
       ><%= Form.normalize_value("textarea", @value) %></textarea>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -507,10 +493,10 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <div class="shadow-textcard rounded-lg bg-white px-8 py-4">
       <label for={@id} class="text-title-text leading-[1.3rem] block uppercase lg:text-xl">
-        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+        {@label}{if @required && @label && !@implicit_required, do: "*"}
       </label>
       <div class="mt-4 flex items-center gap-4">
-        <div class="text-regulargray"><%= @text_before %></div>
+        <div class="text-regulargray">{@text_before}</div>
         <input
           type="text"
           name={@name}
@@ -524,9 +510,9 @@ defmodule CenWeb.CoreComponents do
           required={@required}
           {@rest}
         />
-        <div class="text-regulargray"><%= @text_after %></div>
+        <div class="text-regulargray">{@text_after}</div>
       </div>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -536,7 +522,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <div>
       <.label for={@id}>
-        <%= @label %><%= if @required && @label && !@implicit_required, do: "*" %>
+        {@label}{if @required && @label && !@implicit_required, do: "*"}
       </.label>
       <input
         type={@type}
@@ -551,7 +537,7 @@ defmodule CenWeb.CoreComponents do
         required={@required}
         {@rest}
       />
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </div>
     """
   end
@@ -565,7 +551,7 @@ defmodule CenWeb.CoreComponents do
   def label(assigns) do
     ~H"""
     <label for={@for} class="text-title-text mt-[1.5625rem] leading-[1.3rem] block uppercase lg:text-xl">
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </label>
     """
   end
@@ -579,7 +565,7 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <p class="mt-3 flex gap-3 text-sm leading-6 text-rose-600">
       <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </p>
     """
   end
@@ -598,16 +584,10 @@ defmodule CenWeb.CoreComponents do
   def header(assigns) do
     ~H"""
     <header class={@class}>
-      <.dynamic_tag
-        tag_name={@header_level}
-        class={[
-          "leading-[1.2] text-2xl lg:text-3xl font-medium uppercase",
-          header_kind_class(@header_kind)
-        ]}
-      >
-        <%= render_slot(@inner_block) %>
+      <.dynamic_tag tag_name={@header_level} class={["leading-[1.2] text-2xl font-medium uppercase lg:text-3xl", header_kind_class(@header_kind)]}>
+        {render_slot(@inner_block)}
       </.dynamic_tag>
-      <%= render_slot(@subtitle) %>
+      {render_slot(@subtitle)}
     </header>
     """
   end
@@ -631,16 +611,16 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <fieldset class={@class}>
       <.header header_level="legend" header_kind="black_left">
-        <%= @legend %>
+        {@legend}
         <:subtitle>
           <%= if @subtitle do %>
             <p class="text-title-text leading-[1.3rem] mt-2.5 block uppercase lg:text-xl">
-              <%= @subtitle %>
+              {@subtitle}
             </p>
           <% end %>
         </:subtitle>
       </.header>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </fieldset>
     """
   end
@@ -651,8 +631,8 @@ defmodule CenWeb.CoreComponents do
 
   def regular_link(assigns) do
     ~H"""
-    <.link class="text-text hover:text-accent font-normal underline" {@rest}>
-      <%= @text %>
+    <.link class="text-text font-normal underline hover:text-accent" {@rest}>
+      {@text}
     </.link>
     """
   end
@@ -666,9 +646,9 @@ defmodule CenWeb.CoreComponents do
     ~H"""
     <div class={[@class, "bg-[#F5F5F5] shadow-default-convexity rounded-lg"]}>
       <h2 class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-        <%= @header %>
+        {@header}
       </h2>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -681,7 +661,7 @@ defmodule CenWeb.CoreComponents do
 
   def render_not_nil(assigns) do
     ~H"""
-    <%= render_slot(@inner_block) %>
+    {render_slot(@inner_block)}
     """
   end
 
@@ -721,9 +701,9 @@ defmodule CenWeb.CoreComponents do
       <table class="w-[40rem] mt-11 sm:w-full">
         <thead class="text-left text-sm leading-6 text-zinc-500">
           <tr>
-            <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal"><%= col[:label] %></th>
+            <th :for={col <- @col} class="p-0 pr-6 pb-4 font-normal">{col[:label]}</th>
             <th :if={@action != []} class="relative p-0 pb-4">
-              <span class="sr-only"><%= gettext("Actions") %></span>
+              <span class="sr-only">{gettext("Actions")}</span>
             </th>
           </tr>
         </thead>
@@ -741,7 +721,7 @@ defmodule CenWeb.CoreComponents do
               <div class="block py-4 pr-6">
                 <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
                 <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
-                  <%= render_slot(col, @row_item.(row)) %>
+                  {render_slot(col, @row_item.(row))}
                 </span>
               </div>
             </td>
@@ -749,7 +729,7 @@ defmodule CenWeb.CoreComponents do
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
                 <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
                 <span :for={action <- @action} class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
-                  <%= render_slot(action, @row_item.(row)) %>
+                  {render_slot(action, @row_item.(row))}
                 </span>
               </div>
             </td>
@@ -779,8 +759,8 @@ defmodule CenWeb.CoreComponents do
     <div class="mt-14">
       <dl class="-my-4 divide-y divide-zinc-100">
         <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
-          <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+          <dt class="w-1/4 flex-none text-zinc-500">{item.title}</dt>
+          <dd class="text-zinc-700">{render_slot(item)}</dd>
         </div>
       </dl>
     </div>
@@ -802,7 +782,7 @@ defmodule CenWeb.CoreComponents do
     <div class="mt-16">
       <.link navigate={@navigate} class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700">
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
-        <%= render_slot(@inner_block) %>
+        {render_slot(@inner_block)}
       </.link>
     </div>
     """
@@ -830,13 +810,13 @@ defmodule CenWeb.CoreComponents do
   attr :class, :string, default: nil
   attr :alt, :string, default: ""
 
-  def icon(%{name: "hero-" <> _} = assigns) do
+  def icon(%{name: "hero-" <> _icon_name} = assigns) do
     ~H"""
     <span class={[@name, @class]} alt={@alt} />
     """
   end
 
-  def icon(%{name: "cen-" <> _} = assigns) do
+  def icon(%{name: "cen-" <> _icon_name} = assigns) do
     ~H"""
     <img src={"/images/icons/#{@name}.svg"} alt={@alt} class={[@class]} />
     """
@@ -867,7 +847,7 @@ defmodule CenWeb.CoreComponents do
           phx-click="goto_page"
           phx-value-page={page_num}
         >
-          <%= page_num %>
+          {page_num}
         </.button>
       </li>
       <li class={@metadata.has_next_page? || "invisible"}>

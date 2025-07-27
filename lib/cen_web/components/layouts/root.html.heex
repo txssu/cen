@@ -6,7 +6,7 @@
     <meta name="git-revision" content={Cen.BuildInfo.git_short_hash()} />
     <meta name="csrf-token" content={get_csrf_token()} />
     <.live_title suffix=" · Phoenix Framework">
-      <%= assigns[:page_title] || "Cen" %>
+      {assigns[:page_title] || "Cen"}
     </.live_title>
     <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
     <script defer src="https://unpkg.com/@vkid/sdk@2.4.0/dist-sdk/umd/index.js">
@@ -47,7 +47,7 @@
       </div>
     </div>
     <div class="cen-background grow">
-      <%= @inner_content %>
+      {@inner_content}
     </div>
     <footer class="shadow-footer bg-[#F8F8F8] text-footergray">
       <div class="container mx-auto py-10 lg:py-[3.75rem] lg:grid-cols-12">
@@ -88,7 +88,7 @@
               <ul class="flex">
                 <li class="w-10">
                   <.link href="https://vk.com/ekb_ton" target="_blank" rel="noopener noreferrer">
-                    <.icon name="cen-vk" class="rounded-full  border border-accent" />
+                    <.icon name="cen-vk" class="border-accent rounded-full border" />
                   </.link>
                 </li>
               </ul>

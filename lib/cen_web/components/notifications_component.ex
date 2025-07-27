@@ -9,13 +9,13 @@ defmodule CenWeb.NotificationsComponent do
       <div class="shadow-default-1 w-[630px] rounded-lg bg-white p-5">
         <div class="flex">
           <p class="text-title-text text-xl font-medium uppercase">
-            <%= dgettext("publications", "Уведомления") %>
+            {dgettext("publications", "Уведомления")}
           </p>
-          <.link navigate={~p"/notifications"} class="ml-4 flex items-center text-accent">
-            <%= dgettext("publications", "Показать все") %>
+          <.link navigate={~p"/notifications"} class="text-accent ml-4 flex items-center">
+            {dgettext("publications", "Показать все")}
           </.link>
           <button class="text-accent ml-auto" phx-click="read_notifications">
-            <%= dgettext("publications", "Пометить прочитанными") %>
+            {dgettext("publications", "Пометить прочитанными")}
           </button>
         </div>
         <ul class="mt-7 space-y-4">
@@ -26,14 +26,14 @@ defmodule CenWeb.NotificationsComponent do
               </div>
               <div class="flex items-center">
                 <p>
-                  <%= notification.message %>
+                  {notification.message}
                 </p>
               </div>
             </div>
           </li>
           <li :if={@unread_notifications == []}>
             <p class="mb-4">
-              <%= dgettext("publications", "У вас нет непрочитанных уведомлений") %>
+              {dgettext("publications", "У вас нет непрочитанных уведомлений")}
             </p>
           </li>
         </ul>

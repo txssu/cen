@@ -187,7 +187,7 @@ defmodule Cen.Accounts.UserToken do
     from t in UserToken, where: t.user_id == ^user.id
   end
 
-  def by_user_and_contexts_query(user, [_ | _] = contexts) do
+  def by_user_and_contexts_query(user, [_head | _tail] = contexts) do
     from t in UserToken, where: t.user_id == ^user.id and t.context in ^contexts
   end
 end

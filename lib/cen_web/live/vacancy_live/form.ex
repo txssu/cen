@@ -101,7 +101,7 @@ defmodule CenWeb.VacancyLive.Form do
         </.fieldset>
         <:actions>
           <.arrow_button>
-            <%= dgettext("forms", "Сохранить") %>
+            {dgettext("forms", "Сохранить")}
           </.arrow_button>
         </:actions>
       </.simple_form>

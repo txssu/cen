@@ -19,8 +19,8 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
         </div>
         <div class="flex flex-grow-0 flex-col justify-center">
           <.link href={~p"/users/log_out"} method="delete">
-            <.button class="flex-grow-0 bg-accent-hover uppercase py-[0.9375rem] text-title-text px-5 text-nowrap">
-              <%= dgettext("users", "Выйти") %>
+            <.button class="bg-accent-hover py-[0.9375rem] text-title-text text-nowrap flex-grow-0 px-5 uppercase">
+              {dgettext("users", "Выйти")}
             </.button>
           </.link>
           <!--
@@ -46,7 +46,7 @@ defmodule CenWeb.UserSettings.PersonalInfoLive do
           <.input field={@personal_info_form[:phone_number]} type="text" placeholder={dgettext("users", "Номер телефона")} implicit_required />
           <:actions>
             <.arrow_button>
-              <%= dgettext("users", "Сохранить") %>
+              {dgettext("users", "Сохранить")}
             </.arrow_button>
           </:actions>
         </.simple_form>

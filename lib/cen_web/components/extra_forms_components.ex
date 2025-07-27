@@ -23,14 +23,14 @@ defmodule CenWeb.ExtraFormsComponents do
 
     ~H"""
     <fieldset class="flex flex-row flex-wrap justify-between gap-y-2.5 sm:flex-col md:flex-row lg:flex-col xl:flex-row">
-      <p class="text-xl uppercase"><%= @legend %></p>
+      <p class="text-xl uppercase">{@legend}</p>
       <div :for={{label, value} <- @options}>
         <label>
           <input id={"#{@id}-#{value}"} type="radio" name={@name} value={value} checked={@selected_value == value} />
-          <%= label %>
+          {label}
         </label>
       </div>
-      <.error :for={msg <- @errors}><%= msg %></.error>
+      <.error :for={msg <- @errors}>{msg}</.error>
     </fieldset>
     """
   end

@@ -9,15 +9,15 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Подтверждение аккаунта") %>
+        {dgettext("users", "Подтверждение аккаунта")}
       </.header>
 
       <div class="my-10">
         <p>
-          <%= dgettext("users", "Не пришло письмо?") %>
+          {dgettext("users", "Не пришло письмо?")}
         </p>
         <p>
-          <%= dgettext("users", "Мы отправим новую ссылку для подтверждения") %>
+          {dgettext("users", "Мы отправим новую ссылку для подтверждения")}
         </p>
       </div>
 
@@ -25,7 +25,7 @@ defmodule CenWeb.UserConfirmationInstructionsLive do
         <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
         <:actions>
           <.arrow_button class="mx-auto">
-            <%= dgettext("users", "Отправить") %>
+            {dgettext("users", "Отправить")}
           </.arrow_button>
         </:actions>
       </.simple_form>

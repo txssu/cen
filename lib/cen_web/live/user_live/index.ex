@@ -13,15 +13,15 @@ defmodule CenWeb.UserLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= dgettext("users", "Пользователи") %>
+          {dgettext("users", "Пользователи")}
         </.header>
       </div>
       <ul class="mt-7 space-y-6">
         <%= for user <- @users do %>
           <li>
-            <.basic_card class="w-full py-7 px-6" header={user.email}>
+            <.basic_card class="w-full px-6 py-7" header={user.email}>
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-                <%= dgettext("users", "Роль:") %> <%= translate_role(user.role) %>
+                {dgettext("users", "Роль:")} {translate_role(user.role)}
               </p>
             </.basic_card>
           </li>

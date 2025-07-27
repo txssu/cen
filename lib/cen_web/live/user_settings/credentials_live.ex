@@ -14,7 +14,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
 
     <div :if={not @has_password?} class="col-span-4 lg:col-span-8">
       <p class="font leading-[1.5] mt-5">
-        Вы вошли через VK ID и почтой: <span class="font-bold"><%= @current_user.email %></span> <br />
+        Вы вошли через VK ID и почтой: <span class="font-bold">{@current_user.email}</span> <br />
         Для редактирования адреса электронной почты вам необходимо сбросить пароль. <br />
         Чтобы это сделать, выйдите из аккаунта и нажмите "Я не помню пароль".
       </p>
@@ -23,7 +23,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
     <div :if={@has_password?} class="col-span-4 lg:col-start-5">
       <section>
         <.header header_level="h2" header_kind="black_left">
-          <%= dgettext("users", "Обновить почту") %>
+          {dgettext("users", "Обновить почту")}
         </.header>
 
         <.simple_form for={@email_form} id="email_form" phx-submit="update_email" phx-change="validate_email">
@@ -39,7 +39,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
           />
           <:actions>
             <.arrow_button>
-              <%= dgettext("users", "Сохранить") %>
+              {dgettext("users", "Сохранить")}
             </.arrow_button>
           </:actions>
         </.simple_form>
@@ -47,7 +47,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
 
       <section class="mt-[4.375rem]">
         <.header header_level="h2" header_kind="black_left">
-          <%= dgettext("users", "Обновить пароль") %>
+          {dgettext("users", "Обновить пароль")}
         </.header>
 
         <.simple_form
@@ -73,7 +73,7 @@ defmodule CenWeb.UserSettings.CredentialsLive do
           />
           <:actions>
             <.arrow_button>
-              <%= dgettext("users", "Сохранить") %>
+              {dgettext("users", "Сохранить")}
             </.arrow_button>
           </:actions>
         </.simple_form>

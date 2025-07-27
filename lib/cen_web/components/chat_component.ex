@@ -27,7 +27,7 @@ defmodule CenWeb.ChatComponent do
                 phx-window-keydown={JS.exec("data-cancel", to: "#chat_modal")}
                 phx-key="escape"
                 phx-click-away={JS.exec("data-cancel", to: "#chat_modal")}
-                class="lg:shadow-zinc-700/10 lg:ring-zinc-700/10 relative h-full hidden lg:rounded-2xl bg-white lg:shadow-lg lg:ring-1 transition"
+                class="relative hidden h-full bg-white transition lg:shadow-zinc-700/10 lg:ring-zinc-700/10 lg:rounded-2xl lg:shadow-lg lg:ring-1"
               >
                 <div class={["absolute top-6 right-5 lg:block", @selected_interaction && "hidden"]}>
                   <button
@@ -43,7 +43,7 @@ defmodule CenWeb.ChatComponent do
                   <div class="flex h-full">
                     <div class={["bg-[#F5F5F5] h-full w-full p-7 lg:w-[430px] lg:block", @selected_interaction && "hidden"]}>
                       <.header header_kind="black_left" class="mb-10">
-                        <%= dgettext("publications", "Чаты") %>
+                        {dgettext("publications", "Чаты")}
                       </.header>
                       <ul class="space-y-4 ">
                         <li :for={interaction <- @interactions} phx-click="select_chat" phx-value-id={interaction.id} phx-target={@myself}>
@@ -55,7 +55,7 @@ defmodule CenWeb.ChatComponent do
                       <%= if @selected_interaction do %>
                         <div class="flex h-full flex-col p-7 lg:p-14 lg:pb-7 lg:pl-7">
                           <.chat_header interaction={@selected_interaction} myself={@myself} />
-                          <ul class="my-1 flex grow flex-col-reverse gap-2.5 overflow-y-auto rounded-lg pb-7 [scrollbar-width:_none]">
+                          <ul class="[scrollbar-width:_none] my-1 flex grow flex-col-reverse gap-2.5 overflow-y-auto rounded-lg pb-7">
                             <li :for={message <- @messages}>
                               <.message_card message={message} current_user={@current_user} />
                             </li>
@@ -90,17 +90,17 @@ defmodule CenWeb.ChatComponent do
     ~H"""
     <div class="shadow-default-1 cursor-pointer rounded-lg bg-white p-5">
       <div class="text-title-text font-medium uppercase">
-        <%= @title %>
+        {@title}
       </div>
       <div class="text-title-text mt-2 text-sm">
-        <%= @subtitle %>
+        {@subtitle}
       </div>
       <div class="mt-4 flex gap-2.5">
         <.initiator_text interaction={assigns.interaction} />
         <%= if @last_message_text do %>
           <div>|</div>
           <div class="text-nowrap overflow-hidden text-ellipsis">
-            <%= @last_message_text %>
+            {@last_message_text}
           </div>
         <% end %>
       </div>
@@ -121,9 +121,9 @@ defmodule CenWeb.ChatComponent do
       <div class="flex gap-4">
         <div class="flex items-center justify-center">
           <div class="lg:hidden">
-            <.button class="w-11 h-11" phx-click="deselect_chat" phx-target={@myself}>
+            <.button class="h-11 w-11" phx-click="deselect_chat" phx-target={@myself}>
               <div class="flex h-full w-full items-center justify-center">
-                <.icon name="cen-arrow-back" class="w-6 h-6" />
+                <.icon name="cen-arrow-back" class="h-6 w-6" />
               </div>
             </.button>
           </div>
@@ -131,12 +131,12 @@ defmodule CenWeb.ChatComponent do
 
         <div>
           <div class="text-title-text font-medium uppercase">
-            <%= @to_user.fullname %>
+            {@to_user.fullname}
           </div>
 
           <div class="mt-5 space-y-1">
-            <p><span class="text-accent"><%= dgettext("publications", "Вакансия") %></span>: <%= @interaction.vacancy.job_title %></p>
-            <p><span class="text-accent"><%= dgettext("publications", "Резюме") %></span>: <%= @interaction.resume.job_title %></p>
+            <p><span class="text-accent"><%= dgettext("publications", "Вакансия") %></span>: {@interaction.vacancy.job_title}</p>
+            <p><span class="text-accent"><%= dgettext("publications", "Резюме") %></span>: {@interaction.resume.job_title}</p>
           </div>
         </div>
       </div>
@@ -147,8 +147,8 @@ defmodule CenWeb.ChatComponent do
   defp message_card(assigns) do
     ~H"""
     <div class={["bg-[#F5F5F5] max-w-80 rounded-lg p-5", @current_user.id == @message.user_id && "bg-accent-hover ml-auto"]}>
-      <p class="break-words"><%= @message.text %></p>
-      <div class="mt-2.5 text-right"><%= Calendar.strftime(@message.inserted_at, "%H:%M") %></div>
+      <p class="break-words">{@message.text}</p>
+      <div class="mt-2.5 text-right">{Calendar.strftime(@message.inserted_at, "%H:%M")}</div>
     </div>
     """
   end
@@ -199,10 +199,10 @@ defmodule CenWeb.ChatComponent do
     <%= case @interaction.initiator do %>
       <% :vacancy -> %>
         <.icon name="cen-invite" />
-        <p class="text-accent uppercase"><%= dgettext("publications", "Приглашение") %></p>
+        <p class="text-accent uppercase">{dgettext("publications", "Приглашение")}</p>
       <% :resume -> %>
         <.icon name="cen-application" />
-        <p class="text-accent uppercase"><%= dgettext("publications", "Отклик") %></p>
+        <p class="text-accent uppercase">{dgettext("publications", "Отклик")}</p>
     <% end %>
     """
   end

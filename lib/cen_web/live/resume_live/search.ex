@@ -19,7 +19,7 @@ defmodule CenWeb.ResumeLive.Search do
           </div>
 
           <div class="lg:col-span-9 lg:col-start-4">
-            <.header header_kind="black_left"><%= dgettext("search", "Кого вы ищете?") %></.header>
+            <.header header_kind="black_left">{dgettext("search", "Кого вы ищете?")}</.header>
 
             <div class="mt-4 flex items-center gap-4">
               <div class="relative grow">
@@ -32,13 +32,13 @@ defmodule CenWeb.ResumeLive.Search do
               </div>
               <div class="block lg:hidden">
                 <.button type="button" class="bg-white p-4" phx-click={show_modal(JS.push("show_modal"), "filters-modal")}>
-                  <.icon name="cen-quick-actions" class="w-3.5 h-3.5" alt={dgettext("search", "Фильтры")} />
+                  <.icon name="cen-quick-actions" class="h-3.5 w-3.5" alt={dgettext("search", "Фильтры")} />
                 </.button>
               </div>
             </div>
 
             <.filters_modal id="filters-modal">
-              <.header header_kind="black_center"><%= dgettext("search", "Фильтры") %></.header>
+              <.header header_kind="black_center">{dgettext("search", "Фильтры")}</.header>
               <%= if @render_modal do %>
                 <.filters search_params={@search_params} />
               <% end %>
@@ -47,12 +47,12 @@ defmodule CenWeb.ResumeLive.Search do
             <div class="lg:col-span-9 lg:col-start-3">
               <ul class="mt-6 space-y-4">
                 <li :for={resume <- @search_result}>
-                  <.basic_card class="w-full py-7 px-6" header={resume.job_title}>
+                  <.basic_card class="w-full px-6 py-7" header={resume.job_title}>
                     <p class="text-title-text mt-2.5">
-                      <%= resume.user.fullname %>, <%= Accounts.calculate_user_age(resume.user) %>
+                      {resume.user.fullname}, {Accounts.calculate_user_age(resume.user)}
                     </p>
-                    <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
-                      <%= gettext("Открыть") %>
+                    <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
+                      {gettext("Открыть")}
                     </.regular_button>
                   </.basic_card>
                 </li>
@@ -107,11 +107,11 @@ defmodule CenWeb.ResumeLive.Search do
         text_after={dgettext("publications", "лет")}
       />
       <div class="flex gap-2.5">
-        <.arrow_button class="grow text-center [&_span]:w-full" phx-click={hide_modal("filters-modal")}>
-          <%= gettext("Применить") %>
+        <.arrow_button class="[&_span]:w-full grow text-center" phx-click={hide_modal("filters-modal")}>
+          {gettext("Применить")}
         </.arrow_button>
         <.regular_button class="bg-accent-hover" type="button" phx-click="reset">
-          <%= gettext("Сбросить") %>
+          {gettext("Сбросить")}
         </.regular_button>
       </div>
     </div>

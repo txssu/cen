@@ -109,7 +109,7 @@ defmodule Cen.Publications do
         |> preload(:user)
         |> Flop.validate_and_run(%Flop{page_size: 10, order_by: [:inserted_at], order_directions: [:desc], page: params["page"]}, repo: Cen.Repo)
 
-      {:error, _} ->
+      {:error, _changeset_error} ->
         []
     end
   end
@@ -130,7 +130,7 @@ defmodule Cen.Publications do
         |> preload(organization: [:user])
         |> Flop.validate_and_run(%Flop{page_size: 10, order_by: [:inserted_at], order_directions: [:desc], page: params["page"]}, repo: Cen.Repo)
 
-      {:error, _} ->
+      {:error, _changeset_error} ->
         []
     end
   end

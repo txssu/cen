@@ -11,14 +11,14 @@ defmodule CenWeb.InteractionLive do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="black_left">
-        <%= header_text(@initiator) %>
+        {header_text(@initiator)}
       </.header>
       <ul class="mt-7 space-y-6">
         <%= for interaction <- @interactions do %>
           <.interest_list_item interaction={interaction} initiator={@initiator} rendered_entity={@rendered_entity} />
         <% end %>
         <%= if @interactions == [] do %>
-          <%= gettext("Тут пока пусто") %>
+          {gettext("Тут пока пусто")}
         <% end %>
       </ul>
     </div>
@@ -38,12 +38,12 @@ defmodule CenWeb.InteractionLive do
 
     ~H"""
     <li>
-      <.basic_card class="w-full py-7 px-6" header={@resume.job_title}>
+      <.basic_card class="w-full px-6 py-7" header={@resume.job_title}>
         <p class="text-title-text mt-2.5">
-          <%= @resume.user.fullname %>, <%= Accounts.calculate_user_age(@resume.user) %>
+          {@resume.user.fullname}, {Accounts.calculate_user_age(@resume.user)}
         </p>
-        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(@resume_link)}>
-          <%= gettext("Открыть") %>
+        <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(@resume_link)}>
+          {gettext("Открыть")}
         </.regular_button>
       </.basic_card>
     </li>
@@ -63,15 +63,15 @@ defmodule CenWeb.InteractionLive do
 
     ~H"""
     <li>
-      <.basic_card class="w-full py-7 px-6" header={@vacancy.job_title}>
+      <.basic_card class="w-full px-6 py-7" header={@vacancy.job_title}>
         <p :if={@vacancy.proposed_salary} class="text-title-text mt-2.5">
-          <%= pgettext("money", "от") %> <%= Publications.format_salary(@vacancy.proposed_salary) %>
+          {pgettext("money", "от")} {Publications.format_salary(@vacancy.proposed_salary)}
         </p>
         <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-          <%= @vacancy.organization.name %>
+          {@vacancy.organization.name}
         </p>
-        <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(@vacancy_link)}>
-          <%= gettext("Открыть") %>
+        <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(@vacancy_link)}>
+          {gettext("Открыть")}
         </.regular_button>
       </.basic_card>
     </li>

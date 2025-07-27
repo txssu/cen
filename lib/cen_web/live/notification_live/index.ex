@@ -13,7 +13,7 @@ defmodule CenWeb.NotificationLive.Index do
     <div class="lg:col-span-9">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= gettext("Уведомления") %>
+          {gettext("Уведомления")}
         </.header>
         <div :if={has_permission?(@current_user, %Notification{}, :new)} class="ml-auto">
           <.button class="bg-white p-4" phx-click={JS.navigate(~p"/notifications/new")}>
@@ -23,8 +23,8 @@ defmodule CenWeb.NotificationLive.Index do
       </div>
       <ul class="mt-7 space-y-6" id="notifications" phx-update="stream">
         <li :for={{id, notification} <- @streams.notifications} id={id}>
-          <.basic_card class="w-full py-7 px-6">
-            <%= notification.message %>
+          <.basic_card class="w-full px-6 py-7">
+            {notification.message}
           </.basic_card>
         </li>
       </ul>

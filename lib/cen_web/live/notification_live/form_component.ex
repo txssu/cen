@@ -13,7 +13,7 @@ defmodule CenWeb.NotificationLive.FormComponent do
 
         <:actions>
           <.arrow_button>
-            <%= "Отправить уведомление" %>
+            {"Отправить уведомление"}
           </.arrow_button>
         </:actions>
       </.simple_form>

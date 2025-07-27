@@ -9,14 +9,14 @@ defmodule CenWeb.UserConfirmationLive do
     ~H"""
     <div class="col-span-4 lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Подтверждение аккаунта") %>
+        {dgettext("users", "Подтверждение аккаунта")}
       </.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
           <.arrow_button class="mx-auto">
-            <%= dgettext("users", "Подтвердить аккаунт") %>
+            {dgettext("users", "Подтвердить аккаунт")}
           </.arrow_button>
         </:actions>
       </.simple_form>
@@ -35,7 +35,7 @@ defmodule CenWeb.UserConfirmationLive do
   @impl Phoenix.LiveView
   def handle_event("confirm_account", %{"user" => %{"token" => token}}, socket) do
     case Accounts.confirm_user(token) do
-      {:ok, _} ->
+      {:ok, _user} ->
         {:noreply,
          socket
          |> put_flash(:info, dgettext("users", "Аккаунт успешно подтверждён."))

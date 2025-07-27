@@ -13,7 +13,7 @@ defmodule CenWeb.OrganizationLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= title_text(@current_user.role) %>
+          {title_text(@current_user.role)}
         </.header>
         <div class="ml-auto">
           <.button class="bg-white p-4" phx-click={JS.navigate(~p"/orgs/new")}>
@@ -24,12 +24,12 @@ defmodule CenWeb.OrganizationLive.Index do
       <ul class="mt-7 space-y-6">
         <%= for organization <- @organizations do %>
           <li>
-            <.basic_card class="w-full py-7 px-6" header={organization.name}>
+            <.basic_card class="w-full px-6 py-7" header={organization.name}>
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-                <%= organization.address %>
+                {organization.address}
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/orgs/#{organization}")}>
-                <%= gettext("Открыть") %>
+              <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/orgs/#{organization}")}>
+                {gettext("Открыть")}
               </.regular_button>
             </.basic_card>
           </li>

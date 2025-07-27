@@ -13,12 +13,12 @@ defmodule CenWeb.UserLive.ChooseRole do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Выберите роль") %>
+        {dgettext("users", "Выберите роль")}
       </.header>
       <div class="mt-[2.1875rem]">
         <.simple_form for={@form} id="registration_form" phx-submit="save" phx-change="validate">
           <.error :if={@check_errors}>
-            <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
+            {dgettext("forms", "Oops, something went wrong! Please check the errors below.")}
           </.error>
 
           <div class="mb-[2.8125rem]">
@@ -34,7 +34,7 @@ defmodule CenWeb.UserLive.ChooseRole do
 
           <:actions>
             <.arrow_button class="mx-auto">
-              <%= dgettext("users", "Подтвердить") %>
+              {dgettext("users", "Подтвердить")}
             </.arrow_button>
           </:actions>
         </.simple_form>

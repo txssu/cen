@@ -14,7 +14,7 @@ defmodule CenWeb.ResumeLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= @title %>
+          {@title}
         </.header>
         <%= if @live_action == :index_for_user do %>
           <div class="ml-auto">
@@ -27,12 +27,12 @@ defmodule CenWeb.ResumeLive.Index do
       <ul class="mt-7 space-y-6">
         <%= for resume <- @resumes do %>
           <li>
-            <.basic_card class="w-full py-7 px-6" header={resume.job_title}>
+            <.basic_card class="w-full px-6 py-7" header={resume.job_title}>
               <p class="text-title-text mt-2.5">
-                <%= resume.user.fullname %>, <%= Accounts.calculate_user_age(resume.user) %>
+                {resume.user.fullname}, {Accounts.calculate_user_age(resume.user)}
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
-                <%= gettext("Открыть") %>
+              <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
+                {gettext("Открыть")}
               </.regular_button>
             </.basic_card>
           </li>

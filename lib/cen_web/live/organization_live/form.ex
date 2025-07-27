@@ -24,7 +24,7 @@ defmodule CenWeb.OrganizationLive.Form do
             </div>
 
             <div class="pt-28 lg:col-span-4 lg:col-start-6">
-              <.basic_card class="bg-white relative pt-24">
+              <.basic_card class="relative bg-white pt-24">
                 <.render_preview entries={@uploads.image.entries} />
                 <div
                   id="croppr"
@@ -40,15 +40,15 @@ defmodule CenWeb.OrganizationLive.Form do
                       <.icon name="cen-upload" class="inline" />
                     </p>
                     <p class="mt-6">
-                      <%= gettext("Нажмите, чтобы загрузить изображение или перетащите его") %>
+                      {gettext("Нажмите, чтобы загрузить изображение или перетащите его")}
                     </p>
                     <p class="mt-4">
-                      <%= gettext("JPG или PNG до 10МБ") %>
+                      {gettext("JPG или PNG до 10МБ")}
                     </p>
                   </div>
                   <div class="order-last mt-4 flex justify-center gap-4">
-                    <.regular_button type="button" class="hidden croppr-delete-button">
-                      <%= gettext("Удалить") %>
+                    <.regular_button type="button" class="croppr-delete-button hidden">
+                      {gettext("Удалить")}
                     </.regular_button>
                   </div>
                 </div>
@@ -85,7 +85,7 @@ defmodule CenWeb.OrganizationLive.Form do
 
         <:actions>
           <.arrow_button>
-            <%= dgettext("forms", "Сохранить") %>
+            {dgettext("forms", "Сохранить")}
           </.arrow_button>
         </:actions>
       </.simple_form>
@@ -103,7 +103,7 @@ defmodule CenWeb.OrganizationLive.Form do
     <% else %>
       <.live_img_preview
         entry={@entry}
-        class="outline-[1rem] absolute z-20 top-0 left-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full outline outline-white lg:-translate-y-1/2"
+        class="outline-[1rem] absolute top-0 left-1/2 z-20 h-32 w-32 -translate-x-1/2 -translate-y-1/2 rounded-full outline outline-white lg:-translate-y-1/2"
       />
     <% end %>
     """

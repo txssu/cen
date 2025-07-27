@@ -14,7 +14,7 @@ defmodule CenWeb.UserRegistrationLive do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Регистрация") %>
+        {dgettext("users", "Регистрация")}
       </.header>
       <div class="mt-[2.1875rem]">
         <.simple_form
@@ -27,7 +27,7 @@ defmodule CenWeb.UserRegistrationLive do
           method="post"
         >
           <.error :if={@check_errors}>
-            <%= dgettext("forms", "Oops, something went wrong! Please check the errors below.") %>
+            {dgettext("forms", "Oops, something went wrong! Please check the errors below.")}
           </.error>
 
           <div class="mb-[2.8125rem]">
@@ -65,13 +65,13 @@ defmodule CenWeb.UserRegistrationLive do
 
           <:actions>
             <.arrow_button class="mx-auto">
-              <%= dgettext("users", "Зарегистрироваться") %>
+              {dgettext("users", "Зарегистрироваться")}
             </.arrow_button>
           </:actions>
         </.simple_form>
 
         <div class="mt-4">
-          <p class="text-center text-lg uppercase"><%= gettext("или") %></p>
+          <p class="text-center text-lg uppercase">{gettext("или")}</p>
         </div>
 
         <div class="max-w-60 mx-auto mt-4">
@@ -80,7 +80,7 @@ defmodule CenWeb.UserRegistrationLive do
 
         <div class="mt-[1.125rem] space-y-2.5 text-center">
           <p>
-            <%= dgettext("users", "Уже есть аккаунт?") %>
+            {dgettext("users", "Уже есть аккаунт?")}
             <.regular_link navigate={~p"/users/log_in"} text={dgettext("users", "Войти")} />
           </p>
         </div>
@@ -106,7 +106,7 @@ defmodule CenWeb.UserRegistrationLive do
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
-        {:ok, _} =
+        {:ok, _email_delivery} =
           Accounts.deliver_user_confirmation_instructions(
             user,
             &url(~p"/users/confirm/#{&1}")

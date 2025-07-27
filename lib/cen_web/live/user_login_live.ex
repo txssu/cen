@@ -9,7 +9,7 @@ defmodule CenWeb.UserLoginLive do
     ~H"""
     <div class="lg:col-span-4 lg:col-start-5">
       <.header header_kind="blue_center">
-        <%= dgettext("users", "Вход") %>
+        {dgettext("users", "Вход")}
       </.header>
 
       <div class="mt-9">
@@ -19,13 +19,13 @@ defmodule CenWeb.UserLoginLive do
 
           <:actions>
             <.arrow_button class="mx-auto">
-              <%= dgettext("users", "Войти") %>
+              {dgettext("users", "Войти")}
             </.arrow_button>
           </:actions>
         </.simple_form>
 
         <div class="mt-8">
-          <p class="text-center text-lg uppercase"><%= gettext("или") %></p>
+          <p class="text-center text-lg uppercase">{gettext("или")}</p>
         </div>
 
         <div class="max-w-60 mx-auto mt-4">
@@ -34,7 +34,7 @@ defmodule CenWeb.UserLoginLive do
 
         <div class="mt-8 space-y-2.5 text-center">
           <p>
-            <%= dgettext("users", "Нет аккаунта?") %>
+            {dgettext("users", "Нет аккаунта?")}
             <.regular_link navigate={~p"/users/register"} text={dgettext("users", "Зарегистрироваться")} />
           </p>
           <p>

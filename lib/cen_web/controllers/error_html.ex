@@ -24,11 +24,11 @@ defmodule CenWeb.ErrorHTML do
               Ой! Произошла ошибочка...
             </p>
             <p class="text-accent text-[12rem]">
-              <%= @status %>
+              {@status}
             </p>
             <p></p>
             <p class="text-xl">
-              <%= status_code_message(@status) %>
+              {status_code_message(@status)}
             </p>
           </main>
         </div>

@@ -17,13 +17,13 @@ defmodule CenWeb.PrivacyLive do
     assigns = assign(assigns, domain: domain)
 
     ~H"""
-    <.link navigate={~p"/"} class="text-accent"><%= @domain %></.link>
+    <.link navigate={~p"/"} class="text-accent">{@domain}</.link>
     """
   end
 
   defp privacy_link(assigns) do
     ~H"""
-    <.link navigate={~p"/privacy"} class="text-accent"><%= url(~p"/privacy") %></.link>
+    <.link navigate={~p"/privacy"} class="text-accent">{url(~p"/privacy")}</.link>
     """
   end
 end

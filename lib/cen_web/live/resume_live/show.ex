@@ -16,7 +16,7 @@ defmodule CenWeb.ResumeLive.Show do
     <div class="lg:col-span-12">
       <div class="space-y-6 lg:grid lg:grid-flow-dense lg:grid-cols-12 lg:gap-10 lg:space-y-0">
         <.header class="lg:col-span-12" header_kind="black_left">
-          <%= @resume.job_title %>
+          {@resume.job_title}
         </.header>
 
         <div class="relative pt-16 lg:order-1 lg:col-span-3 lg:col-start-10 lg:pt-0">
@@ -25,9 +25,9 @@ defmodule CenWeb.ResumeLive.Show do
               <%= for {value, icon} <- contacts_list(@resume.user) do %>
                 <.render_not_nil value={value}>
                   <li class="flex items-center gap-2.5">
-                    <.icon name={icon} class="w-4 h-4" />
+                    <.icon name={icon} class="h-4 w-4" />
                     <div class="leading-[1.2] text-sm font-light text-black">
-                      <%= value %>
+                      {value}
                     </div>
                   </li>
                 </.render_not_nil>
@@ -40,7 +40,7 @@ defmodule CenWeb.ResumeLive.Show do
           <div class="flex gap-2.5">
             <%= if has_permission?(@current_user, @resume, :update) do %>
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/edit")}>
-                <%= gettext("Редактировать") %>
+                {gettext("Редактировать")}
               </.regular_button>
               <.button class="bg-white p-4" phx-click="delete_resume">
                 <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
@@ -48,7 +48,7 @@ defmodule CenWeb.ResumeLive.Show do
             <% end %>
             <%= if @current_user.role == :employer do %>
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/choose_vacancy")}>
-                <%= dgettext("publications", "Пригласить") %>
+                {dgettext("publications", "Пригласить")}
               </.regular_button>
             <% end %>
           </div>
@@ -56,60 +56,60 @@ defmodule CenWeb.ResumeLive.Show do
             <div class="flex gap-2.5">
               <%= if @resume.reviewed_at do %>
                 <.regular_button class="bg-accent-hover" phx-click="unapprove_resume">
-                  <%= gettext("На проверку") %>
+                  {gettext("На проверку")}
                 </.regular_button>
               <% else %>
                 <.regular_button class="bg-accent-hover" phx-click="approve_resume">
-                  <%= gettext("Одобрить") %>
+                  {gettext("Одобрить")}
                 </.regular_button>
               <% end %>
             </div>
           <% end %>
         </div>
 
-        <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9" header={dgettext("publications", "Описание")}>
+        <.basic_card class="w-full px-6 py-10 lg:col-span-9 lg:py-12" header={dgettext("publications", "Описание")}>
           <p class="mt-6">
-            <%= @resume.description %>
+            {@resume.description}
           </p>
         </.basic_card>
 
-        <.basic_card class="w-full px-6 py-10 lg:py-12 lg:col-span-9">
+        <.basic_card class="w-full px-6 py-10 lg:col-span-9 lg:py-12">
           <div class="space-y-14">
             <div>
               <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                <%= dgettext("publications", "Тип занятости") %>
+                {dgettext("publications", "Тип занятости")}
               </p>
-              <p class="mt-4"><%= GettextEnums.enums_to_translation(@resume.employment_types, employment_types_translations()) %></p>
+              <p class="mt-4">{GettextEnums.enums_to_translation(@resume.employment_types, employment_types_translations())}</p>
             </div>
             <div>
               <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                <%= dgettext("publications", "График работы") %>
+                {dgettext("publications", "График работы")}
               </p>
-              <p class="mt-4"><%= GettextEnums.enums_to_translation(@resume.work_schedules, work_schedules_translations()) %></p>
+              <p class="mt-4">{GettextEnums.enums_to_translation(@resume.work_schedules, work_schedules_translations())}</p>
             </div>
             <div>
               <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                <%= dgettext("publications", "Образование") %>
+                {dgettext("publications", "Образование")}
               </p>
               <ul class="mt-4 space-y-4">
                 <li :for={education <- @resume.educations}>
-                  <p><%= GettextEnums.enum_to_translation(education.level, educations_translations()) %></p>
-                  <p><%= education.educational_institution %>, <%= education.year_of_graduation %></p>
-                  <p><%= education.department %></p>
-                  <p><%= education.specialization %></p>
+                  <p>{GettextEnums.enum_to_translation(education.level, educations_translations())}</p>
+                  <p>{education.educational_institution}, {education.year_of_graduation}</p>
+                  <p>{education.department}</p>
+                  <p>{education.specialization}</p>
                 </li>
               </ul>
             </div>
             <div>
               <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                <%= dgettext("publications", "Опыт работы") %>
+                {dgettext("publications", "Опыт работы")}
               </p>
               <ul class="mt-4 space-y-4">
                 <li :for={education <- @resume.jobs}>
-                  <p class="text-accent"><%= format_date_range(education.start_date, education.end_date) %></p>
-                  <p><%= education.organization_name %></p>
-                  <p><%= education.job_title %></p>
-                  <p><%= education.description %></p>
+                  <p class="text-accent">{format_date_range(education.start_date, education.end_date)}</p>
+                  <p>{education.organization_name}</p>
+                  <p>{education.job_title}</p>
+                  <p>{education.description}</p>
                 </li>
               </ul>
             </div>
@@ -120,7 +120,7 @@ defmodule CenWeb.ResumeLive.Show do
 
     <.modal id="choose_vacancy" show={@show_vacancy_modal} on_cancel={JS.patch(~p"/cvs/#{@resume}")}>
       <.header class="mb-4" header_kind="black_left">
-        <%= dgettext("publications", "Выберите вакансию") %>
+        {dgettext("publications", "Выберите вакансию")}
         <.simple_form for={@select_vacancy_form} phx-submit="choose_vacancy">
           <.input field={@select_vacancy_form[:vacancy_id]} type="select" options={@vacancies |> Enum.map(&{&1.job_title, &1.id})} />
 
@@ -128,7 +128,7 @@ defmodule CenWeb.ResumeLive.Show do
 
           <:actions>
             <.arrow_button>
-              <%= dgettext("publications", "Отправить") %>
+              {dgettext("publications", "Отправить")}
             </.arrow_button>
           </:actions>
         </.simple_form>

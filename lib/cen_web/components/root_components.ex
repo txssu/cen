@@ -10,28 +10,28 @@ defmodule CenWeb.RootComponents do
     ~H"""
     <%= if @current_user do %>
       <%= if @current_user.role == nil do %>
-        <.navbar_link navigate={~p"/users/choose_role"} horizontal={@horizontal}><%= dgettext("users", "Выбрать роль") %></.navbar_link>
+        <.navbar_link navigate={~p"/users/choose_role"} horizontal={@horizontal}>{dgettext("users", "Выбрать роль")}</.navbar_link>
       <% end %>
       <%= if @current_user.role == :employer do %>
-        <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Искать резюме") %></.navbar_link>
-        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
-        <.navbar_link navigate={~p"/jobs"} horizontal={@horizontal}><%= dgettext("users", "Вакансии") %></.navbar_link>
-        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
-        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
+        <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}>{dgettext("users", "Искать резюме")}</.navbar_link>
+        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}>{dgettext("users", "Организации")}</.navbar_link>
+        <.navbar_link navigate={~p"/jobs"} horizontal={@horizontal}>{dgettext("users", "Вакансии")}</.navbar_link>
+        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}>{dgettext("users", "Отклики")}</.navbar_link>
+        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}>{dgettext("users", "Приглашения")}</.navbar_link>
       <% end %>
       <%= if @current_user.role == :applicant do %>
-        <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}><%= dgettext("users", "Искать вакансии") %></.navbar_link>
-        <.navbar_link navigate={~p"/cvs"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>
-        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}><%= dgettext("users", "Отклики") %></.navbar_link>
-        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}><%= dgettext("users", "Приглашения") %></.navbar_link>
+        <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}>{dgettext("users", "Искать вакансии")}</.navbar_link>
+        <.navbar_link navigate={~p"/cvs"} horizontal={@horizontal}>{dgettext("users", "Резюме")}</.navbar_link>
+        <.navbar_link navigate={~p"/res"} horizontal={@horizontal}>{dgettext("users", "Отклики")}</.navbar_link>
+        <.navbar_link navigate={~p"/invs"} horizontal={@horizontal}>{dgettext("users", "Приглашения")}</.navbar_link>
       <% end %>
       <%= if @current_user.role == :admin do %>
-        <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}><%= dgettext("users", "Резюме") %></.navbar_link>
-        <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}><%= dgettext("users", "Вакансии") %></.navbar_link>
-        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}><%= dgettext("users", "Организации") %></.navbar_link>
-        <.navbar_link navigate={~p"/cvs/review"} horizontal={@horizontal}><%= dgettext("users", "Резюме на проверке") %></.navbar_link>
-        <.navbar_link navigate={~p"/jobs/review"} horizontal={@horizontal}><%= dgettext("users", "Вакансии на проверке") %></.navbar_link>
-        <.navbar_link navigate={~p"/users"} horizontal={@horizontal}><%= dgettext("users", "Пользователи") %></.navbar_link>
+        <.navbar_link navigate={~p"/cvs/search"} horizontal={@horizontal}>{dgettext("users", "Резюме")}</.navbar_link>
+        <.navbar_link navigate={~p"/jobs/search"} horizontal={@horizontal}>{dgettext("users", "Вакансии")}</.navbar_link>
+        <.navbar_link navigate={~p"/orgs"} horizontal={@horizontal}>{dgettext("users", "Организации")}</.navbar_link>
+        <.navbar_link navigate={~p"/cvs/review"} horizontal={@horizontal}>{dgettext("users", "Резюме на проверке")}</.navbar_link>
+        <.navbar_link navigate={~p"/jobs/review"} horizontal={@horizontal}>{dgettext("users", "Вакансии на проверке")}</.navbar_link>
+        <.navbar_link navigate={~p"/users"} horizontal={@horizontal}>{dgettext("users", "Пользователи")}</.navbar_link>
       <% end %>
       <.navbar_list_item horizontal={@horizontal} to_right>
         <div class="flex gap-10">
@@ -45,7 +45,7 @@ defmodule CenWeb.RootComponents do
                 <.icon name="cen-notification" />
               </div>
             <% else %>
-              <%= dgettext("users", "Уведомления") %>
+              {dgettext("users", "Уведомления")}
             <% end %>
           </button>
           <button
@@ -58,7 +58,7 @@ defmodule CenWeb.RootComponents do
                 <.icon name="cen-chat" />
               </div>
             <% else %>
-              <%= dgettext("users", "Сообщения") %>
+              {dgettext("users", "Сообщения")}
             <% end %>
           </button>
         </div>
@@ -67,12 +67,12 @@ defmodule CenWeb.RootComponents do
         <%= if @horizontal do %>
           <div class="bg-accent inline-block h-11 w-11 rounded-full"></div>
         <% else %>
-          <%= dgettext("users", "Профиль") %>
+          {dgettext("users", "Профиль")}
         <% end %>
       </.navbar_link>
     <% else %>
-      <.navbar_link navigate={~p"/users/register"} horizontal={@horizontal} to_right><%= dgettext("users", "Регистрация") %></.navbar_link>
-      <.navbar_link navigate={~p"/users/log_in"} horizontal={@horizontal}><%= dgettext("users", "Вход") %></.navbar_link>
+      <.navbar_link navigate={~p"/users/register"} horizontal={@horizontal} to_right>{dgettext("users", "Регистрация")}</.navbar_link>
+      <.navbar_link navigate={~p"/users/log_in"} horizontal={@horizontal}>{dgettext("users", "Вход")}</.navbar_link>
     <% end %>
     """
   end
@@ -127,9 +127,9 @@ defmodule CenWeb.RootComponents do
 
     ~H"""
     <.navbar_list_item horizontal={@horizontal} to_right={@to_right}>
-      <.link class="text-navbargray no-underline text-xl leading-[1.35] font-light hover:text-accent w-full h-full block" phx-click={hide_menu()} {@rest}>
+      <.link class="text-navbargray leading-[1.35] block h-full w-full text-xl font-light no-underline hover:text-accent" phx-click={hide_menu()} {@rest}>
         <div class="flex h-full items-center">
-          <%= render_slot(@inner_block) %>
+          {render_slot(@inner_block)}
         </div>
       </.link>
     </.navbar_list_item>
@@ -151,7 +151,7 @@ defmodule CenWeb.RootComponents do
 
     ~H"""
     <li class={@class}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </li>
     """
   end

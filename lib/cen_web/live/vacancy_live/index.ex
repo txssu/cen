@@ -13,7 +13,7 @@ defmodule CenWeb.VacancyLive.Index do
     <div class="lg:col-span-4 lg:col-start-5">
       <div class="flex items-center">
         <.header header_kind="black_left">
-          <%= @title %>
+          {@title}
         </.header>
         <%= if @live_action == :index_for_user do %>
           <div class="ml-auto">
@@ -26,15 +26,15 @@ defmodule CenWeb.VacancyLive.Index do
       <ul class="mt-7 space-y-6">
         <%= for vacancy <- @vacancies do %>
           <li>
-            <.basic_card class="w-full py-7 px-6" header={vacancy.job_title}>
+            <.basic_card class="w-full px-6 py-7" header={vacancy.job_title}>
               <p :if={vacancy.proposed_salary} class="text-title-text mt-2.5">
-                <%= pgettext("money", "от") %> <%= Publications.format_salary(vacancy.proposed_salary) %>
+                {pgettext("money", "от")} {Publications.format_salary(vacancy.proposed_salary)}
               </p>
               <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-                <%= vacancy.organization.name %>
+                {vacancy.organization.name}
               </p>
-              <.regular_button class="bg-white w-full flex justify-center mt-5" phx-click={JS.navigate(~p"/jobs/#{vacancy}")}>
-                <%= gettext("Открыть") %>
+              <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/jobs/#{vacancy}")}>
+                {gettext("Открыть")}
               </.regular_button>
             </.basic_card>
           </li>
