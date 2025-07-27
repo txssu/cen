@@ -19,10 +19,12 @@ defmodule Cen.BuildInfo do
       end
     end
 
-  if git_hash_file && File.exists?(git_hash_file), do: @external_resource(git_hash_file)
+  process_hash_file? = git_hash_file && File.exists?(git_hash_file)
+
+  if process_hash_file?, do: @external_resource(git_hash_file)
 
   hash =
-    if File.exists?(git_hash_file) do
+    if process_hash_file? do
       git_hash_file
       |> File.read!()
       |> String.slice(0, 7)
