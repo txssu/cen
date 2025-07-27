@@ -151,7 +151,10 @@ defmodule Cen.Accounts do
 
     with {:ok, query} <- UserToken.verify_change_email_token_query(token, context),
          %UserToken{sent_to: email} <- Repo.one(query),
-         {:ok, _user} <- user |> user_email_multi(email, context) |> Repo.transaction() do
+         {:ok, _user} <-
+           user
+           |> user_email_multi(email, context)
+           |> Repo.transaction() do
       :ok
     else
       _error -> :error
@@ -311,7 +314,10 @@ defmodule Cen.Accounts do
   def confirm_user(token) do
     with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
          %User{} = user <- Repo.one(query),
-         {:ok, %{user: user}} <- user |> confirm_user_multi() |> Repo.transaction() do
+         {:ok, %{user: user}} <-
+           user
+           |> confirm_user_multi()
+           |> Repo.transaction() do
       {:ok, user}
     else
       _error -> :error

@@ -26,8 +26,6 @@ defmodule Cen.BuildInfo do
       git_hash_file
       |> File.read!()
       |> String.slice(0, 7)
-    else
-      nil
     end
 
   def git_short_hash, do: unquote(hash)

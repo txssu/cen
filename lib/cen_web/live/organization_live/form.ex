@@ -129,7 +129,10 @@ defmodule CenWeb.OrganizationLive.Form do
 
   @impl Phoenix.LiveView
   def handle_event("delete_image", %{"ref" => ref}, socket) do
-    {:noreply, socket |> cancel_upload(:image, ref) |> assign(delete_image: true)}
+    {:noreply,
+     socket
+     |> cancel_upload(:image, ref)
+     |> assign(delete_image: true)}
   end
 
   def handle_event("delete_image", _params, socket) do
@@ -152,6 +155,7 @@ defmodule CenWeb.OrganizationLive.Form do
     save_organization(socket, socket.assigns.live_action, params)
   end
 
+  # sobelow_skip ["Traversal.FileModule"]
   defp maybe_put_image(params, socket) do
     files =
       consume_uploaded_entries(socket, :image, fn %{path: path}, entry ->
@@ -200,7 +204,11 @@ defmodule CenWeb.OrganizationLive.Form do
   end
 
   defp assign_form(socket, organization) do
-    form = organization |> Employers.change_organization() |> to_form()
+    form =
+      organization
+      |> Employers.change_organization()
+      |> to_form()
+
     assign(socket, organization: organization, form: form)
   end
 

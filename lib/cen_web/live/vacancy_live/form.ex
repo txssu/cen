@@ -129,7 +129,10 @@ defmodule CenWeb.VacancyLive.Form do
 
       verify_has_permission!(socket.assigns.current_user, vacancy, action)
 
-      {:ok, socket |> assign_form(vacancy) |> assign(organizations: organizations)}
+      {:ok,
+       socket
+       |> assign_form(vacancy)
+       |> assign(organizations: organizations)}
     end
   end
 
@@ -180,7 +183,11 @@ defmodule CenWeb.VacancyLive.Form do
   end
 
   defp assign_form(socket, vacancy) do
-    form = vacancy |> Publications.change_vacancy() |> to_form()
+    form =
+      vacancy
+      |> Publications.change_vacancy()
+      |> to_form()
+
     assign(socket, vacancy: vacancy, form: form)
   end
 end

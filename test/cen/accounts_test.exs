@@ -1,5 +1,5 @@
 defmodule Cen.AccountsTest do
-  use Cen.DataCase
+  use Cen.DataCase, async: true
 
   import Cen.AccountsFixtures
 
@@ -91,7 +91,12 @@ defmodule Cen.AccountsTest do
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = [email: email] |> valid_user_attributes() |> Accounts.register_user()
+
+      {:ok, user} =
+        [email: email]
+        |> valid_user_attributes()
+        |> Accounts.register_user()
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)

@@ -9,7 +9,11 @@ defmodule CenWeb.UserControllerTest do
 
   describe "DELETE /users" do
     test "deletes the user and logs out", %{conn: conn, user: user} do
-      conn = conn |> log_in_user(user) |> delete(~p"/users")
+      conn =
+        conn
+        |> log_in_user(user)
+        |> delete(~p"/users")
+
       assert redirected_to(conn) == ~p"/"
       refute get_session(conn, :user_token)
       assert Phoenix.Flash.get(conn.assigns.flash, :info) == "Account deleted successfully."

@@ -29,6 +29,7 @@ defmodule Cen.Utils.GettextEnums do
     |> Enum.map(fn {name, enum} -> define_enum(name, enum) end)
   end
 
+  # sobelow_skip ["DOS.StringToAtom"]
   defp define_enum(name, enum) do
     enum_translations = get_translations(enum)
 
@@ -49,7 +50,12 @@ defmodule Cen.Utils.GettextEnums do
   defp get_translations(enum) do
     Enum.map(enum, fn value ->
       value = to_string(value)
-      text = value |> String.capitalize() |> String.replace("_", " ")
+
+      text =
+        value
+        |> String.capitalize()
+        |> String.replace("_", " ")
+
       quote(do: {dgettext("enums", unquote(text)), unquote(value)})
     end)
   end

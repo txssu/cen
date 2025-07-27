@@ -3,7 +3,9 @@ defmodule CenWeb.Router do
 
   import CenWeb.UserAuth
 
-  @nonce 10 |> :crypto.strong_rand_bytes() |> Base.url_encode64(padding: false)
+  @nonce 10
+         |> :crypto.strong_rand_bytes()
+         |> Base.url_encode64(padding: false)
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -11,9 +13,7 @@ defmodule CenWeb.Router do
     plug :fetch_live_flash
     plug :put_root_layout, html: {CenWeb.Layouts, :root}
     plug :protect_from_forgery
-
-    plug CenWeb.Plugs.PutSecureHeaders
-
+    plug :put_secure_browser_headers, %{"content-security-policy" => CenWeb.SecureHeaders.csp()}
     plug :fetch_current_user
     plug CenWeb.Plugs.AlertUserChooseRole
     plug CenWeb.FetchCookiesConsentPlug

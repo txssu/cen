@@ -48,7 +48,11 @@ defmodule CenWeb.ResumeLive.Index do
 
     verify_has_permission!(socket.assigns.current_user, :resumes, action)
 
-    {:ok, socket |> assign_title(action) |> load_resumes(action) |> assign(action: action)}
+    {:ok,
+     socket
+     |> assign_title(action)
+     |> load_resumes(action)
+     |> assign(action: action)}
   end
 
   defp assign_title(socket, live_action) do

@@ -121,7 +121,10 @@ defmodule CenWeb.RootComponents do
     height = if not assigns.horizontal, do: "h-12"
     to_right = if assigns.to_right and assigns.horizontal, do: "ml-auto"
 
-    class = [height, to_right] |> Enum.filter(& &1) |> Enum.join(" ")
+    class =
+      [height, to_right]
+      |> Enum.filter(& &1)
+      |> Enum.join(" ")
 
     assigns = assign(assigns, :class, class)
 
@@ -145,7 +148,10 @@ defmodule CenWeb.RootComponents do
     height = if not assigns.horizontal, do: "h-12"
     to_right = if assigns.to_right and assigns.horizontal, do: "ml-auto"
 
-    class = [height, to_right] |> Enum.filter(& &1) |> Enum.join(" ")
+    class =
+      [height, to_right]
+      |> Enum.filter(& &1)
+      |> Enum.join(" ")
 
     assigns = assign(assigns, :class, class)
 

@@ -190,8 +190,13 @@ defmodule CenWeb.VacancyLive.Show do
 
   defp assign_interactions(socket) do
     case socket.assigns.live_action do
-      :show -> assign(socket, show_resume_modal: false)
-      :choose_resume -> socket |> assign(show_resume_modal: true) |> maybe_send_interaction()
+      :show ->
+        assign(socket, show_resume_modal: false)
+
+      :choose_resume ->
+        socket
+        |> assign(show_resume_modal: true)
+        |> maybe_send_interaction()
     end
   end
 
@@ -252,10 +257,14 @@ defmodule CenWeb.VacancyLive.Show do
            url_fun: url_fun
          ) do
       {:ok, _interaction} ->
-        socket |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
+        socket
+        |> put_flash(:info, dgettext("publications", "Отклик успешно отправлен"))
+        |> push_navigate(to: ~p"/jobs/#{vacancy}")
 
       {:error, _changeset} ->
-        socket |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик")) |> push_navigate(to: ~p"/jobs/#{vacancy}")
+        socket
+        |> put_flash(:error, dgettext("publications", "Вы уже отправили отклик"))
+        |> push_navigate(to: ~p"/jobs/#{vacancy}")
     end
   end
 end

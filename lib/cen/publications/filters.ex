@@ -34,7 +34,10 @@ defmodule Cen.Publications.Filters do
   def filter_resume_educations(query, nil), do: query
 
   def filter_resume_educations(query, education) do
-    educations = education |> Atom.to_string() |> not_smaller_educations()
+    educations =
+      education
+      |> Atom.to_string()
+      |> not_smaller_educations()
 
     from(resume in query,
       where:
@@ -50,7 +53,10 @@ defmodule Cen.Publications.Filters do
   def filter_vacancy_educations(query, nil), do: query
 
   def filter_vacancy_educations(query, education) do
-    educations = education |> Atom.to_string() |> not_greater_educations()
+    educations =
+      education
+      |> Atom.to_string()
+      |> not_greater_educations()
 
     filter(query, :education, :field_in_value, educations)
   end

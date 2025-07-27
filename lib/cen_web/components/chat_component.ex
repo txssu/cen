@@ -239,7 +239,11 @@ defmodule CenWeb.ChatComponent do
   def handle_event("select_chat", %{"id" => id}, socket) do
     interaction = Enum.find(socket.assigns.interactions, &(to_string(&1.id) == id))
     {messages, _metadata} = Communications.list_messages(interaction.id, 0)
-    {:noreply, socket |> assign(selected_interaction: interaction, messages: messages) |> assign_message_form()}
+
+    {:noreply,
+     socket
+     |> assign(selected_interaction: interaction, messages: messages)
+     |> assign_message_form()}
   end
 
   def handle_event("deselect_chat", _params, socket) do
@@ -263,7 +267,10 @@ defmodule CenWeb.ChatComponent do
     interactions = add_new_message(socket.assigns.interactions, message)
     messages = [message | socket.assigns.messages]
 
-    {:noreply, socket |> assign(interactions: interactions, messages: messages) |> assign_message_form()}
+    {:noreply,
+     socket
+     |> assign(interactions: interactions, messages: messages)
+     |> assign_message_form()}
   end
 
   defp assign_message_form(socket, attrs \\ %{}) do

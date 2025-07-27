@@ -16,7 +16,11 @@ defmodule Cen.Publications do
   @type resume_changeset :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
 
   @spec get_vacancy!(id :: integer() | binary()) :: Vacancy.t()
-  def get_vacancy!(id), do: Vacancy |> Repo.get!(id) |> Repo.preload(:organization)
+  def get_vacancy!(id) do
+    Vacancy
+    |> Repo.get!(id)
+    |> Repo.preload(:organization)
+  end
 
   @spec list_vacancies_for(User.t()) :: [Vacancy.t()]
   def list_vacancies_for(user) do
@@ -60,7 +64,11 @@ defmodule Cen.Publications do
   end
 
   @spec get_resume!(id :: integer() | binary()) :: Resume.t()
-  def get_resume!(id), do: Resume |> Repo.get!(id) |> Repo.preload([:user])
+  def get_resume!(id) do
+    Resume
+    |> Repo.get!(id)
+    |> Repo.preload([:user])
+  end
 
   @spec list_resumes_for(user :: User.t()) :: [Resume.t()]
   def list_resumes_for(user) do
@@ -96,7 +104,9 @@ defmodule Cen.Publications do
 
   @spec search_resumes(map()) :: {:ok, {[Resume.t()], Flop.Meta.t()}} | {:error, Flop.Meta.t()}
   def search_resumes(params) do
-    case %ResumeSearchOptions{} |> ResumeSearchOptions.changeset(params) |> Ecto.Changeset.apply_action(:validate) do
+    case %ResumeSearchOptions{}
+         |> ResumeSearchOptions.changeset(params)
+         |> Ecto.Changeset.apply_action(:validate) do
       {:ok, filters} ->
         Resume
         |> filter(:searchable, :search, filters.query)
@@ -116,7 +126,9 @@ defmodule Cen.Publications do
 
   @spec search_vacancies(map()) :: {:ok, {[Vacancy.t()], Flop.Meta.t()}} | {:error, Flop.Meta.t()}
   def search_vacancies(params) do
-    case %VacancySearchOptions{} |> VacancySearchOptions.changeset(params) |> Ecto.Changeset.apply_action(:validate) do
+    case %VacancySearchOptions{}
+         |> VacancySearchOptions.changeset(params)
+         |> Ecto.Changeset.apply_action(:validate) do
       {:ok, filters} ->
         Vacancy
         |> filter(:searchable, :search, filters.query)

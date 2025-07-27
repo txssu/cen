@@ -64,7 +64,10 @@ defmodule CenWeb.UserLive.ChooseRole do
         {:noreply, push_navigate(socket, to: ~p"/")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
+        {:noreply,
+         socket
+         |> assign(check_errors: true)
+         |> assign_form(changeset)}
     end
   end
 

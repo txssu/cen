@@ -50,7 +50,11 @@ defmodule CenWeb.UserLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, socket |> assign_vkid_data() |> assign(form: form), temporary_assigns: [form: form]}
+
+    {:ok,
+     socket
+     |> assign_vkid_data()
+     |> assign(form: form), temporary_assigns: [form: form]}
   end
 
   defp assign_vkid_data(socket) do

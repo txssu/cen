@@ -146,7 +146,11 @@ defmodule CenWeb.UserSettings.CredentialsLive do
         )
 
         info = dgettext("users", "На новый адрес отправлена ссылка для подтверждения изменения электронной почты.")
-        {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+
+        {:noreply,
+         socket
+         |> put_flash(:info, info)
+         |> assign(email_form_current_password: nil)}
 
       {:error, changeset} ->
         {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}

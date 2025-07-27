@@ -49,7 +49,11 @@ defmodule CenWeb.UserRegistrationLiveTest do
       assert redirected_to(conn) == ~p"/"
 
       # Now do a logged in request and assert on the menu
-      response = conn |> get("/") |> html_response(200)
+      response =
+        conn
+        |> get("/")
+        |> html_response(200)
+
       assert response =~ ~p"/users/settings/personal"
     end
 

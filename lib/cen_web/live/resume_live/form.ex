@@ -238,7 +238,11 @@ defmodule CenWeb.ResumeLive.Form do
   end
 
   defp assign_form(socket, resume) do
-    form = resume |> Publications.change_resume() |> to_form()
+    form =
+      resume
+      |> Publications.change_resume()
+      |> to_form()
+
     assign(socket, resume: resume, form: form)
   end
 end

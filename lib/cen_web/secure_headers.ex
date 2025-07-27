@@ -1,15 +1,8 @@
-defmodule CenWeb.Plugs.PutSecureHeaders do
+defmodule CenWeb.SecureHeaders do
   @moduledoc false
-  @behaviour Plug
 
-  @impl Plug
-  def init(options), do: options
-
-  @impl Plug
-  def call(conn, _opts) do
-    Phoenix.Controller.put_secure_browser_headers(conn, %{
-      "content-security-policy" => csp_string()
-    })
+  def csp do
+    Enum.map_join(csp_options(), "; ", fn {key, values} -> "#{key} #{Enum.join(values, " ")}" end)
   end
 
   defp csp_options do
@@ -33,10 +26,6 @@ defmodule CenWeb.Plugs.PutSecureHeaders do
       "style-src-elem" => ["'unsafe-inline'"],
       "frame-src" => ["https://id.vk.com https://login.vk.com"]
     }
-  end
-
-  defp csp_string do
-    Enum.map_join(csp_options(), "; ", fn {key, values} -> "#{key} #{Enum.join(values, " ")}" end)
   end
 
   defp csp_s3 do

@@ -18,7 +18,11 @@ defmodule CenWeb.UserSessionControllerTest do
       assert redirected_to(conn) == ~p"/"
 
       # Now do a logged in request and assert on the menu
-      response = conn |> get(~p"/") |> html_response(200)
+      response =
+        conn
+        |> get(~p"/")
+        |> html_response(200)
+
       assert response =~ ~p"/users/settings/personal"
     end
 
@@ -86,7 +90,11 @@ defmodule CenWeb.UserSessionControllerTest do
 
   describe "DELETE /users/log_out" do
     test "logs the user out", %{conn: conn, user: user} do
-      conn = conn |> log_in_user(user) |> delete(~p"/users/log_out")
+      conn =
+        conn
+        |> log_in_user(user)
+        |> delete(~p"/users/log_out")
+
       assert redirected_to(conn) == ~p"/"
       refute get_session(conn, :user_token)
       assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Logged out successfully"

@@ -50,7 +50,11 @@ defmodule CenWeb.VacancyLive.Index do
 
     verify_has_permission!(socket.assigns.current_user, :vacancies, action)
 
-    {:ok, socket |> assign_title(action) |> load_vacancies(action) |> assign(action: action)}
+    {:ok,
+     socket
+     |> assign_title(action)
+     |> load_vacancies(action)
+     |> assign(action: action)}
   end
 
   defp assign_title(socket, live_action) do
