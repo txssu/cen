@@ -115,7 +115,7 @@ defmodule Cen.Communications do
   def list_messages(interaction_id, offset) do
     Message
     |> where([message], message.interaction_id == ^interaction_id)
-    |> Flop.run(%Flop{limit: 30, order_by: [:inserted_at], order_directions: [:desc], offset: offset}, repo: Cen.Repo)
+    |> Flop.run(%Flop{limit: 30, order_by: [:inserted_at], order_directions: [:desc], offset: offset}, repo: Repo)
   end
 
   @spec send_notification(map() | String.t()) :: {:ok, Notification.t()} | {:error, term()}

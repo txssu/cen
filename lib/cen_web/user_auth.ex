@@ -167,8 +167,8 @@ defmodule CenWeb.UserAuth do
     else
       socket =
         socket
-        |> Phoenix.LiveView.put_flash(:error, dgettext("users", "Вам нужно войти, чтобы открыть эту страницу."))
-        |> Phoenix.LiveView.redirect(to: ~p"/users/log_in")
+        |> LiveView.put_flash(:error, dgettext("users", "Вам нужно войти, чтобы открыть эту страницу."))
+        |> LiveView.redirect(to: ~p"/users/log_in")
 
       {:halt, socket}
     end
@@ -178,7 +178,7 @@ defmodule CenWeb.UserAuth do
     socket = mount_current_user(socket, session)
 
     if socket.assigns.current_user do
-      {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
+      {:halt, LiveView.redirect(socket, to: signed_in_path(socket))}
     else
       {:cont, socket}
     end

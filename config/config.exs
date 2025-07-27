@@ -28,11 +28,11 @@ config :cen, CenWeb.Endpoint,
   live_view: [signing_salt: "E9Av9SG/"]
 
 config :cen, CenWeb.PCKE.Storage,
-  gc_interval: :timer.hours(1),
+  gc_interval: to_timeout(hour: 1),
   max_size: 1_000_000,
   allocated_memory: 200_000_000,
-  gc_cleanup_min_timeout: :timer.seconds(10),
-  gc_cleanup_max_timeout: :timer.minutes(10)
+  gc_cleanup_min_timeout: to_timeout(second: 10),
+  gc_cleanup_max_timeout: to_timeout(minute: 10)
 
 config :cen, :email_from, "cen@example.com"
 
