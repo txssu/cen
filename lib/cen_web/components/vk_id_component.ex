@@ -29,6 +29,6 @@ defmodule CenWeb.VKIDComponent do
   end
 
   defp redirect_url do
-    Application.get_env(:cen, :vk_id_redirect_host) <> ~p"/users/auth/vkid"
+    url(~p"/users/auth/vkid")
   end
 end

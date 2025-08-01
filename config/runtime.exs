@@ -123,7 +123,6 @@ if config_env() == :prod do
   config :cen, :csp, s3: to_string(s3_uri)
   config :cen, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
   config :cen, :email_from, System.get_env("EMAIL_FROM")
-  config :cen, :vk_id_redirect_host, "https://#{host}"
 
   config :ex_aws,
     json_codec: Jason,

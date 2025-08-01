@@ -7,6 +7,13 @@
 # General application configuration
 import Config
 
+config :cen, Cen.Accounts.InvalidParamsStorage,
+  gc_interval: to_timeout(minute: 10),
+  max_size: 1_000,
+  allocated_memory: 1_000_000,
+  gc_cleanup_min_timeout: to_timeout(second: 10),
+  gc_cleanup_max_timeout: to_timeout(minute: 5)
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

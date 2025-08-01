@@ -19,9 +19,21 @@ defmodule CenWeb.UserSessionController do
     create(conn, params, dgettext("users", "С возвращением!"))
   end
 
-  defp create(conn, %{"user" => user_params}, info) do
-    %{"email" => email, "password" => password} = user_params
+  defp create(conn, %{"user" => %{"vk_id" => encrypted_vk_id} = user_params}, info) do
+    with {:ok, vk_id} <- Phoenix.Token.decrypt(CenWeb.Endpoint, "user vk id", encrypted_vk_id),
+         %Accounts.User{} = user <- Accounts.get_user_by_vk_id(vk_id) do
+      conn
+      |> put_flash(:info, info)
+      |> UserAuth.log_in_user(user, user_params)
+    else
+      _any_error ->
+        conn
+        |> put_flash(:error, dgettext("users", "Во время авторизации произошла ошибка, воспользуйтесь другим способом входа"))
+        |> redirect(to: ~p"/users/log_in")
+    end
+  end
 
+  defp create(conn, %{"user" => %{"email" => email, "password" => password} = user_params}, info) do
     if user = Accounts.get_user_by_email_and_password(email, password) do
       conn
       |> put_flash(:info, info)
@@ -37,18 +49,25 @@ defmodule CenWeb.UserSessionController do
 
   @spec auth_vkid(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def auth_vkid(conn, params) do
-    host = Application.get_env(:cen, :vk_id_redirect_host)
+    case Accounts.fetch_user_from_vk(params, url(~p"/users/auth/vkid")) do
+      {:ok, user} ->
+        conn
+        |> put_flash(:info, dgettext("users", "Вы успешно вошли через VK ID."))
+        |> UserAuth.log_in_user(user, %{})
 
-    if user = Accounts.get_user_by_vkid_data(params, host <> ~p"/users/auth/vkid") do
-      redirect_to = if user.role == nil, do: ~p"/users/choose_role"
+      {:error, %Ecto.Changeset{} = changeset} ->
+        vk_id = Accounts.save_invalid_params(changeset)
 
-      conn
-      |> put_flash(:info, dgettext("users", "Вы успешно вошли через VK ID."))
-      |> UserAuth.log_in_user(user, %{}, redirect_to)
-    else
-      conn
-      |> put_flash(:error, dgettext("users", "Во время входа произошла ошибка."))
-      |> redirect(to: ~p"/users/log_in")
+        encrypted_vk_id = Phoenix.Token.encrypt(CenWeb.Endpoint, "user vk id", vk_id)
+
+        conn
+        |> put_flash(:error, "Отредактируйте данные")
+        |> redirect(to: ~p"/users/register?vk_id=#{encrypted_vk_id}")
+
+      {:error, _reason} ->
+        conn
+        |> put_flash(:error, "В данный момент вход через ВК не работает, попробуйте позже.")
+        |> redirect(to: ~p"/users/log_in")
     end
   end
 

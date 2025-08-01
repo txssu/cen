@@ -1,5 +1,11 @@
 import Config
 
+url = [
+  host: System.get_env("DEV_URL_HOST", "localhost"),
+  scheme: System.get_env("DEV_URL_SCHEME", "http"),
+  port: "DEV_URL_PORT" |> System.get_env("4000") |> String.to_integer()
+]
+
 # Configure your database
 config :cen, Cen.Repo,
   username: "postgres",
@@ -20,6 +26,7 @@ config :cen, CenWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {0, 0, 0, 0}, port: 4000],
+  url: [host: "rabbit.txssu.dev", scheme: "https", port: "443"],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
@@ -66,9 +73,6 @@ config :cen, :csp, s3: "http://localhost:9000"
 
 # Enable dev routes for dashboard and mailbox
 config :cen, dev_routes: true
-
-# Works only on 80 port
-config :cen, vk_id_redirect_host: "http://localhost"
 
 config :ex_aws,
   json_codec: Jason,

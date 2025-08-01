@@ -5,6 +5,7 @@ defmodule Cen.Accounts do
 
   import Ecto.Query, warn: false
 
+  alias Cen.Accounts.InvalidParamsStorage
   alias Cen.Accounts.User
   alias Cen.Accounts.UserNotifier
   alias Cen.Accounts.UserToken
@@ -30,6 +31,10 @@ defmodule Cen.Accounts do
   @spec get_user_by_email(String.t()) :: User.t() | nil
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
+  end
+
+  def get_user_by_vk_id(vk_id) do
+    Repo.get_by(User, vk_id: vk_id)
   end
 
   @doc """
@@ -417,57 +422,60 @@ defmodule Cen.Accounts do
     Repo.all(User)
   end
 
-  @spec get_user_by_vk_id(integer()) :: User.t() | nil
-  def get_user_by_vk_id(vk_id) do
-    Repo.get_by(User, vk_id: vk_id)
-  end
-
-  @spec get_user_by_vkid_data(map(), String.t()) :: User.t() | nil
-  def get_user_by_vkid_data(params, redirect_uri) do
+  def fetch_user_from_vk(params, redirect_uri) do
     case VKIDAuthProvider.auth(params, redirect_uri) do
-      {:ok, user_vk_id, access_token} ->
-        if user = get_user_by_vk_id(user_vk_id) do
-          user
-        else
-          create_user_with_by_access_token(access_token)
-        end
-
-      :error ->
-        nil
+      {:ok, user_vk_id, access_token} -> fetch_user_by_vk_data(user_vk_id, access_token)
+      :error -> {:error, :unauth_from_vk}
     end
   end
 
-  @spec create_user_with_by_access_token(String.t()) :: User.t() | nil
-  def create_user_with_by_access_token(access_token) do
+  defp fetch_user_by_vk_data(vk_id, access_token) do
+    if user = Repo.get_by(User, vk_id: vk_id) do
+      {:ok, user}
+    else
+      create_user_using_access_token(access_token)
+    end
+  end
+
+  def create_user_using_access_token(access_token, fixed_info \\ %{}) do
     with {:ok, user_info} <- VKIDAuthProvider.get_info(access_token) do
-      if user = get_user_by_email(user_info["email"]) do
-        user
-        |> Ecto.Changeset.cast(%{vk_id: user_info["user_id"]}, [:vk_id])
-        |> Repo.update!()
-      else
-        attrs = format_vk_user_info(user_info)
+      attrs =
+        user_info
+        |> format_vk_user_info()
+        |> Map.merge(fixed_info)
 
-        insert_result =
-          %User{}
-          |> User.vk_id_changeset(attrs)
-          |> Repo.insert()
-
-        case insert_result do
-          {:error, _changeset} -> nil
-          {:ok, user} -> user
-        end
-      end
+      %User{vk_access_token: access_token}
+      |> User.vk_id_changeset(attrs)
+      |> Repo.insert()
     end
   end
 
   defp format_vk_user_info(user_info) do
     %{
-      birthdate: convert_ru_date_to_iso(user_info["birthday"]),
-      email: user_info["email"],
-      fullname: user_info["last_name"] <> " " <> user_info["first_name"],
-      phone_number: "+" <> user_info["phone"],
-      vk_id: user_info["user_id"]
+      "birthdate" => convert_ru_date_to_iso(user_info["birthday"]),
+      "email" => user_info["email"],
+      "fullname" => user_info["last_name"] <> " " <> user_info["first_name"],
+      "phone_number" => "+" <> user_info["phone"],
+      "vk_id" => user_info["user_id"]
     }
+  end
+
+  def change_vk_user_creation(user, attrs) do
+    User.vk_id_changeset(user, attrs)
+  end
+
+  def create_vk_user(attrs) do
+    create_user_using_access_token(attrs["vk_access_token"], attrs)
+  end
+
+  def save_invalid_params(%Ecto.Changeset{changes: %{vk_id: vk_id}} = changeset) do
+    InvalidParamsStorage.put(vk_id, changeset)
+
+    vk_id
+  end
+
+  def get_invalid_params(vk_id) do
+    InvalidParamsStorage.get(vk_id)
   end
 
   defp convert_ru_date_to_iso(ru_date) do
