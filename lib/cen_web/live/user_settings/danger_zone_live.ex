@@ -81,7 +81,7 @@ defmodule CenWeb.UserSettings.DangerZoneLive do
     user = socket.assigns.current_user
 
     case Accounts.soft_delete_user(user) do
-      :ok ->
+      {:ok, _user} ->
         {:noreply,
          socket
          |> put_flash(:info, dgettext("users", "Ваш аккаунт был успешно удален."))

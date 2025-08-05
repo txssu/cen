@@ -700,7 +700,6 @@ defmodule Cen.AccountsTest do
       # Update user1 to have a vk_id (simulating VK registration)
       query = from(u in User, where: u.id == ^user1.id)
       Repo.update_all(query, set: [vk_id: vk_id])
-      updated_user1 = Repo.get!(User, user1.id)
 
       # Soft delete the user
       assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
@@ -762,14 +761,6 @@ defmodule Cen.AccountsTest do
 
       # Should not find user after soft delete
       refute Accounts.get_user_by_vk_id(vk_id)
-    end
-  end
-
-  describe "delete_user/1" do
-    test "deletes user" do
-      user = user_fixture()
-      assert :ok == Accounts.delete_user(user)
-      assert nil == Accounts.get_user_by_email(user.email)
     end
   end
 end

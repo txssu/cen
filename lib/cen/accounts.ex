@@ -418,18 +418,9 @@ defmodule Cen.Accounts do
       |> Multi.delete_all(:delete_tokens, UserToken.by_user_and_contexts_query(user, :all))
 
     case Repo.transaction(t) do
-      {:ok, _actions} -> :ok
+      {:ok, %{soft_delete: user}} -> {:ok, user}
       {:error, _action, _reason, _changes} -> :error
     end
-  end
-
-  @doc """
-  Hard deletes the user (permanently removes from database).
-  """
-  @spec delete_user(User.t()) :: :ok
-  def delete_user(user) do
-    Repo.delete(user)
-    :ok
   end
 
   @spec calculate_user_age(User.t()) :: integer()
