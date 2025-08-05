@@ -11,6 +11,7 @@ defmodule Cen.Accounts do
   alias Cen.Accounts.UserToken
   alias Cen.Accounts.VKIDAuthProvider
   alias Cen.Repo
+  alias Ecto.Multi
 
   @type user_changeset :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
 
@@ -178,9 +179,9 @@ defmodule Cen.Accounts do
       |> User.email_changeset(%{email: email})
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
+    Multi.new()
+    |> Multi.update(:user, changeset)
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
   end
 
   @doc ~S"""
@@ -234,9 +235,9 @@ defmodule Cen.Accounts do
       |> User.password_changeset(attrs)
       |> User.validate_current_password(password)
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+    Multi.new()
+    |> Multi.update(:user, changeset)
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
@@ -336,9 +337,9 @@ defmodule Cen.Accounts do
   end
 
   defp confirm_user_multi(user) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, User.confirm_changeset(user))
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
+    Multi.new()
+    |> Multi.update(:user, User.confirm_changeset(user))
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
   end
 
   ## Reset password
@@ -396,9 +397,9 @@ defmodule Cen.Accounts do
   """
   @spec reset_user_password(User.t(), map()) :: user_changeset()
   def reset_user_password(user, attrs) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+    Multi.new()
+    |> Multi.update(:user, User.password_changeset(user, attrs))
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
@@ -410,22 +411,15 @@ defmodule Cen.Accounts do
   Soft deletes the user by setting deleted_at timestamp.
   This hides the user from most queries while preserving data integrity.
   """
-  @spec soft_delete_user(User.t()) :: user_changeset()
   def soft_delete_user(user) do
-    user
-    |> User.soft_delete_changeset()
-    |> Repo.update()
-    |> case do
-      {:ok, user} ->
-        # Delete all user sessions on account deletion
-        user
-        |> UserToken.by_user_and_contexts_query(:all)
-        |> Repo.delete_all()
+    t =
+      Multi.new()
+      |> Multi.update(:soft_delete, User.soft_delete_changeset(user))
+      |> Multi.delete_all(:delete_tokens, UserToken.by_user_and_contexts_query(user, :all))
 
-        {:ok, user}
-
-      {:error, changeset} ->
-        {:error, changeset}
+    case Repo.transaction(t) do
+      {:ok, _actions} -> :ok
+      {:error, _action, _reason, _changes} -> :error
     end
   end
 
