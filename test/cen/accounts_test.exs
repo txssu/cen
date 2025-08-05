@@ -107,12 +107,12 @@ defmodule Cen.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset for `applicant` role" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{role: :applicant})
-      assert changeset.required == [:phone_number, :fullname, :birthdate, :role, :password, :email]
+      assert changeset.required == [:phone_number, :fullname, :birthdate, :privacy_consent, :role, :password, :email]
     end
 
     test "returns a changeset for `employer` role" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{role: :employer})
-      assert changeset.required == [:phone_number, :fullname, :role, :password, :email]
+      assert changeset.required == [:phone_number, :fullname, :privacy_consent, :role, :password, :email]
     end
 
     test "allows fields to be set" do
@@ -528,6 +528,240 @@ defmodule Cen.AccountsTest do
   describe "inspect/2 for the User module" do
     test "does not include password" do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
+    end
+  end
+
+  describe "soft_delete_user/1" do
+    test "soft deletes user by setting deleted_at" do
+      user = user_fixture()
+      assert {:ok, soft_deleted_user} = Accounts.soft_delete_user(user)
+      assert soft_deleted_user.deleted_at
+      refute is_nil(soft_deleted_user.deleted_at)
+    end
+
+    test "soft deleted user is not returned by get_user_by_email/1" do
+      user = user_fixture()
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user)
+      assert nil == Accounts.get_user_by_email(user.email)
+    end
+
+    test "soft deleted user is not returned by get_user_by_email_and_password/2" do
+      user = user_fixture()
+      password = valid_user_password()
+
+      # User exists before soft delete
+      assert %User{} = Accounts.get_user_by_email_and_password(user.email, password)
+
+      # Soft delete the user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user)
+
+      # User should not be found after soft delete
+      refute Accounts.get_user_by_email_and_password(user.email, password)
+    end
+
+    test "soft deleted user is not returned by list_users/0" do
+      user1 = user_fixture()
+      user2 = user_fixture()
+
+      # Both users should be in the list initially
+      users = Accounts.list_users()
+      user_ids = Enum.map(users, & &1.id)
+      assert user1.id in user_ids
+      assert user2.id in user_ids
+
+      # Soft delete one user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
+
+      # Only non-deleted user should be in the list
+      users_after_delete = Accounts.list_users()
+      user_ids_after_delete = Enum.map(users_after_delete, & &1.id)
+      refute user1.id in user_ids_after_delete
+      assert user2.id in user_ids_after_delete
+    end
+
+    test "soft delete removes all user sessions" do
+      user = user_fixture()
+      session_token = Accounts.generate_user_session_token(user)
+
+      # Session token should exist
+      assert Accounts.get_user_by_session_token(session_token)
+
+      # Soft delete user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user)
+
+      # Session token should be removed
+      refute Accounts.get_user_by_session_token(session_token)
+    end
+
+    test "get_user!/1 still returns soft deleted user" do
+      user = user_fixture()
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user)
+
+      # get_user!/1 should still work for soft deleted users (for admin purposes)
+      assert %User{} = Accounts.get_user!(user.id)
+    end
+  end
+
+  describe "User query scopes" do
+    test "not_deleted/1 excludes soft deleted users" do
+      user1 = user_fixture()
+      user2 = user_fixture()
+
+      # Soft delete one user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
+
+      # not_deleted scope should only return non-deleted users
+      non_deleted_users =
+        User
+        |> User.not_deleted()
+        |> Repo.all()
+
+      user_ids = Enum.map(non_deleted_users, & &1.id)
+      refute user1.id in user_ids
+      assert user2.id in user_ids
+    end
+
+    test "deleted_only/1 includes only soft deleted users" do
+      user1 = user_fixture()
+      user2 = user_fixture()
+
+      # Soft delete one user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
+
+      # deleted_only scope should only return deleted users
+      deleted_users =
+        User
+        |> User.deleted_only()
+        |> Repo.all()
+
+      user_ids = Enum.map(deleted_users, & &1.id)
+      assert user1.id in user_ids
+      refute user2.id in user_ids
+    end
+  end
+
+  describe "Email uniqueness with soft delete" do
+    test "allows registration with same email after user is soft deleted" do
+      # Create and soft delete a user
+      email = unique_user_email()
+      user1 = user_fixture(%{email: email})
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
+
+      # Should be able to create a new user with the same email
+      attrs = valid_user_attributes(%{email: email})
+      assert {:ok, user2} = Accounts.register_user(attrs)
+      assert user2.email == email
+      assert user2.id != user1.id
+    end
+
+    test "prevents registration with same email when user is not deleted" do
+      # Create a user
+      email = unique_user_email()
+      _user1 = user_fixture(%{email: email})
+
+      # Should not be able to create another user with the same email
+      attrs = valid_user_attributes(%{email: email})
+      assert {:error, changeset} = Accounts.register_user(attrs)
+      assert %{email: ["has already been taken"]} = errors_on(changeset)
+    end
+
+    test "soft deleted users can have duplicate emails between them" do
+      # Create two users with different emails
+      email = unique_user_email()
+      user1 = user_fixture(%{email: email})
+      user2 = user_fixture()
+
+      # Soft delete both users
+      assert {:ok, _deleted_user1} = Accounts.soft_delete_user(user1)
+      assert {:ok, _deleted_user2} = Accounts.soft_delete_user(user2)
+
+      # Update second user to have same email as first (this simulates the scenario)
+      # This should be allowed since both are deleted
+      query = from(u in User, where: u.id == ^user2.id)
+      Repo.update_all(query, set: [email: email])
+
+      # Verify both deleted users have the same email
+      deleted_users =
+        User
+        |> User.deleted_only()
+        |> where([u], u.email == ^email)
+        |> Repo.all()
+
+      assert length(deleted_users) == 2
+    end
+  end
+
+  describe "VK ID uniqueness with soft delete" do
+    test "allows registration with same vk_id after user is soft deleted" do
+      # Create and soft delete a user with VK ID
+      vk_id = 12_345
+      user1 = user_fixture()
+
+      # Update user1 to have a vk_id (simulating VK registration)
+      query = from(u in User, where: u.id == ^user1.id)
+      Repo.update_all(query, set: [vk_id: vk_id])
+      updated_user1 = Repo.get!(User, user1.id)
+
+      # Soft delete the user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user1)
+
+      # Create changeset for new user with same vk_id - should be valid
+      changeset =
+        User.vk_id_changeset(%User{}, %{
+          "email" => unique_user_email(),
+          "fullname" => valid_user_fullname(),
+          "phone_number" => valid_user_phone_number(),
+          "role" => "applicant",
+          "birthdate" => valid_user_birthdate(),
+          "vk_id" => vk_id
+        })
+
+      assert changeset.valid?
+      assert {:ok, user2} = Repo.insert(changeset)
+      assert user2.vk_id == vk_id
+      assert user2.id != user1.id
+    end
+
+    test "prevents registration with same vk_id when user is not deleted" do
+      # Create a user with VK ID
+      vk_id = 54_321
+      user1 = user_fixture()
+
+      query = from(u in User, where: u.id == ^user1.id)
+      Repo.update_all(query, set: [vk_id: vk_id])
+
+      # Try to create another user with the same vk_id - should fail
+      changeset =
+        User.vk_id_changeset(%User{}, %{
+          "email" => unique_user_email(),
+          "fullname" => valid_user_fullname(),
+          "phone_number" => valid_user_phone_number(),
+          "role" => "applicant",
+          "birthdate" => valid_user_birthdate(),
+          "vk_id" => vk_id
+        })
+
+      assert {:error, changeset} = Repo.insert(changeset)
+      assert %{vk_id: ["has already been taken"]} = errors_on(changeset)
+    end
+
+    test "get_user_by_vk_id returns nil for soft deleted users" do
+      # Create user with VK ID
+      vk_id = 98_765
+      user = user_fixture()
+
+      query = from(u in User, where: u.id == ^user.id)
+      Repo.update_all(query, set: [vk_id: vk_id])
+
+      # Should find user before soft delete
+      assert found_user = Accounts.get_user_by_vk_id(vk_id)
+      assert found_user.id == user.id
+
+      # Soft delete the user
+      assert {:ok, _soft_deleted_user} = Accounts.soft_delete_user(user)
+
+      # Should not find user after soft delete
+      refute Accounts.get_user_by_vk_id(vk_id)
     end
   end
 

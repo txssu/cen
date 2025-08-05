@@ -17,7 +17,7 @@ defmodule Cen.AccountsFixtures do
   def valid_user_birthdate, do: ~D[1990-01-01]
 
   @spec valid_user_fullname() :: String.t()
-  def valid_user_fullname, do: "John Doe"
+  def valid_user_fullname, do: "Иван Иванов"
 
   @spec valid_user_phone_number() :: String.t()
   def valid_user_phone_number, do: "+70001234567"
@@ -30,7 +30,8 @@ defmodule Cen.AccountsFixtures do
       role: valid_user_role(),
       fullname: valid_user_fullname(),
       phone_number: valid_user_phone_number(),
-      birthdate: valid_user_birthdate()
+      birthdate: valid_user_birthdate(),
+      privacy_consent: true
     })
   end
 

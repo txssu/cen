@@ -30,11 +30,17 @@ defmodule Cen.Accounts do
   """
   @spec get_user_by_email(String.t()) :: User.t() | nil
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    User
+    |> User.not_deleted()
+    |> where([u], u.email == ^email)
+    |> Repo.one()
   end
 
   def get_user_by_vk_id(vk_id) do
-    Repo.get_by(User, vk_id: vk_id)
+    User
+    |> User.not_deleted()
+    |> where([u], u.vk_id == ^vk_id)
+    |> Repo.one()
   end
 
   @doc """
@@ -51,7 +57,7 @@ defmodule Cen.Accounts do
   """
   @spec get_user_by_email_and_password(String.t(), String.t()) :: User.t() | nil
   def get_user_by_email_and_password(email, password) when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    user = get_user_by_email(email)
     if User.valid_password?(user, password), do: user
   end
 
@@ -401,12 +407,34 @@ defmodule Cen.Accounts do
   end
 
   @doc """
-  Deletes the user.
+  Soft deletes the user by setting deleted_at timestamp.
+  This hides the user from most queries while preserving data integrity.
+  """
+  @spec soft_delete_user(User.t()) :: user_changeset()
+  def soft_delete_user(user) do
+    user
+    |> User.soft_delete_changeset()
+    |> Repo.update()
+    |> case do
+      {:ok, user} ->
+        # Delete all user sessions on account deletion
+        user
+        |> UserToken.by_user_and_contexts_query(:all)
+        |> Repo.delete_all()
+
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Hard deletes the user (permanently removes from database).
   """
   @spec delete_user(User.t()) :: :ok
   def delete_user(user) do
     Repo.delete(user)
-
     :ok
   end
 
@@ -419,7 +447,9 @@ defmodule Cen.Accounts do
 
   @spec list_users() :: [User.t()]
   def list_users do
-    Repo.all(User)
+    User
+    |> User.not_deleted()
+    |> Repo.all()
   end
 
   def fetch_user_from_vk(params, redirect_uri) do
@@ -430,7 +460,7 @@ defmodule Cen.Accounts do
   end
 
   defp fetch_user_by_vk_data(vk_id, access_token) do
-    if user = Repo.get_by(User, vk_id: vk_id) do
+    if user = get_user_by_vk_id(vk_id) do
       {:ok, user}
     else
       create_user_using_access_token(access_token)
