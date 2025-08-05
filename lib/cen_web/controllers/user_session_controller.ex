@@ -51,10 +51,10 @@ defmodule CenWeb.UserSessionController do
   def auth_vkid(conn, params) do
     case Accounts.fetch_user_from_vk(params, url(~p"/users/auth/vkid")) do
       {:ok, user} ->
-        # TODO: Add redirect to /choose_role page
         conn
         |> put_flash(:info, dgettext("users", "Вы успешно вошли через VK ID."))
         |> UserAuth.log_in_user(user, %{})
+        |> redirect(to: ~p"/users/choose_role")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         vk_id = Accounts.save_invalid_params(changeset)
