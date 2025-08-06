@@ -22,18 +22,16 @@ defmodule CenWeb.OrganizationLive.Index do
         </div>
       </div>
       <ul class="mt-7 space-y-6">
-        <%= for organization <- @organizations do %>
-          <li>
-            <.basic_card class="w-full px-6 py-7" header={organization.name}>
-              <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-                {organization.address}
-              </p>
-              <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/orgs/#{organization}")}>
-                {gettext("Открыть")}
-              </.regular_button>
-            </.basic_card>
-          </li>
-        <% end %>
+        <li :for={organization <- @organizations} :key={organization.id}>
+          <.basic_card class="w-full px-6 py-7" header={organization.name}>
+            <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
+              {organization.address}
+            </p>
+            <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/orgs/#{organization}")}>
+              {gettext("Открыть")}
+            </.regular_button>
+          </.basic_card>
+        </li>
       </ul>
     </div>
     """

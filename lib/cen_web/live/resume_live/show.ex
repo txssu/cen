@@ -22,16 +22,14 @@ defmodule CenWeb.ResumeLive.Show do
         <div class="relative pt-16 lg:order-1 lg:col-span-3 lg:col-start-10 lg:pt-0">
           <.basic_card class="px-6 pt-24 pb-14" header={"#{@resume.user.fullname}"}>
             <ul class="mt-7 space-y-4">
-              <%= for {value, icon} <- contacts_list(@resume.user) do %>
-                <.render_not_nil value={value}>
-                  <li class="flex items-center gap-2.5">
-                    <.icon name={icon} class="h-4 w-4" />
-                    <div class="leading-[1.2] text-sm font-light text-black">
-                      {value}
-                    </div>
-                  </li>
-                </.render_not_nil>
-              <% end %>
+              <.render_not_nil :for={{value, icon} <- contacts_list(@resume.user)} value={value}>
+                <li class="flex items-center gap-2.5">
+                  <.icon name={icon} class="h-4 w-4" />
+                  <div class="leading-[1.2] text-sm font-light text-black">
+                    {value}
+                  </div>
+                </li>
+              </.render_not_nil>
             </ul>
           </.basic_card>
         </div>

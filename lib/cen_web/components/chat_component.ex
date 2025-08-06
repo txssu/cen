@@ -46,7 +46,13 @@ defmodule CenWeb.ChatComponent do
                         {dgettext("publications", "Чаты")}
                       </.header>
                       <ul class="space-y-4 ">
-                        <li :for={interaction <- @interactions} phx-click="select_chat" phx-value-id={interaction.id} phx-target={@myself}>
+                        <li
+                          :for={interaction <- @interactions}
+                          :key={interaction.id}
+                          phx-click="select_chat"
+                          phx-value-id={interaction.id}
+                          phx-target={@myself}
+                        >
                           <.chat_card interaction={interaction} />
                         </li>
                       </ul>
@@ -56,7 +62,7 @@ defmodule CenWeb.ChatComponent do
                         <div class="flex h-full flex-col p-7 lg:p-14 lg:pb-7 lg:pl-7">
                           <.chat_header interaction={@selected_interaction} myself={@myself} />
                           <ul class="[scrollbar-width:_none] my-1 flex grow flex-col-reverse gap-2.5 overflow-y-auto rounded-lg pb-7">
-                            <li :for={message <- @messages}>
+                            <li :for={message <- @messages} :key={message.id}>
                               <.message_card message={message} current_user={@current_user} />
                             </li>
                           </ul>

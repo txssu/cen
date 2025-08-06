@@ -19,7 +19,7 @@ defmodule CenWeb.NotificationsComponent do
           </button>
         </div>
         <ul class="mt-7 space-y-4">
-          <li :for={notification <- @unread_notifications}>
+          <li :for={notification <- @unread_notifications} :key={notification.id}>
             <div class="shadow-notification-card flex gap-12 rounded-lg px-2.5 py-4">
               <div class="flex w-6 shrink-0 items-center">
                 <.notification_icon type={notification.type} />

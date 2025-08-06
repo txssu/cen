@@ -25,16 +25,14 @@ defmodule CenWeb.VacancyLive.Show do
               class="outline-[1rem] absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full outline outline-white lg:-translate-y-1/2"
             />
             <ul class="mt-7 space-y-4">
-              <%= for {value, icon} <- contacts_list(@vacancy.organization) do %>
-                <.render_not_nil value={value}>
-                  <li class="flex items-center gap-2.5">
-                    <.icon name={icon} class="h-4 w-4" />
-                    <div class="leading-[1.2] text-sm font-light text-black">
-                      {value}
-                    </div>
-                  </li>
-                </.render_not_nil>
-              <% end %>
+              <.render_not_nil :for={{value, icon} <- contacts_list(@vacancy.organization)} value={value}>
+                <li class="flex items-center gap-2.5">
+                  <.icon name={icon} class="h-4 w-4" />
+                  <div class="leading-[1.2] text-sm font-light text-black">
+                    {value}
+                  </div>
+                </li>
+              </.render_not_nil>
             </ul>
           </.basic_card>
         </div>
@@ -78,14 +76,12 @@ defmodule CenWeb.VacancyLive.Show do
 
         <.basic_card class="w-full px-6 py-10 lg:col-span-9 lg:py-12">
           <div class="space-y-14">
-            <%= for {header, text} <- format_vacancy_info(@vacancy) do %>
-              <div>
-                <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
-                  {header}
-                </p>
-                <p class="mt-4">{text}</p>
-              </div>
-            <% end %>
+            <div :for={{header, text} <- format_vacancy_info(@vacancy)}>
+              <p class="leading leading-[1.3] text-regulargray text-base uppercase lg:text-xl">
+                {header}
+              </p>
+              <p class="mt-4">{text}</p>
+            </div>
           </div>
         </.basic_card>
       </div>

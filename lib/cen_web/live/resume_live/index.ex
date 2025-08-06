@@ -25,18 +25,16 @@ defmodule CenWeb.ResumeLive.Index do
         <% end %>
       </div>
       <ul class="mt-7 space-y-6">
-        <%= for resume <- @resumes do %>
-          <li>
-            <.basic_card class="w-full px-6 py-7" header={resume.job_title}>
-              <p class="text-title-text mt-2.5">
-                {resume.user.fullname}, {Accounts.calculate_user_age(resume.user)}
-              </p>
-              <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
-                {gettext("Открыть")}
-              </.regular_button>
-            </.basic_card>
-          </li>
-        <% end %>
+        <li :for={resume <- @resumes} :key={resume.id}>
+          <.basic_card class="w-full px-6 py-7" header={resume.job_title}>
+            <p class="text-title-text mt-2.5">
+              {resume.user.fullname}, {Accounts.calculate_user_age(resume.user)}
+            </p>
+            <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(~p"/cvs/#{resume}")}>
+              {gettext("Открыть")}
+            </.regular_button>
+          </.basic_card>
+        </li>
       </ul>
     </div>
     """
