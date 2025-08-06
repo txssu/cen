@@ -20,22 +20,21 @@ import "phoenix_html";
 // Establish Phoenix Socket and LiveView configuration.
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
+import { hooks as colocatedHooks } from "phoenix-colocated/cen";
 import topbar from "../vendor/topbar";
 import Croppr from "./croppr";
 import { VKIDOneTap } from "./vkid";
-import { CookiesConsent } from "./cookies_consent";
 
 const hooks = {
   Croppr,
   VKIDOneTap,
-  CookiesConsent,
 };
 
 const csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 const liveSocket = new LiveSocket("/live", Socket, {
-  hooks,
+  hooks: { ...hooks, ...colocatedHooks },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
 });
