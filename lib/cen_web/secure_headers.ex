@@ -8,7 +8,6 @@ defmodule CenWeb.SecureHeaders do
   defp csp_options do
     self = %{
       "default-src" => ["'self'"],
-      "script-src" => ["'self'", "'unsafe-inline'"],
       "script-src-elem" => ["'self'"],
       "connect-src" => ["'self'", csp_s3()],
       "img-src" => ["'self'", "data:", "blob:", csp_s3()],
