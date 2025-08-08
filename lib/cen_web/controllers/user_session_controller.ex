@@ -54,6 +54,7 @@ defmodule CenWeb.UserSessionController do
         conn
         |> put_flash(:info, dgettext("users", "Вы успешно вошли через VK ID."))
         |> UserAuth.log_in_user(user, %{})
+        |> redirect(to: ~p"/users/choose_role")
 
       {:error, %Ecto.Changeset{} = changeset} ->
         vk_id = Accounts.save_invalid_params(changeset)

@@ -11,6 +11,7 @@ defmodule Cen.Accounts do
   alias Cen.Accounts.UserToken
   alias Cen.Accounts.VKIDAuthProvider
   alias Cen.Repo
+  alias Ecto.Multi
 
   @type user_changeset :: {:ok, User.t()} | {:error, Ecto.Changeset.t()}
 
@@ -30,11 +31,17 @@ defmodule Cen.Accounts do
   """
   @spec get_user_by_email(String.t()) :: User.t() | nil
   def get_user_by_email(email) when is_binary(email) do
-    Repo.get_by(User, email: email)
+    User
+    |> User.not_deleted()
+    |> where([u], u.email == ^email)
+    |> Repo.one()
   end
 
   def get_user_by_vk_id(vk_id) do
-    Repo.get_by(User, vk_id: vk_id)
+    User
+    |> User.not_deleted()
+    |> where([u], u.vk_id == ^vk_id)
+    |> Repo.one()
   end
 
   @doc """
@@ -51,7 +58,7 @@ defmodule Cen.Accounts do
   """
   @spec get_user_by_email_and_password(String.t(), String.t()) :: User.t() | nil
   def get_user_by_email_and_password(email, password) when is_binary(email) and is_binary(password) do
-    user = Repo.get_by(User, email: email)
+    user = get_user_by_email(email)
     if User.valid_password?(user, password), do: user
   end
 
@@ -172,9 +179,9 @@ defmodule Cen.Accounts do
       |> User.email_changeset(%{email: email})
       |> User.confirm_changeset()
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
+    Multi.new()
+    |> Multi.update(:user, changeset)
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
   end
 
   @doc ~S"""
@@ -228,9 +235,9 @@ defmodule Cen.Accounts do
       |> User.password_changeset(attrs)
       |> User.validate_current_password(password)
 
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+    Multi.new()
+    |> Multi.update(:user, changeset)
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
@@ -330,9 +337,9 @@ defmodule Cen.Accounts do
   end
 
   defp confirm_user_multi(user) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, User.confirm_changeset(user))
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
+    Multi.new()
+    |> Multi.update(:user, User.confirm_changeset(user))
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
   end
 
   ## Reset password
@@ -390,9 +397,9 @@ defmodule Cen.Accounts do
   """
   @spec reset_user_password(User.t(), map()) :: user_changeset()
   def reset_user_password(user, attrs) do
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(:user, User.password_changeset(user, attrs))
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+    Multi.new()
+    |> Multi.update(:user, User.password_changeset(user, attrs))
+    |> Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
     |> Repo.transaction()
     |> case do
       {:ok, %{user: user}} -> {:ok, user}
@@ -401,13 +408,19 @@ defmodule Cen.Accounts do
   end
 
   @doc """
-  Deletes the user.
+  Soft deletes the user by setting deleted_at timestamp.
+  This hides the user from most queries while preserving data integrity.
   """
-  @spec delete_user(User.t()) :: :ok
-  def delete_user(user) do
-    Repo.delete(user)
+  def soft_delete_user(user) do
+    t =
+      Multi.new()
+      |> Multi.update(:soft_delete, User.soft_delete_changeset(user))
+      |> Multi.delete_all(:delete_tokens, UserToken.by_user_and_contexts_query(user, :all))
 
-    :ok
+    case Repo.transaction(t) do
+      {:ok, %{soft_delete: user}} -> {:ok, user}
+      {:error, _action, _reason, _changes} -> :error
+    end
   end
 
   @spec calculate_user_age(User.t()) :: integer()
@@ -419,7 +432,9 @@ defmodule Cen.Accounts do
 
   @spec list_users() :: [User.t()]
   def list_users do
-    Repo.all(User)
+    User
+    |> User.not_deleted()
+    |> Repo.all()
   end
 
   def fetch_user_from_vk(params, redirect_uri) do
@@ -430,7 +445,7 @@ defmodule Cen.Accounts do
   end
 
   defp fetch_user_by_vk_data(vk_id, access_token) do
-    if user = Repo.get_by(User, vk_id: vk_id) do
+    if user = get_user_by_vk_id(vk_id) do
       {:ok, user}
     else
       create_user_using_access_token(access_token)

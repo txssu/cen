@@ -4,7 +4,7 @@ defmodule CenWeb.UserSettings.Components do
 
   alias Phoenix.LiveView.Rendered
 
-  attr :current_page, :atom, required: true, values: [:personal, :credentials]
+  attr :current_page, :atom, required: true, values: [:personal, :credentials, :danger_zone]
 
   @spec navigation(map()) :: Rendered.t()
   def navigation(assigns) do
@@ -23,6 +23,12 @@ defmodule CenWeb.UserSettings.Components do
         <li>
           <.maybe_link navigate={~p"/users/settings/credentials"} is_link={@current_page != :credentials}>
             {dgettext("users", "Данные для входа")}
+          </.maybe_link>
+        </li>
+
+        <li>
+          <.maybe_link navigate={~p"/users/settings/danger-zone"} is_link={@current_page != :danger_zone}>
+            {dgettext("users", "Опасная зона")}
           </.maybe_link>
         </li>
       </ul>

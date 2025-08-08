@@ -4,6 +4,7 @@ defmodule Cen.Accounts.User do
   use Gettext, backend: CenWeb.Gettext
 
   import Ecto.Changeset
+  import Ecto.Query
 
   alias Cen.Communications.Notification
   alias Cen.Employers.Organization
@@ -18,6 +19,7 @@ defmodule Cen.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
+    field :deleted_at, :utc_datetime
 
     field :privacy_consent, :boolean, virtual: true, default: false
 
@@ -119,8 +121,8 @@ defmodule Cen.Accounts.User do
   defp maybe_validate_unique_email(changeset, opts) do
     if Keyword.get(opts, :validate_email, true) do
       changeset
-      |> unsafe_validate_unique(:email, Cen.Repo)
-      |> unique_constraint(:email)
+      |> unsafe_validate_unique(:email, Cen.Repo, query: not_deleted())
+      |> unique_constraint(:email, name: :users_email_unique_when_not_deleted)
     else
       changeset
     end
@@ -169,7 +171,10 @@ defmodule Cen.Accounts.User do
   end
 
   defp validate_vk_id(changeset) do
-    validate_required(changeset, [:vk_id])
+    changeset
+    |> validate_required([:vk_id])
+    |> unsafe_validate_unique(:vk_id, Cen.Repo, query: not_deleted())
+    |> unique_constraint(:vk_id, name: :users_vk_id_unique_when_not_deleted)
   end
 
   defp validate_privacy_consent(changeset) do
@@ -228,6 +233,29 @@ defmodule Cen.Accounts.User do
   def confirm_changeset(user) do
     now = DateTime.utc_now(:second)
     change(user, confirmed_at: now)
+  end
+
+  @doc """
+  Soft deletes the user by setting `deleted_at`.
+  """
+  @spec soft_delete_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def soft_delete_changeset(user) do
+    now = DateTime.utc_now(:second)
+    change(user, deleted_at: now)
+  end
+
+  @doc """
+  Query scope to exclude soft-deleted users.
+  """
+  def not_deleted(query \\ __MODULE__) do
+    from(u in query, where: is_nil(u.deleted_at))
+  end
+
+  @doc """
+  Query scope to include only soft-deleted users.
+  """
+  def deleted_only(query \\ __MODULE__) do
+    from(u in query, where: not is_nil(u.deleted_at))
   end
 
   @doc """

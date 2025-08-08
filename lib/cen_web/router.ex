@@ -59,6 +59,7 @@ defmodule CenWeb.Router do
         live "/personal/delete", PersonalInfoLive, :confirm_delete_user
         live "/credentials", CredentialsLive, :edit_credentials
         live "/confirm_email/:token", CredentialsLive, :confirm_email
+        live "/danger-zone", DangerZoneLive
       end
 
       scope "/users", UserLive do
@@ -117,7 +118,6 @@ defmodule CenWeb.Router do
   scope "/", CenWeb do
     pipe_through [:browser]
 
-    delete "/users", UserController, :delete
     delete "/users/log_out", UserSessionController, :delete
 
     live_session :current_user,
