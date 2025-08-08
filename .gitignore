@@ -38,8 +38,4 @@ npm-debug.log
 # Env
 .env
 
-# Dialyzer
-/priv/plts/*.plt
-/priv/plts/*.plt.hash
-
 priv/scripts/tailwind_components_diffs.txt

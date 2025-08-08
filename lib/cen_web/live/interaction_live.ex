@@ -14,9 +14,13 @@ defmodule CenWeb.InteractionLive do
         {header_text(@initiator)}
       </.header>
       <ul class="mt-7 space-y-6">
-        <%= for interaction <- @interactions do %>
-          <.interest_list_item interaction={interaction} initiator={@initiator} rendered_entity={@rendered_entity} />
-        <% end %>
+        <.interest_list_item
+          :for={interaction <- @interactions}
+          :key={interaction.id}
+          interaction={interaction}
+          initiator={@initiator}
+          rendered_entity={@rendered_entity}
+        />
         <%= if @interactions == [] do %>
           {gettext("Тут пока пусто")}
         <% end %>

@@ -46,7 +46,7 @@ defmodule CenWeb.ResumeLive.Search do
 
             <div class="lg:col-span-9 lg:col-start-3">
               <ul class="mt-6 space-y-4">
-                <li :for={resume <- @search_result}>
+                <li :for={resume <- @search_result} :key={resume.id}>
                   <.basic_card class="w-full px-6 py-7" header={resume.job_title}>
                     <p class="text-title-text mt-2.5">
                       {resume.user.fullname}, {Accounts.calculate_user_age(resume.user)}

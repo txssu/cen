@@ -45,7 +45,7 @@ defmodule CenWeb.VacancyLive.Search do
 
             <div class="lg:col-span-9 lg:col-start-3">
               <ul class="mt-6 space-y-4">
-                <li :for={vacancy <- @search_result}>
+                <li :for={vacancy <- @search_result} :key={vacancy.id}>
                   <.basic_card class="w-full px-6 py-7" header={vacancy.job_title}>
                     <p :if={vacancy.proposed_salary} class="text-title-text mt-2.5">
                       {pgettext("money", "от")} {Publications.format_salary(vacancy.proposed_salary)}

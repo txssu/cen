@@ -22,16 +22,14 @@ defmodule CenWeb.OrganizationLive.Show do
               class="outline-[1rem] absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 rounded-full outline outline-white lg:-translate-y-1/2"
             />
             <ul class="mt-7 space-y-4">
-              <%= for {value, icon} <- contacts_list(@organization) do %>
-                <.render_not_nil value={value}>
-                  <li class="flex items-center gap-2.5">
-                    <.icon name={icon} class="h-4 w-4" />
-                    <div class="leading-[1.2] text-sm font-light text-black">
-                      {value}
-                    </div>
-                  </li>
-                </.render_not_nil>
-              <% end %>
+              <.render_not_nil :for={{value, icon} <- contacts_list(@organization)} value={value}>
+                <li class="flex items-center gap-2.5">
+                  <.icon name={icon} class="h-4 w-4" />
+                  <div class="leading-[1.2] text-sm font-light text-black">
+                    {value}
+                  </div>
+                </li>
+              </.render_not_nil>
             </ul>
           </.basic_card>
         </div>

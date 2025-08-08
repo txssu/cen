@@ -46,7 +46,13 @@ defmodule CenWeb.ChatComponent do
                         {dgettext("publications", "Чаты")}
                       </.header>
                       <ul class="space-y-4 ">
-                        <li :for={interaction <- @interactions} phx-click="select_chat" phx-value-id={interaction.id} phx-target={@myself}>
+                        <li
+                          :for={interaction <- @interactions}
+                          :key={interaction.id}
+                          phx-click="select_chat"
+                          phx-value-id={interaction.id}
+                          phx-target={@myself}
+                        >
                           <.chat_card interaction={interaction} />
                         </li>
                       </ul>
@@ -55,8 +61,12 @@ defmodule CenWeb.ChatComponent do
                       <%= if @selected_interaction do %>
                         <div class="flex h-full flex-col p-7 lg:p-14 lg:pb-7 lg:pl-7">
                           <.chat_header interaction={@selected_interaction} myself={@myself} />
-                          <ul class="[scrollbar-width:_none] my-1 flex grow flex-col-reverse gap-2.5 overflow-y-auto rounded-lg pb-7">
-                            <li :for={message <- @messages}>
+                          <ul
+                            id="messages"
+                            phx-update="stream"
+                            class="[scrollbar-width:_none] my-1 flex grow flex-col-reverse gap-2.5 overflow-y-auto rounded-lg pb-7"
+                          >
+                            <li :for={{dom_id, message} <- @streams.messages} :key={message.id} id={dom_id}>
                               <.message_card message={message} current_user={@current_user} />
                             </li>
                           </ul>
@@ -229,7 +239,10 @@ defmodule CenWeb.ChatComponent do
     if not is_nil(selected_interaction) and selected_interaction.id == new_message.interaction_id do
       interactions = add_new_message(socket.assigns.interactions, new_message)
 
-      {:ok, assign(socket, interactions: interactions, messages: [new_message | socket.assigns.messages])}
+      {:ok,
+       socket
+       |> assign(interactions: interactions)
+       |> stream(:messages, [new_message])}
     else
       {:ok, socket}
     end
@@ -242,12 +255,13 @@ defmodule CenWeb.ChatComponent do
 
     {:noreply,
      socket
-     |> assign(selected_interaction: interaction, messages: messages)
+     |> assign(selected_interaction: interaction)
+     |> stream(:messages, messages)
      |> assign_message_form()}
   end
 
   def handle_event("deselect_chat", _params, socket) do
-    {:noreply, assign(socket, selected_interaction: nil, messages: [])}
+    {:noreply, assign(socket, selected_interaction: nil)}
   end
 
   def handle_event("change", %{"message" => message_params}, socket) do
@@ -265,11 +279,11 @@ defmodule CenWeb.ChatComponent do
     PubSub.broadcast(Cen.PubSub, to_string(to_user.id), {:new_message, message})
 
     interactions = add_new_message(socket.assigns.interactions, message)
-    messages = [message | socket.assigns.messages]
 
     {:noreply,
      socket
-     |> assign(interactions: interactions, messages: messages)
+     |> assign(interactions: interactions)
+     |> stream(:messages, [message], at: 0)
      |> assign_message_form()}
   end
 

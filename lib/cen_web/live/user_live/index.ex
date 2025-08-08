@@ -17,15 +17,13 @@ defmodule CenWeb.UserLive.Index do
         </.header>
       </div>
       <ul class="mt-7 space-y-6">
-        <%= for user <- @users do %>
-          <li>
-            <.basic_card class="w-full px-6 py-7" header={user.email}>
-              <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
-                {dgettext("users", "Роль:")} {translate_role(user.role)}
-              </p>
-            </.basic_card>
-          </li>
-        <% end %>
+        <li :for={user <- @users} :key={user.id}>
+          <.basic_card class="w-full px-6 py-7" header={user.email}>
+            <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
+              {dgettext("users", "Роль:")} {translate_role(user.role)}
+            </p>
+          </.basic_card>
+        </li>
       </ul>
     </div>
     """

@@ -22,7 +22,7 @@ defmodule CenWeb.NotificationLive.Index do
         </div>
       </div>
       <ul class="mt-7 space-y-6" id="notifications" phx-update="stream">
-        <li :for={{id, notification} <- @streams.notifications} id={id}>
+        <li :for={{id, notification} <- @streams.notifications} :key={id} id={id}>
           <.basic_card class="w-full px-6 py-7">
             {notification.message}
           </.basic_card>
