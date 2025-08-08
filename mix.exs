@@ -5,7 +5,7 @@ defmodule Cen.MixProject do
     [
       app: :cen,
       version: "0.1.0",
-      elixir: "~> 1.17",
+      elixir: "~> 1.19.0-rc.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix_live_view] ++ Mix.compilers(),
       listeners: [Phoenix.CodeReloader],
