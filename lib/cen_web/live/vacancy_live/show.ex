@@ -8,6 +8,7 @@ defmodule CenWeb.VacancyLive.Show do
   alias Cen.Communications
   alias Cen.Publications
   alias Cen.Publications.Vacancy
+  alias CenWeb.DeleteConfirmationComponent
 
   @impl Phoenix.LiveView
   def render(assigns) do
@@ -43,7 +44,7 @@ defmodule CenWeb.VacancyLive.Show do
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/jobs/#{@vacancy}/edit")}>
                 {gettext("Редактировать")}
               </.regular_button>
-              <.button class="bg-white p-4" phx-click="delete_vacancy">
+              <.button class="bg-white p-4" phx-click="confirm_delete_vacancy">
                 <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
               </.button>
             <% end %>
@@ -103,6 +104,16 @@ defmodule CenWeb.VacancyLive.Show do
         </.simple_form>
       </.header>
     </.modal>
+
+    <DeleteConfirmationComponent.delete_confirmation
+      show={@show_delete_modal}
+      title="Подтвердите удаление вакансии"
+      message="Это действие нельзя отменить. Вакансия будет безвозвратно удалена."
+      confirm_event="delete_vacancy"
+      cancel_event="cancel_delete_vacancy"
+      confirm_text="Да, удалить"
+      cancel_text="Отмена"
+    />
     """
   end
 
@@ -176,7 +187,7 @@ defmodule CenWeb.VacancyLive.Show do
     vacancy = Publications.get_vacancy!(id)
     verify_has_permission!(socket.assigns.current_user, vacancy, :show)
 
-    {:ok, assign(socket, vacancy: vacancy, select_resume_form: to_form(%{}, as: "select_resume_form"), resumes: [])}
+    {:ok, assign(socket, vacancy: vacancy, select_resume_form: to_form(%{}, as: "select_resume_form"), resumes: [], show_delete_modal: false)}
   end
 
   @impl Phoenix.LiveView
@@ -197,9 +208,28 @@ defmodule CenWeb.VacancyLive.Show do
   end
 
   @impl Phoenix.LiveView
+  def handle_event("confirm_delete_vacancy", _params, socket) do
+    {:noreply, assign(socket, show_delete_modal: true)}
+  end
+
+  def handle_event("cancel_delete_vacancy", _params, socket) do
+    {:noreply, assign(socket, show_delete_modal: false)}
+  end
+
   def handle_event("delete_vacancy", _params, socket) do
-    Publications.delete_vacancy(socket.assigns.vacancy)
-    {:noreply, push_navigate(socket, to: ~p"/jobs")}
+    case Publications.delete_vacancy(socket.assigns.vacancy) do
+      {:ok, _vacancy} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, dgettext("publications", "Вакансия успешно удалена."))
+         |> push_navigate(to: ~p"/jobs")}
+
+      {:error, _changeset} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, dgettext("publications", "Произошла ошибка при удалении вакансии."))
+         |> assign(show_delete_modal: false)}
+    end
   end
 
   def handle_event("choose_resume", %{"select_resume_form" => select_resume_params}, socket) do

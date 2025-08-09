@@ -61,7 +61,7 @@ defmodule CenWeb.UserLoginLiveTest do
 
       {:ok, _login_live, login_html} =
         lv
-        |> element(~s|main a:fl-contains("Register")|)
+        |> element(~s|a[href="/users/register"]|)
         |> render_click()
         |> follow_redirect(conn, ~p"/users/register")
 
@@ -75,7 +75,7 @@ defmodule CenWeb.UserLoginLiveTest do
 
       {:ok, _lv, html} =
         lv
-        |> element(~s|main a:fl-contains("Forgot your password?")|)
+        |> element(~s|a[href="/users/reset_password"]|)
         |> render_click()
         |> follow_redirect(conn, ~p"/users/reset_password")
 

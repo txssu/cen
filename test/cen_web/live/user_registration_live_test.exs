@@ -37,12 +37,17 @@ defmodule CenWeb.UserRegistrationLiveTest do
   end
 
   describe "register user" do
-    @tag skip: true
     test "creates account and logs the user in", %{conn: conn} do
       {:ok, lv, _html} = live(conn, ~p"/users/register")
 
       email = unique_user_email()
-      form = form(lv, "#registration_form", user: valid_user_attributes(email: email))
+
+      # First set the role to applicant
+      lv |> form("#registration_form", user: %{role: "applicant"}) |> render_change()
+
+      # Then set all other attributes
+      attrs = valid_user_web_attributes(email: email, role: "applicant")
+      form = form(lv, "#registration_form", user: attrs)
       render_submit(form)
       conn = follow_trigger_action(form, conn)
 

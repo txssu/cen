@@ -18,4 +18,10 @@
     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/images/overlay.png');
     background-size: cover;
   }
+
+  /* Modal scroll prevention with content jump fix */
+  body.modal-open {
+    overflow: hidden;
+    padding-right: var(--scrollbar-width, 0px);
+  }
 }

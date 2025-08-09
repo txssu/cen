@@ -10,8 +10,8 @@ defmodule Cen.AccountsFixtures do
   @spec valid_user_password() :: String.t()
   def valid_user_password, do: "HelloWorld123"
 
-  @spec valid_user_role() :: String.t()
-  def valid_user_role, do: Enum.random(~w[applicant employer]a)
+  @spec valid_user_role() :: atom()
+  def valid_user_role, do: :applicant
 
   @spec valid_user_birthdate() :: Date.t()
   def valid_user_birthdate, do: ~D[1990-01-01]
@@ -24,15 +24,48 @@ defmodule Cen.AccountsFixtures do
 
   @spec valid_user_attributes(map()) :: map()
   def valid_user_attributes(attrs \\ %{}) do
-    Enum.into(attrs, %{
+    base_attrs = %{
       email: unique_user_email(),
       password: valid_user_password(),
       role: valid_user_role(),
       fullname: valid_user_fullname(),
       phone_number: valid_user_phone_number(),
-      birthdate: valid_user_birthdate(),
       privacy_consent: true
-    })
+    }
+
+    attrs_with_defaults = Enum.into(attrs, base_attrs)
+
+    # Use Date for non-web contexts
+    birthdate =
+      case attrs_with_defaults.role do
+        role when role in [:applicant, "applicant"] -> valid_user_birthdate()
+        _other -> nil
+      end
+
+    Map.put(attrs_with_defaults, :birthdate, birthdate)
+  end
+
+  @spec valid_user_web_attributes(map()) :: map()
+  def valid_user_web_attributes(attrs \\ %{}) do
+    base_attrs = %{
+      email: unique_user_email(),
+      password: valid_user_password(),
+      role: "applicant",
+      fullname: valid_user_fullname(),
+      phone_number: valid_user_phone_number(),
+      privacy_consent: true
+    }
+
+    attrs_with_defaults = Enum.into(attrs, base_attrs)
+
+    # Use string for web contexts
+    birthdate =
+      case attrs_with_defaults.role do
+        role when role in [:applicant, "applicant"] -> "1990-01-01"
+        _other -> ""
+      end
+
+    Map.put(attrs_with_defaults, :birthdate, birthdate)
   end
 
   @spec user_fixture(map()) :: Cen.Accounts.User.t()

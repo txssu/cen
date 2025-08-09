@@ -3,6 +3,7 @@ defmodule Cen.Publications.Vacancy do
   use Ecto.Schema
 
   import Ecto.Changeset
+  import Ecto.Query
 
   alias Cen.Accounts.User
   alias Cen.Employers.Organization
@@ -24,6 +25,7 @@ defmodule Cen.Publications.Vacancy do
     field :proposed_salary, :integer
 
     field :reviewed_at, :utc_datetime
+    field :deleted_at, :utc_datetime
 
     belongs_to :user, User
     belongs_to :organization, Organization
@@ -100,5 +102,28 @@ defmodule Cen.Publications.Vacancy do
 
   defp validate_proposed_salary(changeset) do
     changeset
+  end
+
+  @doc """
+  Soft deletes the vacancy by setting `deleted_at`.
+  """
+  @spec soft_delete_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def soft_delete_changeset(vacancy) do
+    now = DateTime.utc_now(:second)
+    change(vacancy, deleted_at: now)
+  end
+
+  @doc """
+  Query scope to exclude soft-deleted vacancies.
+  """
+  def not_deleted(query \\ __MODULE__) do
+    from(v in query, where: is_nil(v.deleted_at))
+  end
+
+  @doc """
+  Query scope to include only soft-deleted vacancies.
+  """
+  def deleted_only(query \\ __MODULE__) do
+    from(v in query, where: not is_nil(v.deleted_at))
   end
 end
