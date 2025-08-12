@@ -23,12 +23,13 @@ import { LiveSocket } from "phoenix_live_view";
 import { hooks } from "phoenix-colocated/cen";
 import topbar from "../vendor/topbar";
 import Croppr from "./croppr";
+import { ModalScrollFix } from "./modal_scroll_fix";
 
 const csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 const liveSocket = new LiveSocket("/live", Socket, {
-  hooks: { Croppr, ...hooks },
+  hooks: { Croppr, ModalScrollFix, ...hooks },
   longPollFallbackMs: 2500,
   params: { _csrf_token: csrfToken },
 });
