@@ -43,7 +43,9 @@ defmodule CenWeb.UserRegistrationLiveTest do
       email = unique_user_email()
 
       # First set the role to applicant
-      lv |> form("#registration_form", user: %{role: "applicant"}) |> render_change()
+      lv
+      |> form("#registration_form", user: %{role: "applicant"})
+      |> render_change()
 
       # Then set all other attributes
       attrs = valid_user_web_attributes(email: email, role: "applicant")
