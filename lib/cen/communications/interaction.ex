@@ -16,6 +16,7 @@ defmodule Cen.Communications.Interaction do
 
     field :initiator, Ecto.Enum, values: [:resume, :vacancy]
     field :status, Ecto.Enum, values: [:pending, :accepted, :rejected], default: :pending
+    field :archived_at, :utc_datetime
 
     has_many :messages, Message
 
@@ -30,5 +31,14 @@ defmodule Cen.Communications.Interaction do
     interaction
     |> cast(attrs, [])
     |> unique_constraint([:resume_id, :vacancy_id, :initiator])
+  end
+
+  @doc """
+  Archives the interaction by setting `archived_at`.
+  """
+  @spec archive_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
+  def archive_changeset(interaction) do
+    now = DateTime.utc_now(:second)
+    change(interaction, archived_at: now)
   end
 end

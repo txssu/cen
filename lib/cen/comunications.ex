@@ -208,6 +208,20 @@ defmodule Cen.Communications do
     )
   end
 
+  @spec archive_interactions_for_resume(Resume.t()) :: {non_neg_integer(), nil | [Interaction.t()]}
+  def archive_interactions_for_resume(resume) do
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(from(i in Interaction, where: i.resume_id == ^resume.id and is_nil(i.archived_at)), set: [archived_at: now])
+  end
+
+  @spec archive_interactions_for_vacancy(Vacancy.t()) :: {non_neg_integer(), nil | [Interaction.t()]}
+  def archive_interactions_for_vacancy(vacancy) do
+    now = DateTime.utc_now(:second)
+
+    Repo.update_all(from(i in Interaction, where: i.vacancy_id == ^vacancy.id and is_nil(i.archived_at)), set: [archived_at: now])
+  end
+
   defp send_email(interaction, text, url_fun) do
     Task.start(fn ->
       InteractionNotifier.deliver_interaction_email(interaction, text, url_fun)

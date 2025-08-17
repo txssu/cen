@@ -4,6 +4,7 @@ defmodule Cen.Publications do
   import Ecto.Query
 
   alias Cen.Accounts.User
+  alias Cen.Communications
   alias Cen.Employers.Organization
   alias Cen.Publications.Filters
   alias Cen.Publications.Resume
@@ -11,6 +12,7 @@ defmodule Cen.Publications do
   alias Cen.Publications.Vacancy
   alias Cen.Publications.VacancySearchOptions
   alias Cen.Repo
+  alias Ecto.Multi
 
   @type vacancy_changeset :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
   @type resume_changeset :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
@@ -60,9 +62,17 @@ defmodule Cen.Publications do
   end
 
   def archive_vacancy(vacancy) do
-    vacancy
-    |> Vacancy.archive_changeset()
-    |> Repo.update()
+    Multi.new()
+    |> Multi.update(:vacancy, Vacancy.archive_changeset(vacancy))
+    |> Multi.run(:archive_interactions, fn _repo, %{vacancy: vacancy} ->
+      {count, _} = Communications.archive_interactions_for_vacancy(vacancy)
+      {:ok, count}
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{vacancy: vacancy}} -> {:ok, vacancy}
+      {:error, :vacancy, changeset, _} -> {:error, changeset}
+    end
   end
 
   @spec get_resume!(id :: integer() | binary()) :: Resume.t()
@@ -102,9 +112,17 @@ defmodule Cen.Publications do
 
   @spec archive_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
   def archive_resume(resume) do
-    resume
-    |> Resume.archive_changeset()
-    |> Repo.update()
+    Multi.new()
+    |> Multi.update(:resume, Resume.archive_changeset(resume))
+    |> Multi.run(:archive_interactions, fn _repo, %{resume: resume} ->
+      {count, _} = Communications.archive_interactions_for_resume(resume)
+      {:ok, count}
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{resume: resume}} -> {:ok, resume}
+      {:error, :resume, changeset, _} -> {:error, changeset}
+    end
   end
 
   @spec search_resumes(map()) :: {:ok, {[Resume.t()], Flop.Meta.t()}} | {:error, Flop.Meta.t()}
