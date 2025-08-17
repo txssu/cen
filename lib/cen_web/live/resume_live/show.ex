@@ -41,8 +41,8 @@ defmodule CenWeb.ResumeLive.Show do
               <.regular_button class="bg-accent-hover" phx-click={JS.navigate(~p"/cvs/#{@resume}/edit")}>
                 {gettext("Редактировать")}
               </.regular_button>
-              <.button class="bg-white p-4" phx-click="confirm_delete_resume">
-                <.icon name="cen-bin" alt={dgettext("publications", "Удалить")} />
+              <.button class="bg-white p-4" phx-click="confirm_archive_resume">
+                <.icon name="cen-bin" alt={dgettext("publications", "В архив")} />
               </.button>
             <% end %>
             <%= if @current_user.role == :employer do %>
@@ -135,12 +135,12 @@ defmodule CenWeb.ResumeLive.Show do
     </.modal>
 
     <DeleteConfirmationComponent.delete_confirmation
-      show={@show_delete_modal}
-      title="Подтвердите удаление резюме"
-      message="Это действие нельзя отменить. Резюме будет безвозвратно удалено."
-      confirm_event="delete_resume"
-      cancel_event="cancel_delete_resume"
-      confirm_text="Да, удалить"
+      show={@show_archive_modal}
+      title="Подтвердите отправку резюме в архив"
+      message="Резюме будет отправлено в архив и скрыто из поиска."
+      confirm_event="archive_resume"
+      cancel_event="cancel_archive_resume"
+      confirm_text="Да, в архив"
       cancel_text="Отмена"
     />
     """
@@ -168,7 +168,7 @@ defmodule CenWeb.ResumeLive.Show do
     resume = Publications.get_resume!(id)
     verify_has_permission!(socket.assigns.current_user, resume, :show)
 
-    {:ok, assign(socket, resume: resume, select_vacancy_form: to_form(%{}, as: "select_vacancy_params"), vacancies: [], show_delete_modal: false)}
+    {:ok, assign(socket, resume: resume, select_vacancy_form: to_form(%{}, as: "select_vacancy_params"), vacancies: [], show_archive_modal: false)}
   end
 
   @impl Phoenix.LiveView
@@ -189,27 +189,27 @@ defmodule CenWeb.ResumeLive.Show do
   end
 
   @impl Phoenix.LiveView
-  def handle_event("confirm_delete_resume", _params, socket) do
-    {:noreply, assign(socket, show_delete_modal: true)}
+  def handle_event("confirm_archive_resume", _params, socket) do
+    {:noreply, assign(socket, show_archive_modal: true)}
   end
 
-  def handle_event("cancel_delete_resume", _params, socket) do
-    {:noreply, assign(socket, show_delete_modal: false)}
+  def handle_event("cancel_archive_resume", _params, socket) do
+    {:noreply, assign(socket, show_archive_modal: false)}
   end
 
-  def handle_event("delete_resume", _params, socket) do
-    case Publications.delete_resume(socket.assigns.resume) do
+  def handle_event("archive_resume", _params, socket) do
+    case Publications.archive_resume(socket.assigns.resume) do
       {:ok, _resume} ->
         {:noreply,
          socket
-         |> put_flash(:info, dgettext("publications", "Резюме успешно удалено."))
+         |> put_flash(:info, dgettext("publications", "Резюме отправлено в архив."))
          |> push_navigate(to: ~p"/cvs")}
 
       {:error, _changeset} ->
         {:noreply,
          socket
-         |> put_flash(:error, dgettext("publications", "Произошла ошибка при удалении резюме."))
-         |> assign(show_delete_modal: false)}
+         |> put_flash(:error, dgettext("publications", "Произошла ошибка при отправке в архив."))
+         |> assign(show_archive_modal: false)}
     end
   end
 

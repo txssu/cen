@@ -25,7 +25,7 @@ defmodule Cen.Publications.Vacancy do
     field :proposed_salary, :integer
 
     field :reviewed_at, :utc_datetime
-    field :deleted_at, :utc_datetime
+    field :archived_at, :utc_datetime
 
     belongs_to :user, User
     belongs_to :organization, Organization
@@ -105,25 +105,24 @@ defmodule Cen.Publications.Vacancy do
   end
 
   @doc """
-  Soft deletes the vacancy by setting `deleted_at`.
+  Archives the vacancy by setting `archived_at`.
   """
-  @spec soft_delete_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def soft_delete_changeset(vacancy) do
+  def archive_changeset(vacancy) do
     now = DateTime.utc_now(:second)
-    change(vacancy, deleted_at: now)
+    change(vacancy, archived_at: now)
   end
 
   @doc """
-  Query scope to exclude soft-deleted vacancies.
+  Query scope to exclude archived vacancies.
   """
-  def not_deleted(query \\ __MODULE__) do
-    from(v in query, where: is_nil(v.deleted_at))
+  def not_archived(query \\ __MODULE__) do
+    from(v in query, where: is_nil(v.archived_at))
   end
 
   @doc """
-  Query scope to include only soft-deleted vacancies.
+  Query scope to include only archived vacancies.
   """
-  def deleted_only(query \\ __MODULE__) do
-    from(v in query, where: not is_nil(v.deleted_at))
+  def archived_only(query \\ __MODULE__) do
+    from(v in query, where: not is_nil(v.archived_at))
   end
 end

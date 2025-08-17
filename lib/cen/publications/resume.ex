@@ -21,7 +21,7 @@ defmodule Cen.Publications.Resume do
     field :work_schedules, {:array, Ecto.Enum}, values: Enums.work_schedules()
 
     field :reviewed_at, :utc_datetime
-    field :deleted_at, :utc_datetime
+    field :archived_at, :utc_datetime
 
     embeds_many :educations, Education, on_replace: :delete
     embeds_many :jobs, Job, on_replace: :delete
@@ -94,25 +94,24 @@ defmodule Cen.Publications.Resume do
   end
 
   @doc """
-  Soft deletes the resume by setting `deleted_at`.
+  Archives the resume by setting `archived_at`.
   """
-  @spec soft_delete_changeset(t() | Ecto.Changeset.t()) :: Ecto.Changeset.t()
-  def soft_delete_changeset(resume) do
+  def archive_changeset(resume) do
     now = DateTime.utc_now(:second)
-    change(resume, deleted_at: now)
+    change(resume, archived_at: now)
   end
 
   @doc """
-  Query scope to exclude soft-deleted resumes.
+  Query scope to exclude archived resumes.
   """
-  def not_deleted(query \\ __MODULE__) do
-    from(r in query, where: is_nil(r.deleted_at))
+  def not_archived(query \\ __MODULE__) do
+    from(r in query, where: is_nil(r.archived_at))
   end
 
   @doc """
-  Query scope to include only soft-deleted resumes.
+  Query scope to include only archived resumes.
   """
-  def deleted_only(query \\ __MODULE__) do
-    from(r in query, where: not is_nil(r.deleted_at))
+  def archived_only(query \\ __MODULE__) do
+    from(r in query, where: not is_nil(r.archived_at))
   end
 end

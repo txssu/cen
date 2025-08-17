@@ -18,7 +18,7 @@ defmodule Cen.Publications do
   @spec get_vacancy!(id :: integer() | binary()) :: Vacancy.t()
   def get_vacancy!(id) do
     Vacancy
-    |> Vacancy.not_deleted()
+    |> Vacancy.not_archived()
     |> Repo.get!(id)
     |> Repo.preload(:organization)
   end
@@ -26,7 +26,7 @@ defmodule Cen.Publications do
   @spec list_vacancies_for(User.t()) :: [Vacancy.t()]
   def list_vacancies_for(user) do
     user
-    |> Repo.preload(vacancies: {Vacancy.not_deleted(), :organization})
+    |> Repo.preload(vacancies: {Vacancy.not_archived(), :organization})
     |> Map.get(:vacancies)
   end
 
@@ -59,17 +59,16 @@ defmodule Cen.Publications do
     )
   end
 
-  @spec delete_vacancy(Vacancy.t()) :: {:ok, Vacancy.t()} | {:error, Ecto.Changeset.t()}
-  def delete_vacancy(vacancy) do
+  def archive_vacancy(vacancy) do
     vacancy
-    |> Vacancy.soft_delete_changeset()
+    |> Vacancy.archive_changeset()
     |> Repo.update()
   end
 
   @spec get_resume!(id :: integer() | binary()) :: Resume.t()
   def get_resume!(id) do
     Resume
-    |> Resume.not_deleted()
+    |> Resume.not_archived()
     |> Repo.get!(id)
     |> Repo.preload([:user])
   end
@@ -77,7 +76,7 @@ defmodule Cen.Publications do
   @spec list_resumes_for(user :: User.t()) :: [Resume.t()]
   def list_resumes_for(user) do
     user
-    |> Repo.preload(resumes: {Resume.not_deleted(), :user})
+    |> Repo.preload(resumes: {Resume.not_archived(), :user})
     |> Map.get(:resumes)
   end
 
@@ -101,10 +100,10 @@ defmodule Cen.Publications do
     |> Repo.update()
   end
 
-  @spec delete_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
-  def delete_resume(resume) do
+  @spec archive_resume(Resume.t()) :: {:ok, Resume.t()} | {:error, Ecto.Changeset.t()}
+  def archive_resume(resume) do
     resume
-    |> Resume.soft_delete_changeset()
+    |> Resume.archive_changeset()
     |> Repo.update()
   end
 
@@ -115,7 +114,7 @@ defmodule Cen.Publications do
          |> Ecto.Changeset.apply_action(:validate) do
       {:ok, filters} ->
         Resume
-        |> Resume.not_deleted()
+        |> Resume.not_archived()
         |> filter(:searchable, :search, filters.query)
         |> filter(:field_of_art, :eq, filters.field_of_art)
         |> Filters.filter_employment_types(filters.employment_types)
@@ -138,7 +137,7 @@ defmodule Cen.Publications do
          |> Ecto.Changeset.apply_action(:validate) do
       {:ok, filters} ->
         Vacancy
-        |> Vacancy.not_deleted()
+        |> Vacancy.not_archived()
         |> filter(:searchable, :search, filters.query)
         |> filter(:field_of_art, :eq, filters.field_of_art)
         |> filter(:min_years_of_work_experience, :not_gt, filters.min_years_of_work_experience)
@@ -172,7 +171,7 @@ defmodule Cen.Publications do
   @spec list_not_reviewed_resumes() :: [Resume.t()]
   def list_not_reviewed_resumes do
     Resume
-    |> Resume.not_deleted()
+    |> Resume.not_archived()
     |> where([resume], is_nil(resume.reviewed_at))
     |> order_by([resume], asc: resume.updated_at)
     |> preload(:user)
@@ -196,7 +195,7 @@ defmodule Cen.Publications do
   @spec list_not_reviewed_vacancies() :: [Vacancy.t()]
   def list_not_reviewed_vacancies do
     Vacancy
-    |> Vacancy.not_deleted()
+    |> Vacancy.not_archived()
     |> where([vacancy], is_nil(vacancy.reviewed_at))
     |> order_by([vacancy], asc: vacancy.updated_at)
     |> preload(:organization)
