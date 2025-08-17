@@ -16,6 +16,7 @@ defmodule Cen.Communications.Interaction do
 
     field :initiator, Ecto.Enum, values: [:resume, :vacancy]
     field :status, Ecto.Enum, values: [:pending, :accepted, :rejected], default: :pending
+    field :interaction_status, Ecto.Enum, values: [:resume_archived, :vacancy_archived]
     field :archived_at, :utc_datetime
 
     has_many :messages, Message
@@ -40,5 +41,12 @@ defmodule Cen.Communications.Interaction do
   def archive_changeset(interaction) do
     now = DateTime.utc_now(:second)
     change(interaction, archived_at: now)
+  end
+
+  @doc """
+  Sets the interaction status.
+  """
+  def set_interaction_status(interaction, status) do
+    change(interaction, interaction_status: status)
   end
 end
