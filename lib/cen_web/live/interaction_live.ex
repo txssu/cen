@@ -46,6 +46,7 @@ defmodule CenWeb.InteractionLive do
         <p class="text-title-text mt-2.5">
           {@resume.user.fullname}, {Accounts.calculate_user_age(@resume.user)}
         </p>
+        <.interaction_status_badge interaction={@interaction} />
         <.regular_button class="mt-5 flex w-full justify-center bg-white" phx-click={JS.navigate(@resume_link)}>
           {gettext("Открыть")}
         </.regular_button>
@@ -71,6 +72,7 @@ defmodule CenWeb.InteractionLive do
         <p :if={@vacancy.proposed_salary} class="text-title-text mt-2.5">
           {pgettext("money", "от")} {Publications.format_salary(@vacancy.proposed_salary)}
         </p>
+        <.interaction_status_badge interaction={@interaction} />
         <p class="text-nowrap mt-9 overflow-hidden text-ellipsis">
           {@vacancy.organization.name}
         </p>
@@ -105,4 +107,19 @@ defmodule CenWeb.InteractionLive do
 
   defp header_text(:resume), do: dgettext("publications", "Отклики")
   defp header_text(:vacancy), do: dgettext("publications", "Приглашения")
+
+  defp interaction_status_badge(assigns) do
+    status_text = interaction_status_text(assigns.interaction.interaction_status)
+    assigns = assign(assigns, status_text: status_text)
+
+    ~H"""
+    <p :if={@status_text} class="mt-2.5 text-sm text-red-600">
+      {@status_text}
+    </p>
+    """
+  end
+
+  defp interaction_status_text(:resume_archived), do: "Резюме в архиве"
+  defp interaction_status_text(:vacancy_archived), do: "Вакансия в архиве"
+  defp interaction_status_text(_), do: nil
 end
