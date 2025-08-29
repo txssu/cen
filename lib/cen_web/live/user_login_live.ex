@@ -16,7 +16,9 @@ defmodule CenWeb.UserLoginLive do
         <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
           <.input field={@form[:email]} type="email" placeholder={dgettext("users", "Почта")} implicit_required />
           <.input field={@form[:password]} type="password" placeholder={dgettext("users", "Пароль")} implicit_required />
-
+          <div class="mt-3">
+            <.input field={@form[:remember_me]} type="checkbox" label={dgettext("users", "Оставаться в системе")} />
+          </div>
           <:actions>
             <.arrow_button class="mx-auto">
               {dgettext("users", "Войти")}
@@ -49,7 +51,7 @@ defmodule CenWeb.UserLoginLive do
   @impl Phoenix.LiveView
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
-    form = to_form(%{"email" => email}, as: "user")
+    form = to_form(%{"email" => email, "remember_me" => false}, as: "user")
 
     {:ok,
      socket

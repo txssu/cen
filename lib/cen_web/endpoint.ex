@@ -26,7 +26,7 @@ defmodule CenWeb.Endpoint do
     only: CenWeb.static_paths()
 
   if Code.ensure_loaded?(Tidewave) do
-    plug Tidewave
+    plug Tidewave, allowed_origins: ["http://localhost:4000"]
   end
 
   # Code reloading can be explicitly enabled under the
