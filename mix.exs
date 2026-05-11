@@ -34,13 +34,13 @@ defmodule Cen.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:usage_rules, "~> 0.1", only: [:dev]},
+      {:usage_rules, "~> 1.2", only: [:dev]},
       {:claude, "~> 0.2", only: [:dev], runtime: false},
       {:igniter, "~> 0.6", only: [:dev, :test]},
       {:bcrypt_elixir, "~> 3.0"},
       # Code quality
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:styler, "~> 1.5.0", only: [:dev, :test], runtime: false},
+      {:styler, "~> 1.11.0", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4.3", only: [:dev, :test], runtime: false},
       {:mix_audit, "~> 2.1.2", only: [:dev, :test], runtime: false},
       {:sobelow, "~> 0.13", only: [:dev, :test], runtime: false},
@@ -48,7 +48,7 @@ defmodule Cen.MixProject do
       # Uploads
       {:waffle, "~> 1.1"},
       {:waffle_ecto, "~> 0.0.12"},
-      {:ex_aws, "~> 2.5.4"},
+      {:ex_aws, "~> 2.6.1"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
@@ -66,18 +66,18 @@ defmodule Cen.MixProject do
       {:phoenix_live_dashboard, "~> 0.8.3"},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-      {:heroicons, github: "tailwindlabs/heroicons", tag: "v2.1.1", sparse: "optimized", app: false, compile: false, depth: 1},
-      {:swoosh, "~> 1.19.0"},
+      {:heroicons, github: "tailwindlabs/heroicons", tag: "v2.2.0", sparse: "optimized", app: false, compile: false, depth: 1},
+      {:swoosh, "~> 1.25.1"},
       {:gen_smtp, "~> 1.2"},
       {:tls_certificate_check, "~> 1.26"},
       {:finch, "~> 0.13"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
-      {:gettext, "~> 0.20"},
+      {:gettext, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.2.0"},
       {:bandit, "~> 1.5"},
-      {:nebulex, "~> 2.6"},
+      {:nebulex, "~> 3.0"},
       {:tidewave, "~> 0.2", only: :dev}
     ]
   end
